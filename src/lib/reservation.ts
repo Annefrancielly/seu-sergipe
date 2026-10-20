@@ -102,3 +102,30 @@ export function buildReservationMessage(
 
   return lines.join("\n");
 }
+
+export function toIsoDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function readText(form: FormData, field: string): string | undefined {
+  const value = form.get(field);
+  return typeof value === "string" ? value : undefined;
+}
+
+export function readReservationForm(form: FormData, intro?: string): ReservationRequest {
+  const guestsValue = readText(form, "guests");
+  const guests = guestsValue ? Number(guestsValue) : undefined;
+
+  return {
+    intro,
+    name: readText(form, "name"),
+    date: readText(form, "date"),
+    time: readText(form, "time"),
+    guests: guests !== undefined && Number.isFinite(guests) ? guests : undefined,
+    occasion: readText(form, "occasion"),
+    notes: readText(form, "notes"),
+  };
+}

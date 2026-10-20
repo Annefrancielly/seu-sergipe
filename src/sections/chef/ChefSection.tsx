@@ -1,15 +1,14 @@
 import Image from "next/image";
 
 import chefPhoto from "@/assets/images/chef-seichele-barboza.jpg";
-import { ArrowIcon } from "@/components/graphics/ArrowIcon";
 import { Section } from "@/components/layout/Section";
+import { ReservationTrigger } from "@/components/reservation/ReservationTrigger";
 import { Carousel } from "@/components/ui/Carousel";
 import { DishCard } from "@/components/ui/DishCard";
 import { OrganicFrame } from "@/components/ui/OrganicFrame";
 import { chefIntro, chefPicksIntro } from "@/content/chef";
 import { chefPickSlugs, dishes } from "@/content/menu";
 import { resolveDishes } from "@/lib/menu";
-import { reservationHref } from "@/lib/whatsapp";
 
 export function ChefSection() {
   const chefPicks = resolveDishes(chefPickSlugs, dishes);
@@ -69,16 +68,12 @@ export function ChefSection() {
           </Carousel>
           <p className="mx-auto mt-8 max-w-6xl px-6 text-lg">
             {chefPicksIntro.closing}{" "}
-            <a
-              href={reservationHref("Vi as sugestões da chef no site e quero reservar uma mesa.")}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-center gap-2 font-semibold underline decoration-1 underline-offset-4"
+            <ReservationTrigger
+              variant="link"
+              intro="Vi as sugestões da chef no site e quero reservar uma mesa."
             >
               {chefPicksIntro.reserveLabel}
-              <ArrowIcon className="transition-transform duration-300 ease-organic group-hover:translate-x-1 group-focus-visible:translate-x-1" />
-              <span className="sr-only"> (abre o WhatsApp em nova aba)</span>
-            </a>
+            </ReservationTrigger>
           </p>
         </div>
       )}

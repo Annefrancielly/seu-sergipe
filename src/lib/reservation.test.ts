@@ -7,7 +7,9 @@ import {
   buildWhatsAppUrl,
   formatReservationDate,
   formatReservationTime,
+  readReservationForm,
   sanitizeField,
+  toIsoDate,
 } from "./reservation.ts";
 
 const PHONE = "5579988695326";
@@ -121,5 +123,44 @@ describe("buildReservationMessage", () => {
       buildReservationMessage({}, "Seu Sergipe"),
       "Olá! Gostaria de reservar uma mesa no Seu Sergipe.",
     );
+  });
+});
+
+describe("toIsoDate", () => {
+  it("usa a data local com zeros à esquerda", () => {
+    assert.equal(toIsoDate(new Date(2026, 0, 5, 23, 30)), "2026-01-05");
+  });
+});
+
+describe("readReservationForm", () => {
+  it("converte os campos do formulário em um pedido de reserva", () => {
+    const form = new FormData();
+    form.set("name", "Ana");
+    form.set("date", "2026-10-23");
+    form.set("time", "20:00");
+    form.set("guests", "4");
+    form.set("occasion", "");
+
+    assert.deepEqual(readReservationForm(form, "Tenho interesse no Menu Sensações."), {
+      intro: "Tenho interesse no Menu Sensações.",
+      name: "Ana",
+      date: "2026-10-23",
+      time: "20:00",
+      guests: 4,
+      occasion: "",
+      notes: undefined,
+    });
+  });
+
+  it("ignora quantidade de pessoas não numérica", () => {
+    const form = new FormData();
+    form.set("guests", "quatro");
+    assert.equal(readReservationForm(form).guests, undefined);
+  });
+
+  it("ignora arquivos enviados no lugar de texto", () => {
+    const form = new FormData();
+    form.set("name", new Blob(["x"]), "arquivo.txt");
+    assert.equal(readReservationForm(form).name, undefined);
   });
 });

@@ -148,6 +148,22 @@ Fotos enviadas em 19/10/2026 e identificadas pela equipe:
 - `objectPosition` em `ImageAsset` ajusta o recorte de cada foto dentro da moldura.
 - Com três pratos, todos cabem na tela do desktop; os controles do carrossel ficam invisíveis (sem deslocar o layout) quando não há o que rolar.
 
+## D15 — Seção 03 e painel guiado de reserva
+
+**Seção 03** sobre superfície marrom, com texto à esquerda e a foto da etapa degustação na moldura `folha`. Abaixo, os três Menus Degustação em cards verdes (superfície aninhada), sem preços até a decisão sobre exibi-los.
+
+**Painel de reserva** (`ReservationProvider` + `ReservationTrigger`):
+
+- Todo convite de reserva (botão principal, cards de prato, menus degustação) é um `ReservationTrigger`: um link real para o WhatsApp que, com JavaScript carregado e dentro do provider, abre o painel em vez de navegar. Sem JavaScript ou fora do provider, o link funciona normalmente (aprimoramento progressivo). Cliques com Ctrl/Cmd/Shift mantêm o comportamento padrão do link.
+- `<dialog>` nativo com `showModal()`: bloqueio do fundo, Esc para fechar e foco preso ao painel sem biblioteca. Clique fora do painel também fecha. Ao abrir, o foco vai para o campo de nome.
+- Cada gatilho passa uma frase de contexto (`intro`), exibida no painel e incluída na mensagem.
+- Validação nativa (`required`, `min`, `max`, `maxLength`); a data mínima é calculada ao abrir o painel, não no build, porque a página é estática.
+- `readReservationForm` converte o `FormData` em `ReservationRequest` e é testada; `buildReservationMessage` sanitiza e monta a mensagem.
+- `window.open(url, "_blank")` seguido de `opener = null`. Passar `"noopener"` nas opções faria `window.open` sempre retornar `null`, acionando por engano o fallback de navegar na mesma aba.
+- Nenhum dado passa por servidor; o envio só acontece quando o visitante toca em enviar no WhatsApp.
+
+Comportamentos do `<dialog>` validados em Chromium: foco inicial, Esc, clique no fundo, clique interno sem fechar, bloqueio do envio vazio e abertura da nova aba.
+
 ---
 
 # Pendências
@@ -172,3 +188,6 @@ Fotos enviadas em 19/10/2026 e identificadas pela equipe:
 - Autorização de imagem dos clientes na foto do salão e crédito do fotógrafo
 - Decisão sobre exibir preços no cardápio
 - Domínio
+- Horários confirmados (para limitar o campo de horário do painel aos períodos de funcionamento)
+- Número de pessoas a partir do qual a reserva é tratada como grupo grande
+- Aprovação da inclusão dos Menus Degustação na Seção 03

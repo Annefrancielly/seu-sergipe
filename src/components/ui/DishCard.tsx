@@ -1,8 +1,7 @@
 import Image from "next/image";
 
-import { ArrowIcon } from "@/components/graphics/ArrowIcon";
+import { ReservationTrigger } from "@/components/reservation/ReservationTrigger";
 import { OrganicFrame } from "@/components/ui/OrganicFrame";
-import { reservationHref } from "@/lib/whatsapp";
 import type { Dish } from "@/types/content";
 
 type DishCardProps = {
@@ -39,16 +38,14 @@ export function DishCard({ dish }: DishCardProps) {
         </details>
       )}
 
-      <a
-        href={reservationHref(`Vi ${dish.name} no site e quero provar!`)}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="group/link mt-auto inline-flex items-center gap-2 pt-6 font-semibold"
+      <ReservationTrigger
+        variant="link"
+        intro={`Vi ${dish.name} no site e quero provar!`}
+        srContext={`: ${dish.name}`}
+        className="mt-auto self-start pt-6"
       >
         Quero provar
-        <ArrowIcon className="transition-transform duration-300 ease-organic group-hover/link:translate-x-1 group-focus-visible/link:translate-x-1" />
-        <span className="sr-only"> {dish.name} (abre o WhatsApp em nova aba)</span>
-      </a>
+      </ReservationTrigger>
     </article>
   );
 }
