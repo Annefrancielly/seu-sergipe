@@ -21,6 +21,7 @@
   --color-focus: var(--focus);
   --color-action: var(--action);
   --color-on-action: var(--on-action);
+  --color-simbolo: var(--simbolo);
 }
 
 :root {
@@ -38,6 +39,7 @@
   --focus: var(--color-verde-profundo);
   --action: var(--color-verde-profundo);
   --on-action: var(--color-creme);
+  --simbolo: var(--color-verde-profundo);
 }
 
 [data-surface="verde"] {
@@ -48,6 +50,7 @@
   --focus: var(--color-laranja-quente);
   --action: var(--color-laranja-quente);
   --on-action: var(--color-verde-profundo);
+  --simbolo: var(--color-laranja-quente);
 }
 
 [data-surface="marrom"] {
@@ -58,6 +61,7 @@
   --focus: var(--color-creme);
   --action: var(--color-laranja-quente);
   --on-action: var(--color-verde-profundo);
+  --simbolo: var(--color-laranja-quente);
 }
 
 @utility traco-marca {
@@ -228,6 +232,20 @@
 }
 
 @layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  a,
+  button,
+  summary,
+  label,
+  input,
+  select,
+  textarea {
+    touch-action: manipulation;
+  }
+
   :focus-visible {
     outline: 3px solid var(--focus);
     outline-offset: 3px;

@@ -26,12 +26,46 @@ describe("integridade do cardápio", () => {
     );
   });
 
-  it("toda foto de prato existe na pasta public", () => {
-    const missing = dishes
-      .map((dish) => dish.photo?.src)
+  it("toda foto de prato e de categoria existe na pasta public", () => {
+    const missing = [...dishes.map((dish) => dish.photo?.src), ...menuCategories.map((category) => category.cover?.src)]
       .filter((src): src is string => src !== undefined)
       .filter((src) => !existsSync(new URL(`../../public${src}`, import.meta.url)));
     assert.deepEqual(missing, []);
+  });
+});
+
+describe("regras do cardápio", () => {
+  it("todo item tem pelo menos um preço positivo", () => {
+    const withoutPrice = dishes.filter(
+      (dish) => !dish.prices?.length || dish.prices.some((price) => price.amountInCents <= 0),
+    );
+    assert.deepEqual(
+      withoutPrice.map((dish) => dish.slug),
+      [],
+    );
+  });
+
+  it("todo item de categoria em cards tem descrição para o verso do card", () => {
+    const cardCategories = new Set(
+      menuCategories.filter((category) => category.layout === "cards").map((category) => category.slug),
+    );
+    const withoutDescription = dishes.filter(
+      (dish) => cardCategories.has(dish.categorySlug) && !dish.description,
+    );
+    assert.deepEqual(
+      withoutDescription.map((dish) => dish.slug),
+      [],
+    );
+  });
+
+  it("toda categoria tem pelo menos um item", () => {
+    const empty = menuCategories.filter(
+      (category) => !dishes.some((dish) => dish.categorySlug === category.slug),
+    );
+    assert.deepEqual(
+      empty.map((category) => category.slug),
+      [],
+    );
   });
 });
 

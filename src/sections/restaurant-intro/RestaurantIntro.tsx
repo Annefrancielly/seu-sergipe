@@ -20,15 +20,15 @@ export function RestaurantIntro() {
       <TerritoryLine className="absolute top-[58%] -bottom-4 right-0 w-24 opacity-60 md:top-1/3 md:right-[6%] md:w-44" />
 
       <div className="relative mx-auto max-w-6xl px-6">
-        <h1>
+        <h1 className="flex justify-center md:justify-start">
           <span className="sr-only">
             {siteConfig.name} — {siteConfig.tagline}
           </span>
-          <BrandLogo />
+          <BrandLogo className="items-center md:items-start" />
         </h1>
 
         <div className="mt-12 grid items-center gap-14 md:mt-16 md:grid-cols-12 md:gap-8">
-          <div className="md:col-span-6 lg:col-span-5">
+          <div className="text-center md:text-left md:col-span-6 lg:col-span-5">
             <h2 id="restaurante-titulo" className="font-display text-4xl leading-tight sm:text-5xl">
               {restaurantIntro.title}
             </h2>

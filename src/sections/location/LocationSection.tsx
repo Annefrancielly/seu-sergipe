@@ -16,8 +16,8 @@ export function LocationSection() {
       <TerritoryLine variant="meandro" className="absolute inset-y-0 left-[4%] hidden w-32 opacity-50 md:block" />
 
       <div className="relative mx-auto grid max-w-6xl gap-12 px-6 md:grid-cols-12 md:gap-8">
-        <div className="surgir md:col-span-6 lg:col-span-5">
-          <svg viewBox="0 0 48 48" aria-hidden="true" focusable="false" className="size-12 text-accent">
+        <div className="surgir text-center md:text-left md:col-span-6 lg:col-span-5">
+          <svg viewBox="0 0 48 48" aria-hidden="true" focusable="false" className="mx-auto size-12 text-accent md:mx-0">
             <path
               className="traco-marca"
               d="M24 44 C16 34 10 26 10 19 C10 11 16 5 24 5 C32 5 38 11 38 19 C38 26 32 34 24 44 Z M24 14 C27 14 29 16 29 19 C29 22 27 24 24 24 C21 24 19 22 19 19 C19 16 21 14 24 14"
@@ -42,14 +42,14 @@ export function LocationSection() {
           data-surface="verde"
           className="surgir surgir-depois rounded-folha-inversa bg-surface p-7 text-ink sm:p-9 md:col-span-6 md:col-start-7"
         >
-          <h3 className="font-display text-3xl">Horários</h3>
-          <div className="mt-3">
+          <h3 className="text-center font-display text-3xl md:text-left">Horários</h3>
+          <div className="mt-3 flex justify-center md:justify-start">
             <OpenStatus />
           </div>
           <dl className="mt-6 space-y-6">
             {rows.map((row) => (
               <div key={row.days}>
-                <dt className="text-sm font-semibold uppercase tracking-[0.2em] text-emphasis">{row.days}</dt>
+                <dt className="text-center text-sm font-semibold uppercase tracking-[0.2em] text-emphasis md:text-left">{row.days}</dt>
                 <dd className="mt-2">
                   {row.periods.length === 0 ? (
                     <p className="text-lg">Fechado</p>
@@ -69,14 +69,11 @@ export function LocationSection() {
               </div>
             ))}
           </dl>
-          <ReservationTrigger
-            variant="link"
-            intro="Gostaria de reservar uma mesa para hoje."
-            presetToday
-            className="mt-6"
-          >
-            Reservar para hoje
-          </ReservationTrigger>
+          <div className="mt-6 text-center md:text-left">
+            <ReservationTrigger variant="link" intro="Gostaria de reservar uma mesa para hoje." presetToday>
+              Reservar para hoje
+            </ReservationTrigger>
+          </div>
         </div>
       </div>
     </Section>

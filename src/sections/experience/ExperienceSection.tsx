@@ -1,16 +1,24 @@
 import Image from "next/image";
 
 import { Section } from "@/components/layout/Section";
+import { ButtonLink } from "@/components/ui/ButtonLink";
 import { ReservationTrigger } from "@/components/reservation/ReservationTrigger";
 import { Carousel } from "@/components/ui/Carousel";
 import { OrganicFrame } from "@/components/ui/OrganicFrame";
-import { experienceIntro, tastingMenus } from "@/content/experience";
+import { experienceIntro } from "@/content/experience";
+import { dishes } from "@/content/menu";
+import { DISH_TAG_LABELS, dishesInCategory, interestPhrase, lowestPrice } from "@/lib/menu";
+import { formatPrice } from "@/lib/price";
 
 export function ExperienceSection() {
+  const tastingMenus = dishesInCategory(dishes, "menu-degustacao").toSorted(
+    (a, b) => (a.steps ?? 0) - (b.steps ?? 0),
+  );
+
   return (
     <Section id="experiencia" surface="marrom" labelledBy="experiencia-titulo" className="py-secao">
       <div className="mx-auto grid max-w-6xl items-center gap-14 px-6 md:grid-cols-12 md:gap-8">
-        <div className="surgir md:col-span-6 lg:col-span-5">
+        <div className="surgir text-center md:text-left md:col-span-6 lg:col-span-5">
           <h2 id="experiencia-titulo" className="font-display text-4xl leading-tight sm:text-5xl">
             {experienceIntro.title}
           </h2>
@@ -36,7 +44,7 @@ export function ExperienceSection() {
       </div>
 
       <div className="mt-20">
-        <h3 className="surgir mx-auto max-w-6xl px-6 font-display text-3xl">{experienceIntro.menusTitle}</h3>
+        <h3 className="surgir mx-auto max-w-6xl px-6 font-display text-3xl text-center md:text-left">{experienceIntro.menusTitle}</h3>
         <Carousel label={experienceIntro.menusTitle} className="surgir surgir-depois mx-auto mt-8 max-w-6xl">
           {tastingMenus.map((menu, index) => (
             <div
@@ -49,10 +57,19 @@ export function ExperienceSection() {
               </p>
               <h4 className="mt-3 font-display text-2xl leading-tight">{menu.name}</h4>
               <p className="mt-3 leading-relaxed">{menu.description}</p>
-              {menu.note && <p className="mt-4 text-sm font-semibold">{menu.note}</p>}
+              {menu.tags?.map((tag) => (
+                <p key={tag} className="mt-4 text-sm font-semibold">
+                  {DISH_TAG_LABELS[tag]}
+                </p>
+              ))}
+              {lowestPrice(menu) !== undefined && (
+                <p className="mt-4 text-sm">
+                  A partir de <span className="font-display text-xl text-emphasis">{formatPrice(lowestPrice(menu) ?? 0)}</span>
+                </p>
+              )}
               <ReservationTrigger
                 variant="link"
-                intro={menu.reservationIntro}
+                intro={interestPhrase(menu)}
                 srContext={`: ${menu.name}`}
                 className="mt-auto self-start pt-6"
               >
@@ -61,7 +78,12 @@ export function ExperienceSection() {
             </div>
           ))}
         </Carousel>
-        <p className="mx-auto mt-6 max-w-6xl px-6 text-sm">{experienceIntro.menusNote}</p>
+        <div className="mx-auto mt-6 flex max-w-6xl flex-col items-center gap-2 px-6 text-center md:text-left md:items-start">
+          <p className="text-sm">{experienceIntro.menusNote}</p>
+          <ButtonLink href="/cardapio/menu-degustacao" variant="link" withArrow>
+            Ver detalhes e valores no cardápio
+          </ButtonLink>
+        </div>
       </div>
     </Section>
   );

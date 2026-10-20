@@ -119,7 +119,7 @@ A foto do salão usa `loading="eager"` em vez de `preload`: no celular ela fica 
 
 ## D12 — Elementos provisórios da Seção 01
 
-- **Logotipo:** `BrandLogo` exibe o nome em texto, marcado com `data-placeholder="logotipo-oficial-pendente"`, até a chegada do vetor sem "Bistrô". A troca acontece apenas nesse componente.
+- **Logotipo:** `BrandLogo` exibia o nome em texto até a chegada do logotipo; substituído pelo vetor na D22.
 - **Foto do salão:** extraída da apresentação da chef (2999 × 2002 px), reduzida para 1800 px e sem metadados. Substituir pelo arquivo original.
 - **`/cardapio`:** página provisória com contato pelo WhatsApp até o cardápio interativo.
 - **Textos:** rascunho em `src/content/home.ts`, aguardando aprovação da chef.
@@ -236,13 +236,73 @@ Regras:
 
 Validado em Chromium (375 × 812): onda, traço e texto partindo do estado inicial e chegando ao final com a rolagem; painel deslizando de 100% a 0; com movimento reduzido, nenhuma animação aplicada.
 
+## D20 — Cardápio interativo
+
+Estrutura do wireframe de 19/10/2026: um sumário com cards de foto por categoria, que leva a uma página por categoria, com cards de nome e preço que viram ao toque para mostrar a descrição.
+
+**Rotas (todas estáticas)**
+
+- `/cardapio`: sumário em grade de 3 colunas, inclusive no celular, como no wireframe.
+- `/cardapio/[categoria]`: uma página por categoria, gerada no build por `generateStaticParams`. Com `dynamicParams = false`, qualquer categoria inexistente responde 404 sem processamento no servidor.
+
+**Dados**
+
+- Todo o cardápio do PDF (9 categorias) está em `src/content/menu.ts`, com grafia revisada (ex.: "mingnon" → mignon, "amouse bouche" → amuse-bouche, "Tripbo" → tribo, "carangueijo" → caranguejo, "farorita" → favorita, "aligort" → aligot, "couli" → coulis, "toffe" → toffee, "crips" → crisps).
+- Preços em centavos (`amountInCents`), com opções rotuladas quando há mais de um valor (Individual/Casal; sem harmonização/com drinks/com vinho). Exibidos sem centavos quando inteiros ("R$ 94").
+- `group` organiza subtítulos dentro da categoria (Cozinha Autoral/Cozinha de Origem, Cervejas, Doses…).
+- `layout` por categoria: `cards` (com descrição, card que vira) ou `list` (Bebidas: lista de preços com linha pontilhada, sem verso).
+- Os Menus Degustação da home passaram a ler os mesmos dados do cardápio (com "A partir de R$ …" e link para os detalhes): uma única fonte.
+- Testes garantem: todo item tem preço, todo item de categoria em cards tem descrição para o verso, nenhuma categoria vazia, fotos de capa existem.
+
+**Card que vira (`FlipCard`)**
+
+- Frente (verde): nome, etapas (menus), preço(s) e "Toque para saber mais". Verso (marrom): descrição, subitens, história, observações, "Quero provar" (abre o painel de reserva citando o item) e "Voltar".
+- Rotação 3D (`perspective`, `preserve-3d`, `backface-visibility: hidden`) de 700 ms. As duas faces ocupam a mesma célula de grid, então a altura do card é a da face mais alta e nada se desloca ao virar.
+- Acessibilidade: a frente é um `<button>` com `aria-expanded`/`aria-controls`; a face escondida recebe `inert` (não focável nem lida); ao virar, o foco vai para o verso e, ao voltar, para a frente.
+- Com movimento reduzido, não há rotação: as faces apenas trocam de visibilidade.
+
+**Pendências**
+
+- Fotos originais para as capas de Pratos Principais, Pratos Infantis, Hambúrgueres, Drinks e Bebidas (hoje com capa gráfica provisória).
+- Confirmar se os preços do PDF estão atualizados.
+- Revisar com a chef: "crudo de cau e Dijon" (Tartar) e a expressão "explosão de sabores" (São Gonçalo), mantidas como no PDF.
+
+## D21 — Texto centralizado no celular e toques mais fluidos
+
+**Alinhamento**: a pedido da equipe, títulos, textos e botões das seções ficam centralizados no celular (`text-center`) e voltam a alinhar à esquerda a partir do tablet (`md:text-left`), onde a composição em duas colunas pede um eixo firme. Isso substitui, no celular, a regra "texto com alinhamento firme" da D6. Componentes de leitura em linha (lista de horários, lista de bebidas, verso dos cards, depoimentos) continuam alinhados à esquerda.
+
+**Toques**
+
+- `-webkit-tap-highlight-color: transparent` remove o flash cinza/azul que o navegador desenha ao tocar em links e botões.
+- `touch-action: manipulation` em elementos interativos desativa o gesto de duplo toque para zoom neles, para que o navegador não espere um segundo toque antes de responder.
+- Retorno imediato ao toque: cards de categoria e frente dos cards de prato encolhem levemente enquanto pressionados (`active:scale`, 150 ms).
+- Virada dos cards mais ágil: 500 ms com curva que acelera no início e desacelera no fim (`cubic-bezier(0.2, 0.8, 0.2, 1)`), em vez de 700 ms.
+- Carrosséis com `overscroll-behavior-x: contain`: arrastar até o fim do carrossel não aciona o gesto de voltar página do navegador.
+
+## D22 — Logotipo e selo vetoriais; contatos com ícones
+
+**Origem**: as duas versões enviadas pela equipe (logotipo horizontal laranja e creme; selo circular verde) foram vetorizadas a partir das imagens, com contorno subpixel (amostragem 4×, tolerância de 0,25 px da imagem original). "Bistrô" foi retirado das duas:
+
+- Logotipo horizontal: só arara e "Seu Sergipe". A assinatura "Casa de Cultura & Arte Gastronômica" fica em texto HTML abaixo, legível em qualquer tamanho.
+- Selo: "Bistrô" removido do anel; "Seu Sergipe" foi girado sobre o centro do círculo para voltar a ficar centralizado no topo. "Arte • Poesia • Gastronomia" e as flores permanecem como no original.
+
+Os caminhos ficam em `brand-paths.ts`, desenhados inline com `currentColor`, para trocar de cor conforme a superfície sem gerar arquivos por cor.
+
+**Cores**: a arara usa o token `--simbolo` (laranja sobre verde e marrom; verde profundo sobre creme) e o nome usa a cor do texto (creme sobre fundos escuros). O selo do rodapé é monocromático em creme sobre marrom.
+
+**Tamanhos**: `size="lg"` (abertura da home, com assinatura) e `size="sm"` (cabeçalhos do cardápio, sem assinatura).
+
+**Rodapé**: WhatsApp e Instagram viram ícones em círculo de traço (48 px de área de toque), com o número ao lado do WhatsApp e a palavra "Instagram" ao lado do Instagram. No celular ficam um abaixo do outro, com os ícones alinhados numa mesma coluna; a partir do tablet ficam lado a lado. Os e-mails continuam em texto, com rótulo: restaurante (`seusergipe@gmail.com`) e contato comercial da chef (`seichelebarboza@gmail.com`, incluído a pedido da equipe).
+
+**Pendente**: substituir pelos vetores originais da agência quando chegarem; a troca acontece apenas em `brand-paths.ts`.
+
 ---
 
 # Pendências
 
 ## Bloqueiam o design
 - Wireframes
-- Logotipo e selo vetoriais sem "Bistrô"
+- Vetores originais da agência para o logotipo e o selo (hoje vetorizados a partir de imagem, ver D22)
 - Arquivos e licença web de Tropicane e Silka (confirmar se a secundária é Silka Mono)
 - Padronagens em vetor
 - Valores oficiais da paleta
@@ -251,6 +311,7 @@ Validado em Chromium (375 × 812): onda, traço e texto partindo do estado inici
 - Confirmar o WhatsApp de reservas: (79) 98869-5326
 - Instagram oficial: o rodapé usa `@seusergipe`; confirmar (o cardápio também cita `@restaurante_seusergipe`)
 - E-mail público do restaurante: o rodapé usa `seusergipe@gmail.com`; confirmar
+- Confirmar com a chef a publicação de `seichelebarboza@gmail.com`: o mesmo endereço é a chave Pix dela na apresentação comercial
 - Autorização dos autores (ou decisão formal do restaurante) para exibir as seis avaliações no site antes do lançamento
 - Revisão periódica da nota agregada do Google (hoje 4,7)
 - Ano de fundação: 2015 (cardápio) ou 2023 (material da marca)
@@ -260,7 +321,6 @@ Validado em Chromium (375 × 812): onda, traço e texto partindo do estado inici
 - Arquivo original da foto do salão
 - Aprovação dos textos da Seção 01
 - Autorização de imagem dos clientes na foto do salão e crédito do fotógrafo
-- Decisão sobre exibir preços no cardápio
 - Domínio
 - Último horário aceito para reserva em cada refeição (adotado: 30 minutos antes do fechamento) e intervalo entre horários (adotado: 30 minutos)
 - Corrigir no Perfil do Google a listagem geral de horários (quarta e domingo aparecem incoerentes)

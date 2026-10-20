@@ -21,5 +21,6 @@ export const siteConfig = {
     googleReviews: "https://maps.google.com/?cid=13310097746565175256",
     instagram: { handle: "@seusergipe", url: "https://www.instagram.com/seusergipe/" },
     email: "seusergipe@gmail.com",
+    chefBusinessEmail: "seichelebarboza@gmail.com",
   },
 } as const;

@@ -15,7 +15,7 @@ export function TestimonialsSection() {
 
   return (
     <Section id="avaliacoes" surface="verde" labelledBy="avaliacoes-titulo" className="py-secao">
-      <div className="surgir mx-auto flex max-w-6xl flex-col gap-8 px-6 md:flex-row md:items-end md:justify-between">
+      <div className="surgir mx-auto flex max-w-6xl flex-col items-center gap-8 px-6 text-center md:text-left md:flex-row md:items-end md:justify-between">
         <div>
           <h2 id="avaliacoes-titulo" className="font-display text-4xl leading-tight sm:text-5xl">
             {testimonialsIntro.title}
@@ -41,7 +41,7 @@ export function TestimonialsSection() {
         </Carousel>
       )}
 
-      <div className="mx-auto mt-10 max-w-6xl px-6">
+      <div className="mx-auto mt-10 max-w-6xl px-6 text-center md:text-left">
         <ButtonLink href={siteConfig.links.googleReviews} withArrow>
           {testimonialsIntro.reviewsLabel}
         </ButtonLink>

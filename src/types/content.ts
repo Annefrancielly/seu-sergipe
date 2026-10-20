@@ -6,28 +6,36 @@ export type ImageAsset = {
   objectPosition?: string;
 };
 
-export type Kitchen = "autoral" | "origem";
+export type DishTag = "reserva-previa" | "sem-alcool" | "consultar-disponibilidade";
 
-export type DishTag =
-  | "adaptavel-vegetariano"
-  | "adaptavel-vegano"
-  | "reserva-previa";
+export type Price = {
+  label?: string;
+  amountInCents: number;
+};
+
+export type MenuCategoryLayout = "cards" | "list";
 
 export type MenuCategory = {
   slug: string;
   name: string;
-  description?: string;
+  description: string;
+  layout: MenuCategoryLayout;
+  cover?: ImageAsset;
+  notes?: readonly string[];
 };
 
 export type Dish = {
   slug: string;
   name: string;
-  description: string;
   categorySlug: string;
-  kitchen?: Kitchen;
+  description?: string;
+  group?: string;
   story?: string;
   photo?: ImageAsset;
-  priceInCents?: number;
+  prices?: readonly Price[];
+  items?: readonly string[];
+  steps?: number;
+  note?: string;
   tags?: readonly DishTag[];
 };
 

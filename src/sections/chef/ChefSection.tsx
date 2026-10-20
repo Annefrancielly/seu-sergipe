@@ -29,7 +29,7 @@ export function ChefSection() {
           </OrganicFrame>
         </div>
 
-        <div className="surgir md:col-span-6 md:col-start-7">
+        <div className="surgir text-center md:text-left md:col-span-6 md:col-start-7">
           <h2 id="chef-titulo" className="text-sm font-semibold uppercase tracking-[0.3em] text-emphasis">
             {chefIntro.title}
           </h2>
@@ -42,7 +42,7 @@ export function ChefSection() {
           ))}
 
           <figure className="mt-10">
-            <svg viewBox="0 0 40 24" aria-hidden="true" focusable="false" className="h-6 w-10 text-accent">
+            <svg viewBox="0 0 40 24" aria-hidden="true" focusable="false" className="mx-auto h-6 w-10 text-accent md:mx-0">
               <path className="traco-marca" d="M2 22 C2 10 8 3 16 2 M22 22 C22 10 28 3 36 2" />
             </svg>
             <blockquote className="mt-3 font-display text-xl leading-snug">
@@ -57,7 +57,7 @@ export function ChefSection() {
 
       {chefPicks.length > 0 && (
         <div className="mt-24">
-          <div className="surgir mx-auto max-w-6xl px-6">
+          <div className="surgir mx-auto max-w-6xl px-6 text-center md:text-left">
             <h3 className="font-display text-4xl">{chefPicksIntro.title}</h3>
             <p className="mt-3 text-lg">{chefPicksIntro.lead}</p>
           </div>
@@ -66,7 +66,7 @@ export function ChefSection() {
               <DishCard key={dish.slug} dish={dish} />
             ))}
           </Carousel>
-          <p className="mx-auto mt-8 max-w-6xl px-6 text-lg">
+          <p className="mx-auto mt-8 max-w-6xl px-6 text-lg text-center md:text-left">
             {chefPicksIntro.closing}{" "}
             <ReservationTrigger
               variant="link"
