@@ -82,6 +82,18 @@ Validada em Chromium antes da implementação:
 - **Uma geometria, dois usos:** cada forma orgânica (`src/lib/organic-shapes.ts`) gera a máscara da fotografia (SVG em data URI) e o arco de destaque, garantindo que ambos coincidam.
 - **Ondas:** `WaveDivider` é um bloco entre duas seções; o fundo é a superfície de origem e o preenchimento do caminho é a superfície de destino.
 
+### Revisão visual (19/10/2026)
+
+Cores, formas, transições e linhas aprovadas após revisão da página `/design-system`.
+
+Cada forma de moldura tem um papel fixo:
+
+| Forma | Uso |
+|---|---|
+| `seixo` | Chef |
+| `folha` | Pratos (Sugestões da Chef e cardápio) |
+| `arco` | Ambiente e salão |
+
 ## D7 — Página sem indexação até o lançamento
 
 `robots: { index: false }` no layout raiz enquanto o site estiver em construção. Será removido na etapa de lançamento, junto com a definição do domínio, `metadataBase`, sitemap e dados estruturados.
@@ -97,6 +109,19 @@ O cardápio interativo (`/cardapio`) será construído após a homepage, reaprov
 ## D10 — Página interna `/design-system`
 
 Catálogo vivo dos componentes para revisão. Retorna 404 quando `VERCEL_ENV === "production"` e não é indexada. Deve ser removida ou mantida fora da produção no lançamento.
+
+## D11 — Seção 01 sem animação de entrada no carregamento
+
+O conteúdo acima da dobra (logotipo, título, texto e foto do salão) aparece já visível, sem fade-in. Elementos com opacidade zero não contam como pintados para o LCP, então animar a entrada atrasaria a métrica principal de carregamento. A sensação de movimento fica com o fio do território, revelado na rolagem, e com as microinterações do botão.
+
+A foto do salão usa `loading="eager"` em vez de `preload`: no celular ela fica abaixo do texto, e a documentação do Next 16 recomenda `preload` apenas quando a imagem é certamente o elemento de LCP.
+
+## D12 — Elementos provisórios da Seção 01
+
+- **Logotipo:** `BrandLogo` exibe o nome em texto, marcado com `data-placeholder="logotipo-oficial-pendente"`, até a chegada do vetor sem "Bistrô". A troca acontece apenas nesse componente.
+- **Foto do salão:** extraída da apresentação da chef (2999 × 2002 px), reduzida para 1800 px e sem metadados. Substituir pelo arquivo original.
+- **`/cardapio`:** página provisória com contato pelo WhatsApp até o cardápio interativo.
+- **Textos:** rascunho em `src/content/home.ts`, aguardando aprovação da chef.
 
 ---
 
@@ -116,6 +141,8 @@ Catálogo vivo dos componentes para revisão. Retorna 404 quando `VERCEL_ENV ===
 - Ano de fundação: 2015 (cardápio) ou 2023 (material da marca)
 - Aprovação da chef: biografia, nomes dos pais, citação, redação sobre o *Mestre do Sabor*
 - Pratos das Sugestões da Chef, com fotos
+- Arquivo original da foto do salão
+- Aprovação dos textos da Seção 01
 - Autorização de imagem dos clientes na foto do salão e crédito do fotógrafo
 - Decisão sobre exibir preços no cardápio
 - Domínio
