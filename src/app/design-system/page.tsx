@@ -8,11 +8,12 @@ import { Section } from "@/components/layout/Section";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { Carousel } from "@/components/ui/Carousel";
 import { DishCard } from "@/components/ui/DishCard";
+import { TestimonialCard } from "@/components/ui/TestimonialCard";
 import { OrganicFrame } from "@/components/ui/OrganicFrame";
 import chefPhoto from "@/assets/images/chef-seichele-barboza.jpg";
 import salaoPhoto from "@/assets/images/salao-seu-sergipe.jpg";
 import { ORGANIC_SHAPES, type OrganicShapeName } from "@/lib/organic-shapes";
-import type { Dish } from "@/types/content";
+import type { Dish, Testimonial } from "@/types/content";
 
 export const metadata: Metadata = {
   title: "Design system",
@@ -37,6 +38,13 @@ const EXAMPLE_DISHES: Dish[] = Array.from({ length: 5 }, (_, index) => ({
     index === 0
       ? { src: salaoPhoto.src, alt: "", width: salaoPhoto.width, height: salaoPhoto.height }
       : undefined,
+}));
+
+const EXAMPLE_TESTIMONIALS: Testimonial[] = [1, 2, 3].map((number) => ({
+  author: `Pessoa de exemplo ${number}`,
+  text: "Texto provisório para avaliar o card. As avaliações reais virão de clientes que autorizarem a publicação.",
+  source: number === 2 ? "depoimento-autorizado" : "google",
+  rating: number === 3 ? 4 : 5,
 }));
 
 const SHAPE_NAMES = Object.keys(ORGANIC_SHAPES) as OrganicShapeName[];
@@ -177,6 +185,23 @@ export default function DesignSystemPage() {
           </p>
         </div>
       </Section>
+
+      <Section surface="verde" labelledBy="depoimentos-titulo" className="pb-secao">
+        <div className="mx-auto max-w-5xl px-6">
+          <h2 id="depoimentos-titulo" className="font-display text-4xl">Cards de avaliação</h2>
+        </div>
+        <Carousel label="Exemplo de avaliações" className="mx-auto mt-10 max-w-5xl">
+          {EXAMPLE_TESTIMONIALS.map((testimonial, index) => (
+            <TestimonialCard
+              key={testimonial.author}
+              testimonial={testimonial}
+              shape={index % 2 === 0 ? "folha" : "folha-inversa"}
+            />
+          ))}
+        </Carousel>
+      </Section>
+
+      <WaveDivider from="verde" to="marrom" withLine />
     </main>
   );
 }

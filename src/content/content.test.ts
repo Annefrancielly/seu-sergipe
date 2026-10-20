@@ -6,6 +6,7 @@ import { findDuplicateSlugs, resolveDishes } from "../lib/menu.ts";
 import { toMinutes } from "../lib/opening-hours.ts";
 import { chefPickSlugs, dishes, menuCategories } from "./menu.ts";
 import { openingHours } from "./opening-hours.ts";
+import { testimonials } from "./testimonials.ts";
 
 describe("integridade do cardápio", () => {
   it("não possui pratos com slug repetido", () => {
@@ -51,5 +52,27 @@ describe("integridade dos horários", () => {
         previousClose = closes;
       }
     }
+  });
+});
+
+describe("integridade das avaliações", () => {
+  it("toda avaliação tem autor, texto e nota válida", () => {
+    for (const testimonial of testimonials) {
+      assert.ok(testimonial.author.trim().length > 0);
+      assert.ok(testimonial.text.trim().length > 0);
+      if (testimonial.rating !== undefined) {
+        assert.ok(testimonial.rating >= 1 && testimonial.rating <= 5);
+      }
+    }
+  });
+
+  it("autores aparecem apenas com nome e iniciais do sobrenome", () => {
+    const fullSurnames = testimonials.filter((testimonial) =>
+      testimonial.author.split(" ").slice(1).some((part) => !/^[A-ZÀ-Ú]\.$/.test(part)),
+    );
+    assert.deepEqual(
+      fullSurnames.map((testimonial) => testimonial.author),
+      [],
+    );
   });
 });

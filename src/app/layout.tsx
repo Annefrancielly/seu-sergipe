@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 
+import { SiteFooter } from "@/components/layout/SiteFooter";
+import { ReservationProvider } from "@/components/reservation/ReservationProvider";
 import { siteConfig } from "@/config/site";
 
 import "./globals.css";
@@ -29,7 +31,10 @@ export default function RootLayout({
         >
           Pular para o conteúdo
         </a>
-        {children}
+        <ReservationProvider>
+          {children}
+          <SiteFooter />
+        </ReservationProvider>
       </body>
     </html>
   );

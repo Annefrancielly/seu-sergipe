@@ -33,7 +33,7 @@ export default function MenuPage() {
           </div>
         </div>
       </Section>
-      <WaveDivider from="verde" to="creme" withLine />
+      <WaveDivider from="verde" to="marrom" withLine />
     </main>
   );
 }

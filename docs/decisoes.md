@@ -183,6 +183,27 @@ Comportamentos do `<dialog>` validados em Chromium: foco inicial, Esc, clique no
 
 **Painel de reserva:** o campo de horário passou a ser uma lista agrupada por refeição, gerada a partir da data escolhida, em intervalos de 30 minutos até 30 minutos antes do fechamento. Para hoje, horários passados são removidos. Dias sem horários mostram um aviso. "Reservar para hoje" abre o painel já com a data de hoje.
 
+## D17 — Seção 05, rodapé e provider global
+
+**Seção 05 (avaliações)** sobre verde. Exibe o carrossel de `TestimonialCard` somente quando `src/content/testimonials.ts` tiver depoimentos; até lá, mostra o título e o botão "Ver avaliações no Google". Cada depoimento precisa ser real, autorizado e identificado pela origem (`google` ou `depoimento-autorizado`). Nada de API do Google nem scraping, conforme o plano (opção A).
+
+**Rodapé (`SiteFooter`)** no layout raiz, sobre marrom: logotipo, frase do filme-conceito, botão de reserva, endereço, horários (mesma fonte da Seção 04), WhatsApp, Instagram, e-mail e navegação. Todas as páginas terminam com uma onda para o marrom, então o rodapé se encaixa sem saber qual página está acima dele.
+
+**`ReservationProvider` no layout raiz:** o painel de reserva passa a funcionar em todas as páginas, inclusive no rodapé, no `/cardapio` e no 404.
+
+**Links externos centralizados** em `siteConfig.links` (Maps, avaliações, Instagram, e-mail).
+
+O ano do rodapé é calculado no build. Como o deploy acontece a cada alteração, a defasagem só ocorreria se o site ficasse um ano inteiro sem nenhum deploy.
+
+## D18 — Avaliações selecionadas do Google
+
+Seis avaliações de 5 estrelas, transcritas manualmente a partir de capturas do Perfil do Google enviadas pela equipe em 19/10/2026 (sem scraping e sem API).
+
+- **Fidelidade:** apenas frases completas e visíveis nas capturas. Trechos cortados pelo "… Mais" do Google não foram completados. Quando um trecho do meio foi omitido, isso é sinalizado com "(…)". A grafia original foi mantida.
+- **Privacidade:** autores identificados pelo primeiro nome e pelas iniciais do sobrenome (ex.: "Elizabeth G."). Menções a funcionários pelo nome ficaram de fora. Um teste garante o formato dos nomes.
+- **Sem datas:** o Google mostra datas relativas ("há 2 semanas"), que ficariam desatualizadas em uma página estática.
+- **Nota agregada:** 4,7 de 5 e "mais de 500 avaliações", conferidos em 19/10/2026 (512 avaliações). O texto usa "mais de 500" para continuar verdadeiro à medida que o número cresce. A nota precisa ser revisada periodicamente.
+
 ---
 
 # Pendências
@@ -196,7 +217,10 @@ Comportamentos do `<dialog>` validados em Chromium: foco inicial, Esc, clique no
 
 ## Bloqueiam o conteúdo
 - Confirmar o WhatsApp de reservas: (79) 98869-5326
-- Instagram oficial: `@seusergipe` ou `@restaurante_seusergipe`
+- Instagram oficial: o rodapé usa `@seusergipe`; confirmar (o cardápio também cita `@restaurante_seusergipe`)
+- E-mail público do restaurante: o rodapé usa `seusergipe@gmail.com`; confirmar
+- Autorização dos autores (ou decisão formal do restaurante) para exibir as seis avaliações no site antes do lançamento
+- Revisão periódica da nota agregada do Google (hoje 4,7)
 - Ano de fundação: 2015 (cardápio) ou 2023 (material da marca)
 - Aprovação da chef: biografia, nomes dos pais, citação, redação sobre o *Mestre do Sabor*
 - Aprovação da chef para as descrições dos pratos das Sugestões

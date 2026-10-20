@@ -33,7 +33,7 @@ export function LocationSection() {
             <br />
             CEP {address.postalCode}
           </address>
-          <ButtonLink href={address.mapsUrl} withArrow className="mt-8">
+          <ButtonLink href={siteConfig.links.maps} withArrow className="mt-8">
             Como chegar
           </ButtonLink>
         </div>

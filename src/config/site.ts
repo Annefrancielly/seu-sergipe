@@ -15,6 +15,11 @@ export const siteConfig = {
     city: "Aracaju",
     state: "SE",
     postalCode: "49020-090",
-    mapsUrl: "https://maps.google.com/?cid=13310097746565175256",
+  },
+  links: {
+    maps: "https://maps.google.com/?cid=13310097746565175256",
+    googleReviews: "https://maps.google.com/?cid=13310097746565175256",
+    instagram: { handle: "@seusergipe", url: "https://www.instagram.com/seusergipe/" },
+    email: "seusergipe@gmail.com",
   },
 } as const;
