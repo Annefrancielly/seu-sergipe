@@ -41,14 +41,21 @@ Acesse `http://localhost:3000`.
 
 ```
 src/
-  app/          rotas, layout raiz e estilos globais (tokens do design system)
-  config/       dados institucionais públicos (nome, assinatura, contato)
-  content/      conteúdo tipado: cardápio, sugestões da chef, horários
-  lib/          funções puras (montagem da reserva, resolução de pratos)
-  types/        tipos de domínio compartilhados
+  app/                  rotas, layout raiz e estilos globais (tokens do design system)
+  app/design-system/    catálogo interno dos componentes (indisponível em produção)
+  assets/images/        fotografias otimizadas importadas estaticamente
+  components/graphics/  SVGs decorativos: ondas, fio do território, ícones
+  components/layout/    estrutura de página (Section com superfície contextual)
+  components/ui/        componentes de interface (botões, molduras orgânicas)
+  config/               dados institucionais públicos (nome, assinatura, contato)
+  content/              conteúdo tipado: cardápio, sugestões da chef, horários
+  lib/                  funções puras (reserva, cardápio, formas orgânicas, superfícies)
+  types/                tipos de domínio compartilhados
 ```
 
-Pastas previstas para as próximas etapas: `sections/` (seções da homepage), `components/ui`, `components/graphics` (SVGs da marca) e `hooks/`.
+Pastas previstas para as próximas etapas: `sections/` (seções da homepage) e `hooks/`.
+
+Para revisar os componentes, rode `npm run dev` e acesse `http://localhost:3000/design-system`.
 
 ## Convenções
 

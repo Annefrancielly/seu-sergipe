@@ -7,8 +7,10 @@
   --color-vermelho-telha: #da4324;
   --color-creme: #fae8dc;
 
+  --font-display: ui-serif, Georgia, "Times New Roman", serif;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
   --ease-organic: cubic-bezier(0.33, 1, 0.68, 1);
-  --duration-gentle: 600ms;
 }
 
 @theme inline {
@@ -16,13 +18,24 @@
   --color-ink: var(--ink);
   --color-accent: var(--accent);
   --color-focus: var(--focus);
+  --color-action: var(--action);
+  --color-on-action: var(--on-action);
 }
 
 :root {
+  --stroke-traco: 2px;
+  --altura-onda: clamp(3rem, 8vw, 7.5rem);
+  --espaco-secao: clamp(4rem, 10vw, 8rem);
+}
+
+:root,
+[data-surface="creme"] {
   --surface: var(--color-creme);
   --ink: var(--color-verde-profundo);
   --accent: var(--color-vermelho-telha);
   --focus: var(--color-verde-profundo);
+  --action: var(--color-verde-profundo);
+  --on-action: var(--color-creme);
 }
 
 [data-surface="verde"] {
@@ -30,6 +43,8 @@
   --ink: var(--color-creme);
   --accent: var(--color-laranja-quente);
   --focus: var(--color-laranja-quente);
+  --action: var(--color-laranja-quente);
+  --on-action: var(--color-verde-profundo);
 }
 
 [data-surface="marrom"] {
@@ -37,6 +52,48 @@
   --ink: var(--color-creme);
   --accent: var(--color-laranja-quente);
   --focus: var(--color-creme);
+  --action: var(--color-laranja-quente);
+  --on-action: var(--color-verde-profundo);
+}
+
+@utility traco-marca {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--stroke-traco);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+@utility rounded-folha {
+  border-radius: 2rem 0.75rem 2rem 0.75rem;
+}
+
+@utility rounded-folha-inversa {
+  border-radius: 0.75rem 2rem 0.75rem 2rem;
+}
+
+@utility py-secao {
+  padding-block: var(--espaco-secao);
+}
+
+@keyframes revelar-de-cima {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .revelar-na-rolagem {
+      animation: revelar-de-cima linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 0%;
+    }
+  }
 }
 
 @layer base {

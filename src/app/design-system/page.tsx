@@ -1,0 +1,152 @@
+import type { Metadata } from "next";
+import Image from "next/image";
+import { notFound } from "next/navigation";
+
+import { TerritoryLine } from "@/components/graphics/TerritoryLine";
+import { WaveDivider } from "@/components/graphics/WaveDivider";
+import { Section } from "@/components/layout/Section";
+import { ButtonLink } from "@/components/ui/ButtonLink";
+import { OrganicFrame } from "@/components/ui/OrganicFrame";
+import chefPhoto from "@/assets/images/chef-seichele-barboza.jpg";
+import { ORGANIC_SHAPES, type OrganicShapeName } from "@/lib/organic-shapes";
+
+export const metadata: Metadata = {
+  title: "Design system",
+  robots: { index: false, follow: false },
+};
+
+const PALETTE = [
+  { name: "Verde profundo", token: "verde-profundo", hex: "#003122", swatch: "bg-verde-profundo" },
+  { name: "Marrom terroso", token: "marrom-terroso", hex: "#84431D", swatch: "bg-marrom-terroso" },
+  { name: "Laranja quente", token: "laranja-quente", hex: "#F69719", swatch: "bg-laranja-quente" },
+  { name: "Vermelho telha", token: "vermelho-telha", hex: "#DA4324", swatch: "bg-vermelho-telha" },
+  { name: "Creme", token: "creme", hex: "#FAE8DC", swatch: "bg-creme" },
+] as const;
+
+const SHAPE_NAMES = Object.keys(ORGANIC_SHAPES) as OrganicShapeName[];
+
+export default function DesignSystemPage() {
+  if (process.env.VERCEL_ENV === "production") notFound();
+
+  return (
+    <main id="conteudo">
+      <Section surface="verde" labelledBy="ds-titulo" className="overflow-hidden py-secao">
+        <TerritoryLine className="absolute inset-y-0 right-4 w-24 opacity-70 md:right-[12%] md:w-40" />
+        <div className="relative mx-auto max-w-5xl px-6">
+          <p className="text-sm uppercase tracking-[0.3em] text-accent">Etapa 1 · revisão interna</p>
+          <h1 id="ds-titulo" className="mt-4 max-w-2xl font-display text-5xl leading-tight md:text-6xl">
+            Linhas, curvas e superfícies do Seu Sergipe
+          </h1>
+          <p className="mt-6 max-w-xl text-lg leading-relaxed">
+            Página de trabalho para aprovar os componentes antes da composição das seções.
+            Não é indexada e não existe em produção.
+          </p>
+          <div className="mt-10 flex flex-wrap gap-4">
+            <ButtonLink href="#formas" withArrow>
+              Botão principal
+            </ButtonLink>
+            <ButtonLink href="#superficies" variant="secondary">
+              Botão secundário
+            </ButtonLink>
+          </div>
+        </div>
+      </Section>
+
+      <WaveDivider from="verde" to="creme" withLine />
+
+      <Section surface="creme" labelledBy="paleta-titulo" className="py-secao">
+        <div className="mx-auto max-w-5xl px-6">
+          <h2 id="paleta-titulo" className="font-display text-4xl">Paleta</h2>
+          <p className="mt-3 max-w-xl leading-relaxed">
+            Valores extraídos do PDF da marca, a confirmar com a agência.
+          </p>
+          <ul className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-5">
+            {PALETTE.map((color) => (
+              <li key={color.token}>
+                <div
+                  className={`aspect-square rounded-folha border border-verde-profundo/15 ${color.swatch}`}
+                />
+                <p className="mt-3 font-semibold">{color.name}</p>
+                <p className="font-mono text-sm">{color.hex}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Section>
+
+      <Section id="formas" surface="creme" labelledBy="formas-titulo" className="pb-secao">
+        <div className="mx-auto max-w-5xl px-6">
+          <h2 id="formas-titulo" className="font-display text-4xl">Molduras orgânicas</h2>
+          <p className="mt-3 max-w-xl leading-relaxed">
+            A mesma geometria define a máscara da fotografia e o arco que a abraça.
+          </p>
+          <ul className="mt-12 grid gap-16 sm:grid-cols-2 lg:grid-cols-3">
+            {SHAPE_NAMES.map((shape, index) => (
+              <li key={shape}>
+                <OrganicFrame shape={shape} className="aspect-[4/5]">
+                  <Image
+                    src={chefPhoto}
+                    alt={
+                      index === 0
+                        ? "Chef Seichele Barboza sorrindo, de braços cruzados, com dólmã preto diante de uma parede azul entre dois quadros."
+                        : ""
+                    }
+                    fill
+                    placeholder="blur"
+                    sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 90vw"
+                    className="object-cover"
+                  />
+                </OrganicFrame>
+                <p className="mt-6 text-center font-mono text-sm">{shape}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Section>
+
+      <WaveDivider from="creme" to="marrom" variant="ampla" flip />
+
+      <Section id="superficies" surface="marrom" labelledBy="superficies-titulo" className="py-secao">
+        <div className="mx-auto max-w-5xl px-6">
+          <h2 id="superficies-titulo" className="font-display text-4xl">Superfícies contextuais</h2>
+          <p className="mt-3 max-w-xl leading-relaxed">
+            Os mesmos componentes mudam de cor conforme a superfície em que estão.
+          </p>
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
+            {(["creme", "verde", "marrom"] as const).map((surface) => (
+              <div
+                key={surface}
+                data-surface={surface}
+                className="rounded-folha bg-surface p-8 text-ink ring-1 ring-creme/20"
+              >
+                <p className="font-mono text-sm uppercase tracking-widest text-accent">{surface}</p>
+                <p className="mt-3 font-display text-2xl">Sente-se e fique um pouco mais.</p>
+                <div className="mt-6 flex flex-col items-start gap-3">
+                  <ButtonLink href="#superficies" withArrow>
+                    Reservar
+                  </ButtonLink>
+                  <ButtonLink href="#superficies" variant="secondary">
+                    Cardápio
+                  </ButtonLink>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Section>
+
+      <WaveDivider from="marrom" to="verde" withLine />
+
+      <Section surface="verde" labelledBy="fio-titulo" className="relative min-h-[150vh] overflow-hidden py-secao">
+        <TerritoryLine variant="meandro" className="absolute inset-y-0 left-1/2 w-48 -translate-x-1/2" />
+        <div className="relative mx-auto max-w-5xl px-6">
+          <h2 id="fio-titulo" className="font-display text-4xl">Fio do território</h2>
+          <p className="mt-3 max-w-md leading-relaxed">
+            Role a página: o traço se revela acompanhando a leitura. Com redução de movimento
+            ativada, ele aparece completo desde o início.
+          </p>
+        </div>
+      </Section>
+    </main>
+  );
+}

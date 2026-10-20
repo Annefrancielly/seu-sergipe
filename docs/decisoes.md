@@ -70,6 +70,18 @@ Aprovada: bordas e contornos fluidos, nada quadrado. Transições em onda entre 
 
 Regras de equilíbrio: curvas nas bordas, texto com alinhamento firme; uma curva protagonista por tela; movimento como revelação, nunca em loop; mesma espessura de traço em todo o sistema, derivada da arara oficial.
 
+### Implementação técnica das curvas (Etapa 1)
+
+Validada em Chromium antes da implementação:
+
+- **Traço uniforme:** todo desenho em linha usa a classe `traco-marca` (`vector-effect: non-scaling-stroke` + `--stroke-traco`). Assim, o traço mantém a mesma espessura mesmo em SVGs esticados com `preserveAspectRatio="none"`.
+- **Sem tracejado animado em traço não escalável:** a combinação de `non-scaling-stroke` com `pathLength`/`stroke-dasharray` gerou repetições do tracejado no teste. Por isso:
+  - o arco de destaque das molduras é um subcaminho aberto (`accentArc`), não um tracejado do contorno;
+  - a revelação do fio do território anima `clip-path: inset()` em vez de `stroke-dashoffset`.
+- **Revelação por rolagem sem JavaScript:** `animation-timeline: view()`, aplicada somente com `prefers-reduced-motion: no-preference` e dentro de `@supports`. Sem suporte ou com redução de movimento, o traço aparece completo.
+- **Uma geometria, dois usos:** cada forma orgânica (`src/lib/organic-shapes.ts`) gera a máscara da fotografia (SVG em data URI) e o arco de destaque, garantindo que ambos coincidam.
+- **Ondas:** `WaveDivider` é um bloco entre duas seções; o fundo é a superfície de origem e o preenchimento do caminho é a superfície de destino.
+
 ## D7 — Página sem indexação até o lançamento
 
 `robots: { index: false }` no layout raiz enquanto o site estiver em construção. Será removido na etapa de lançamento, junto com a definição do domínio, `metadataBase`, sitemap e dados estruturados.
@@ -81,6 +93,10 @@ Funções puras são testadas com `node:test` usando a remoção nativa de tipos
 ## D9 — Cardápio interativo como etapa seguinte
 
 O cardápio interativo (`/cardapio`) será construído após a homepage, reaproveitando o modelo `Dish` e o fluxo de reserva com contexto do prato.
+
+## D10 — Página interna `/design-system`
+
+Catálogo vivo dos componentes para revisão. Retorna 404 quando `VERCEL_ENV === "production"` e não é indexada. Deve ser removida ou mantida fora da produção no lançamento.
 
 ---
 
