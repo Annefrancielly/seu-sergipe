@@ -164,6 +164,25 @@ Fotos enviadas em 19/10/2026 e identificadas pela equipe:
 
 Comportamentos do `<dialog>` validados em Chromium: foco inicial, Esc, clique no fundo, clique interno sem fechar, bloqueio do envio vazio e abertura da nova aba.
 
+## D16 — Seção 04: localização e horários
+
+**Fonte dos horários:** listagem por refeição do Perfil do Google (19/10/2026). A listagem geral do Google trazia valores incoerentes (quarta 00h–17h, domingo 07h–11h, sábado até 23h) e foi descartada.
+
+| Refeição | Segunda a sábado | Domingo |
+|---|---|---|
+| Almoço | 12h às 15h | 12h às 17h |
+| Jantar | 18h às 22h | Fechado |
+
+**Endereço:** Rua Dr. Celso Oliva, 287 – 13 de Julho, Aracaju – SE, 49020-090. O botão "Como chegar" usa o identificador do local no Google Maps (`?cid=`), sem chave de API, sem iframe e sem cookies de terceiros.
+
+**Uma fonte, três usos:** `src/content/opening-hours.ts` alimenta a lista da Seção 04 (agrupada por `groupOpeningHours`), o indicador "Aberto agora" e os horários oferecidos no painel de reserva. Mais adiante, também alimentará os dados estruturados de SEO.
+
+**Fuso do restaurante:** todos os cálculos de "agora" e "hoje" usam `America/Maceio` via `Intl.DateTimeFormat`, independentemente do fuso de quem visita o site.
+
+**"Aberto agora"** é um Client Component que calcula o estado no navegador e se atualiza a cada minuto, porque a página é estática e qualquer valor calculado no build ficaria congelado. O espaço é reservado (`min-h`) para não deslocar o layout.
+
+**Painel de reserva:** o campo de horário passou a ser uma lista agrupada por refeição, gerada a partir da data escolhida, em intervalos de 30 minutos até 30 minutos antes do fechamento. Para hoje, horários passados são removidos. Dias sem horários mostram um aviso. "Reservar para hoje" abre o painel já com a data de hoje.
+
 ---
 
 # Pendências
@@ -176,7 +195,6 @@ Comportamentos do `<dialog>` validados em Chromium: foco inicial, Esc, clique no
 - Valores oficiais da paleta
 
 ## Bloqueiam o conteúdo
-- Endereço completo, dias e horários (o story indica almoço 12h–15h e jantar 18h–23h, a confirmar)
 - Confirmar o WhatsApp de reservas: (79) 98869-5326
 - Instagram oficial: `@seusergipe` ou `@restaurante_seusergipe`
 - Ano de fundação: 2015 (cardápio) ou 2023 (material da marca)
@@ -188,6 +206,7 @@ Comportamentos do `<dialog>` validados em Chromium: foco inicial, Esc, clique no
 - Autorização de imagem dos clientes na foto do salão e crédito do fotógrafo
 - Decisão sobre exibir preços no cardápio
 - Domínio
-- Horários confirmados (para limitar o campo de horário do painel aos períodos de funcionamento)
+- Último horário aceito para reserva em cada refeição (adotado: 30 minutos antes do fechamento) e intervalo entre horários (adotado: 30 minutos)
+- Corrigir no Perfil do Google a listagem geral de horários (quarta e domingo aparecem incoerentes)
 - Número de pessoas a partir do qual a reserva é tratada como grupo grande
 - Aprovação da inclusão dos Menus Degustação na Seção 03

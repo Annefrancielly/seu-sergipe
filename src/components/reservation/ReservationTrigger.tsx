@@ -10,6 +10,7 @@ import { reservationHref } from "@/lib/whatsapp";
 
 type ReservationTriggerProps = {
   intro?: string;
+  presetToday?: boolean;
   children: ReactNode;
   variant?: ButtonVariant;
   withArrow?: boolean;
@@ -19,6 +20,7 @@ type ReservationTriggerProps = {
 
 export function ReservationTrigger({
   intro,
+  presetToday = false,
   children,
   variant = "primary",
   withArrow = true,
@@ -31,7 +33,7 @@ export function ReservationTrigger({
     if (!reservation) return;
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
     event.preventDefault();
-    reservation.openReservation(intro);
+    reservation.openReservation({ intro, presetToday });
   };
 
   return (

@@ -3,7 +3,9 @@ import { existsSync } from "node:fs";
 import { describe, it } from "node:test";
 
 import { findDuplicateSlugs, resolveDishes } from "../lib/menu.ts";
+import { toMinutes } from "../lib/opening-hours.ts";
 import { chefPickSlugs, dishes, menuCategories } from "./menu.ts";
+import { openingHours } from "./opening-hours.ts";
 
 describe("integridade do cardápio", () => {
   it("não possui pratos com slug repetido", () => {
@@ -29,5 +31,25 @@ describe("integridade do cardápio", () => {
       .filter((src): src is string => src !== undefined)
       .filter((src) => !existsSync(new URL(`../../public${src}`, import.meta.url)));
     assert.deepEqual(missing, []);
+  });
+});
+
+describe("integridade dos horários", () => {
+  it("cada dia aparece uma única vez", () => {
+    const days = openingHours.map((entry) => entry.day);
+    assert.equal(new Set(days).size, days.length);
+  });
+
+  it("todo período abre antes de fechar e não se sobrepõe ao anterior", () => {
+    for (const entry of openingHours) {
+      let previousClose = -1;
+      for (const period of entry.periods) {
+        const opens = toMinutes(period.opens);
+        const closes = toMinutes(period.closes);
+        assert.ok(opens < closes, `${entry.day}: ${period.label} fecha antes de abrir`);
+        assert.ok(opens >= previousClose, `${entry.day}: ${period.label} sobrepõe o período anterior`);
+        previousClose = closes;
+      }
+    }
   });
 });

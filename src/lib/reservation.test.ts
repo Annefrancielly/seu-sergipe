@@ -9,7 +9,6 @@ import {
   formatReservationTime,
   readReservationForm,
   sanitizeField,
-  toIsoDate,
 } from "./reservation.ts";
 
 const PHONE = "5579988695326";
@@ -126,11 +125,6 @@ describe("buildReservationMessage", () => {
   });
 });
 
-describe("toIsoDate", () => {
-  it("usa a data local com zeros à esquerda", () => {
-    assert.equal(toIsoDate(new Date(2026, 0, 5, 23, 30)), "2026-01-05");
-  });
-});
 
 describe("readReservationForm", () => {
   it("converte os campos do formulário em um pedido de reserva", () => {

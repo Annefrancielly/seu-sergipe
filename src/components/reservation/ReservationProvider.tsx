@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  type ChangeEvent,
   type FormEvent,
   type MouseEvent,
   type ReactNode,
@@ -14,17 +15,28 @@ import {
 } from "react";
 
 import { siteConfig } from "@/config/site";
+import { openingHours } from "@/content/opening-hours";
 import { buttonVariantClasses } from "@/lib/button-styles";
+import {
+  type TimeSlotGroup,
+  availableTimeSlots,
+  formatHour,
+  getZonedIsoDate,
+} from "@/lib/opening-hours";
 import {
   MAX_GUESTS,
   buildReservationMessage,
   buildWhatsAppUrl,
   readReservationForm,
-  toIsoDate,
 } from "@/lib/reservation";
 
+export type ReservationOptions = {
+  intro?: string;
+  presetToday?: boolean;
+};
+
 type ReservationContextValue = {
-  openReservation: (intro?: string) => void;
+  openReservation: (options?: ReservationOptions) => void;
 };
 
 const ReservationContext = createContext<ReservationContextValue | null>(null);
@@ -45,14 +57,33 @@ export function ReservationProvider({ children }: { children: ReactNode }) {
   const nameInputRef = useRef<HTMLInputElement>(null);
   const [intro, setIntro] = useState<string | undefined>(undefined);
   const [minDate, setMinDate] = useState<string | undefined>(undefined);
+  const [date, setDate] = useState("");
+  const [slotGroups, setSlotGroups] = useState<TimeSlotGroup[]>([]);
   const titleId = useId();
+  const slotsHintId = useId();
 
-  const openReservation = useCallback((nextIntro?: string) => {
-    setIntro(nextIntro);
-    setMinDate(toIsoDate(new Date()));
-    dialogRef.current?.showModal();
-    nameInputRef.current?.focus();
+  const selectDate = useCallback((isoDate: string) => {
+    setDate(isoDate);
+    setSlotGroups(isoDate ? availableTimeSlots(openingHours, isoDate, new Date()) : []);
   }, []);
+
+  const openReservation = useCallback(
+    (options: ReservationOptions = {}) => {
+      const today = getZonedIsoDate(new Date());
+      setIntro(options.intro);
+      setMinDate(today);
+      if (options.presetToday) selectDate(today);
+      dialogRef.current?.showModal();
+      nameInputRef.current?.focus();
+    },
+    [selectDate],
+  );
+
+  const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
+    selectDate(event.currentTarget.value);
+  };
+
+  const hasSlots = slotGroups.length > 0;
 
   const close = () => dialogRef.current?.close();
 
@@ -76,6 +107,7 @@ export function ReservationProvider({ children }: { children: ReactNode }) {
     }
 
     formRef.current?.reset();
+    selectDate("");
     close();
   };
 
@@ -126,12 +158,45 @@ export function ReservationProvider({ children }: { children: ReactNode }) {
             </label>
             <label className={labelClasses}>
               Data
-              <input name="date" type="date" required min={minDate} className={fieldClasses} />
+              <input
+                name="date"
+                type="date"
+                required
+                min={minDate}
+                value={date}
+                onChange={handleDateChange}
+                className={fieldClasses}
+              />
             </label>
             <label className={labelClasses}>
               Horário
-              <input name="time" type="time" required step={900} className={fieldClasses} />
+              <select
+                key={date}
+                name="time"
+                required
+                defaultValue=""
+                aria-describedby={date && !hasSlots ? slotsHintId : undefined}
+                className={fieldClasses}
+              >
+                <option value="" disabled>
+                  {!date ? "Escolha a data primeiro" : hasSlots ? "Selecione" : "Sem horários"}
+                </option>
+                {slotGroups.map((group) => (
+                  <optgroup key={group.label} label={group.label}>
+                    {group.slots.map((slot) => (
+                      <option key={slot} value={slot}>
+                        {formatHour(slot)}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
+              </select>
             </label>
+            {date && !hasSlots && (
+              <p id={slotsHintId} role="status" className="text-sm sm:col-span-2">
+                Não temos horários disponíveis nesta data. Que tal escolher outro dia?
+              </p>
+            )}
             <label className={labelClasses}>
               Pessoas
               <input
