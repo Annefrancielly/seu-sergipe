@@ -6,9 +6,13 @@ import { TerritoryLine } from "@/components/graphics/TerritoryLine";
 import { WaveDivider } from "@/components/graphics/WaveDivider";
 import { Section } from "@/components/layout/Section";
 import { ButtonLink } from "@/components/ui/ButtonLink";
+import { Carousel } from "@/components/ui/Carousel";
+import { DishCard } from "@/components/ui/DishCard";
 import { OrganicFrame } from "@/components/ui/OrganicFrame";
 import chefPhoto from "@/assets/images/chef-seichele-barboza.jpg";
+import salaoPhoto from "@/assets/images/salao-seu-sergipe.jpg";
 import { ORGANIC_SHAPES, type OrganicShapeName } from "@/lib/organic-shapes";
+import type { Dish } from "@/types/content";
 
 export const metadata: Metadata = {
   title: "Design system",
@@ -22,6 +26,18 @@ const PALETTE = [
   { name: "Vermelho telha", token: "vermelho-telha", hex: "#DA4324", swatch: "bg-vermelho-telha" },
   { name: "Creme", token: "creme", hex: "#FAE8DC", swatch: "bg-creme" },
 ] as const;
+
+const EXAMPLE_DISHES: Dish[] = Array.from({ length: 5 }, (_, index) => ({
+  slug: `exemplo-${index + 1}`,
+  name: `Prato de exemplo ${index + 1}`,
+  description: "Texto provisório para avaliar o card. Os pratos reais serão escolhidos pela chef.",
+  categorySlug: "exemplo",
+  story: index % 2 === 0 ? "Espaço para a história ou homenagem cultural por trás do prato." : undefined,
+  photo:
+    index === 0
+      ? { src: salaoPhoto.src, alt: "", width: salaoPhoto.width, height: salaoPhoto.height }
+      : undefined,
+}));
 
 const SHAPE_NAMES = Object.keys(ORGANIC_SHAPES) as OrganicShapeName[];
 
@@ -104,6 +120,20 @@ export default function DesignSystemPage() {
         </div>
       </Section>
 
+      <Section surface="creme" labelledBy="carrossel-titulo" className="pb-secao">
+        <div className="mx-auto max-w-5xl px-6">
+          <h2 id="carrossel-titulo" className="font-display text-4xl">Carrossel e cards de prato</h2>
+          <p className="mt-3 max-w-xl leading-relaxed">
+            Arraste no celular, use os botões ou as setas do teclado com o carrossel em foco.
+          </p>
+        </div>
+        <Carousel label="Exemplo de carrossel" className="mx-auto mt-10 max-w-5xl">
+          {EXAMPLE_DISHES.map((dish) => (
+            <DishCard key={dish.slug} dish={dish} />
+          ))}
+        </Carousel>
+      </Section>
+
       <WaveDivider from="creme" to="marrom" variant="ampla" flip />
 
       <Section id="superficies" surface="marrom" labelledBy="superficies-titulo" className="py-secao">
@@ -119,7 +149,7 @@ export default function DesignSystemPage() {
                 data-surface={surface}
                 className="rounded-folha bg-surface p-8 text-ink ring-1 ring-creme/20"
               >
-                <p className="font-mono text-sm uppercase tracking-widest text-accent">{surface}</p>
+                <p className="font-mono text-sm uppercase tracking-widest text-emphasis">{surface}</p>
                 <p className="mt-3 font-display text-2xl">Sente-se e fique um pouco mais.</p>
                 <div className="mt-6 flex flex-col items-start gap-3">
                   <ButtonLink href="#superficies" withArrow>

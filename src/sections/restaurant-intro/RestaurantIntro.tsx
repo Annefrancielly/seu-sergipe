@@ -32,7 +32,7 @@ export function RestaurantIntro() {
             <h2 id="restaurante-titulo" className="font-display text-4xl leading-tight sm:text-5xl">
               {restaurantIntro.title}
             </h2>
-            <p className="mt-6 font-display text-2xl leading-snug text-accent">
+            <p className="mt-6 font-display text-2xl leading-snug text-emphasis">
               {restaurantIntro.lead}
             </p>
             <p className="mt-4 text-lg leading-relaxed">{restaurantIntro.body}</p>

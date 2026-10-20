@@ -3,20 +3,13 @@ import type { Metadata } from "next";
 import { WaveDivider } from "@/components/graphics/WaveDivider";
 import { Section } from "@/components/layout/Section";
 import { ButtonLink } from "@/components/ui/ButtonLink";
-import { siteConfig } from "@/config/site";
-import { buildReservationMessage, buildWhatsAppUrl } from "@/lib/reservation";
+import { reservationHref } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "Cardápio",
 };
 
-const whatsappUrl = buildWhatsAppUrl(
-  siteConfig.contact.whatsappNumber,
-  buildReservationMessage(
-    { intro: "Vim pelo site e gostaria de conhecer o cardápio." },
-    siteConfig.name,
-  ),
-);
+const whatsappUrl = reservationHref("Vim pelo site e gostaria de conhecer o cardápio.");
 
 export default function MenuPage() {
   return (

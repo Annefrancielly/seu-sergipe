@@ -61,7 +61,8 @@ Valores obtidos por amostragem das páginas rasterizadas do PDF da identidade (a
 Os componentes usam `surface`, `ink`, `accent` e `focus`, que mudam de valor conforme o atributo `data-surface` da seção (`verde`, `marrom` ou o padrão creme). Contrato:
 
 - `ink` sobre `surface` atende 4,5:1 em todas as superfícies.
-- `accent` atende 3:1 em todas as superfícies (gráficos e texto grande) e 4,5:1 apenas sobre `verde`.
+- `accent` atende 3:1 em todas as superfícies e é reservado a gráficos e texto grande (traços, ícones decorativos).
+- `emphasis` atende 4,5:1 em todas as superfícies e é usado em texto destacado de qualquer tamanho: marrom sobre creme (6,30), laranja sobre verde (6,40), creme sobre marrom (6,30).
 - `focus` atende 3:1 contra a superfície em todos os casos.
 
 ## D6 — Linguagem visual de linhas e curvas
@@ -122,6 +123,14 @@ A foto do salão usa `loading="eager"` em vez de `preload`: no celular ela fica 
 - **Foto do salão:** extraída da apresentação da chef (2999 × 2002 px), reduzida para 1800 px e sem metadados. Substituir pelo arquivo original.
 - **`/cardapio`:** página provisória com contato pelo WhatsApp até o cardápio interativo.
 - **Textos:** rascunho em `src/content/home.ts`, aguardando aprovação da chef.
+
+## D13 — Seção 02 e carrossel acessível
+
+- **Seção da chef** sobre creme, com a foto na moldura `seixo` à esquerda no desktop, alternando com a Seção 01 (texto à esquerda). Os nomes dos pais e o *Mestre do Sabor* ficaram de fora até a aprovação da chef.
+- **Sugestões da Chef** só aparecem quando `chefPickSlugs` tem pratos; hoje a lista está vazia porque nenhum prato foi aprovado.
+- **Carrossel sem biblioteca:** `scroll-snap` nativo para arrastar no toque, botões anterior/próximo, foco por teclado no trilho (setas rolam nativamente) e indicador de posição. A lógica de estado é uma função pura testada (`src/lib/carousel.ts`). Sem autoplay. Arrastar com o mouse não foi implementado: os botões, o trackpad e o teclado cobrem esse uso.
+- **História do prato** com `<details>`/`<summary>` nativos: acessível e sem JavaScript.
+- **Conversão no ponto de desejo:** cada card tem "Quero provar", que abre o WhatsApp citando o prato, e o bloco termina com "Já escolheu o seu? Reserve sua mesa".
 
 ---
 

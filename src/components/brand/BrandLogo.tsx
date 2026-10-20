@@ -13,7 +13,7 @@ export function BrandLogo({ className }: BrandLogoProps) {
       className={cn("inline-flex flex-col items-start leading-none", className)}
     >
       <span className="font-display text-3xl sm:text-4xl">{siteConfig.name}</span>
-      <span className="mt-2 text-[0.7rem] uppercase tracking-[0.28em] text-accent sm:text-xs">
+      <span className="mt-2 text-[0.7rem] uppercase tracking-[0.28em] text-emphasis sm:text-xs">
         {siteConfig.tagline}
       </span>
     </span>
