@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@theme {
+  --color-verde-profundo: #003122;
+  --color-marrom-terroso: #84431d;
+  --color-laranja-quente: #f69719;
+  --color-vermelho-telha: #da4324;
+  --color-creme: #fae8dc;
+
+  --ease-organic: cubic-bezier(0.33, 1, 0.68, 1);
+  --duration-gentle: 600ms;
+}
+
+@theme inline {
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-accent: var(--accent);
+  --color-focus: var(--focus);
+}
+
+:root {
+  --surface: var(--color-creme);
+  --ink: var(--color-verde-profundo);
+  --accent: var(--color-vermelho-telha);
+  --focus: var(--color-verde-profundo);
+}
+
+[data-surface="verde"] {
+  --surface: var(--color-verde-profundo);
+  --ink: var(--color-creme);
+  --accent: var(--color-laranja-quente);
+  --focus: var(--color-laranja-quente);
+}
+
+[data-surface="marrom"] {
+  --surface: var(--color-marrom-terroso);
+  --ink: var(--color-creme);
+  --accent: var(--color-laranja-quente);
+  --focus: var(--color-creme);
+}
+
+@layer base {
+  :focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

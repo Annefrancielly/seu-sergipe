@@ -1,0 +1,25 @@
+# Dependências
+/node_modules
+
+# Build do Next.js
+/.next/
+/out/
+/build
+next-env.d.ts
+*.tsbuildinfo
+
+# Variáveis de ambiente: nunca versionar valores reais
+.env
+.env.*
+!.env.example
+
+# Vercel
+.vercel
+
+# Documentos de referência (podem conter dados pessoais e bancários)
+/_referencias/
+
+# Sistema e editores
+.DS_Store
+*.pem
+npm-debug.log*
