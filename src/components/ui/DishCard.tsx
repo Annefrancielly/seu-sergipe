@@ -20,6 +20,7 @@ export function DishCard({ dish }: DishCardProps) {
             fill
             sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 80vw"
             className="object-cover"
+            style={{ objectPosition: dish.photo.objectPosition }}
           />
         </OrganicFrame>
       )}

@@ -100,7 +100,12 @@ export function Carousel({ label, children, className }: CarouselProps) {
         ))}
       </ul>
 
-      <div className="mt-6 flex items-center justify-end gap-4 px-6">
+      <div
+        className={cn(
+          "mt-6 flex items-center justify-end gap-4 px-6",
+          state.atStart && state.atEnd && "invisible",
+        )}
+      >
         <p aria-live="polite" className="mr-auto font-mono text-sm tabular-nums">
           {state.index + 1} de {total}
         </p>

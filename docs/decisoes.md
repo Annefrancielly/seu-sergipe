@@ -132,6 +132,22 @@ A foto do salão usa `loading="eager"` em vez de `preload`: no celular ela fica 
 - **História do prato** com `<details>`/`<summary>` nativos: acessível e sem JavaScript.
 - **Conversão no ponto de desejo:** cada card tem "Quero provar", que abre o WhatsApp citando o prato, e o bloco termina com "Já escolheu o seu? Reserve sua mesa".
 
+## D14 — Primeiros pratos das Sugestões da Chef
+
+Fotos enviadas em 19/10/2026 e identificadas pela equipe:
+
+| Foto | Prato | Uso |
+|---|---|---|
+| `quiabada-crocante.jpg` | Quiabada crocante | Sugestões da Chef |
+| `moqueca-encontro-das-aguas.jpg` | Moqueca Encontro das Águas | Sugestões da Chef |
+| `amorosa.jpg` | Amorosa | Sugestões da Chef |
+| `menu-degustacao-etapa.jpg` | Etapa do Menu Degustação | Reservada para a Seção 03 |
+
+- Descrições adaptadas do cardápio com correções de grafia; preços omitidos até a decisão sobre exibi-los.
+- As fotos dos pratos ficam em `public/images/pratos/` (caminho em texto), e não importadas estaticamente, porque `src/content/menu.ts` também é lido pelos testes do Node, que não importam arquivos `.jpg`. Um teste confirma que cada foto referenciada existe.
+- `objectPosition` em `ImageAsset` ajusta o recorte de cada foto dentro da moldura.
+- Com três pratos, todos cabem na tela do desktop; os controles do carrossel ficam invisíveis (sem deslocar o layout) quando não há o que rolar.
+
 ---
 
 # Pendências
@@ -149,7 +165,8 @@ A foto do salão usa `loading="eager"` em vez de `preload`: no celular ela fica 
 - Instagram oficial: `@seusergipe` ou `@restaurante_seusergipe`
 - Ano de fundação: 2015 (cardápio) ou 2023 (material da marca)
 - Aprovação da chef: biografia, nomes dos pais, citação, redação sobre o *Mestre do Sabor*
-- Pratos das Sugestões da Chef, com fotos
+- Aprovação da chef para as descrições dos pratos das Sugestões
+- Mais pratos para as Sugestões (ideal de 5 a 8) e original em alta resolução da foto da Moqueca Encontro das Águas (recebida com 720 × 1280 px)
 - Arquivo original da foto do salão
 - Aprovação dos textos da Seção 01
 - Autorização de imagem dos clientes na foto do salão e crédito do fotógrafo

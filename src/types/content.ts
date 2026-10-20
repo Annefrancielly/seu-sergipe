@@ -3,6 +3,7 @@ export type ImageAsset = {
   alt: string;
   width: number;
   height: number;
+  objectPosition?: string;
 };
 
 export type Kitchen = "autoral" | "origem";

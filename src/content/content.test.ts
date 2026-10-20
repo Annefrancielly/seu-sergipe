@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { existsSync } from "node:fs";
 import { describe, it } from "node:test";
 
 import { findDuplicateSlugs, resolveDishes } from "../lib/menu.ts";
@@ -20,5 +21,13 @@ describe("integridade do cardápio", () => {
       orphans.map((dish) => dish.slug),
       [],
     );
+  });
+
+  it("toda foto de prato existe na pasta public", () => {
+    const missing = dishes
+      .map((dish) => dish.photo?.src)
+      .filter((src): src is string => src !== undefined)
+      .filter((src) => !existsSync(new URL(`../../public${src}`, import.meta.url)));
+    assert.deepEqual(missing, []);
   });
 });
