@@ -2,17 +2,30 @@ import type { Metadata, Viewport } from "next";
 
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { ReservationProvider } from "@/components/reservation/ReservationProvider";
+import { deployment } from "@/config/deployment";
 import { siteConfig } from "@/config/site";
 
 import "./globals.css";
 
+const defaultTitle = `${siteConfig.name} — ${siteConfig.tagline}`;
+
 export const metadata: Metadata = {
+  metadataBase: deployment.siteUrl,
   title: {
-    default: `${siteConfig.name} — ${siteConfig.tagline}`,
+    default: defaultTitle,
     template: `%s · ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  robots: { index: false, follow: false },
+  applicationName: siteConfig.name,
+  openGraph: {
+    type: "website",
+    locale: "pt_BR",
+    siteName: siteConfig.name,
+    title: defaultTitle,
+    description: siteConfig.description,
+  },
+  robots: deployment.allowIndexing ? { index: true, follow: true } : { index: false, follow: false },
+  formatDetection: { telephone: false, address: false, email: false },
 };
 
 export const viewport: Viewport = {

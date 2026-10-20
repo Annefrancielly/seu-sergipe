@@ -12,6 +12,7 @@ import { menuCategories } from "@/content/menu";
 export const metadata: Metadata = {
   title: "Cardápio",
   description: "Navegue pelo cardápio do Seu Sergipe: menus degustação, entradas, pratos principais, moquecas, drinks e sobremesas.",
+  alternates: { canonical: "/cardapio" },
 };
 
 export default function MenuPage() {

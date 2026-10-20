@@ -1,6 +1,4 @@
-export const SURFACES = ["creme", "verde", "marrom"] as const;
-
-export type Surface = (typeof SURFACES)[number];
+export type Surface = "creme" | "verde" | "marrom";
 
 export const surfaceFillClass: Record<Surface, string> = {
   creme: "fill-creme",

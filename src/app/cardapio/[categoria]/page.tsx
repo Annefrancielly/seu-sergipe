@@ -30,7 +30,11 @@ function findCategory(slug: string) {
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
   const category = findCategory((await params).categoria);
   if (!category) return {};
-  return { title: `${category.name} · Cardápio`, description: category.description };
+  return {
+    title: `${category.name} · Cardápio`,
+    description: category.description,
+    alternates: { canonical: `/cardapio/${category.slug}` },
+  };
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {

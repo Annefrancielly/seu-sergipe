@@ -296,6 +296,24 @@ Os caminhos ficam em `brand-paths.ts`, desenhados inline com `currentColor`, par
 
 **Pendente**: substituir pelos vetores originais da agência quando chegarem; a troca acontece apenas em `brand-paths.ts`.
 
+## D23 — Organização do código, segurança e preparação para a Vercel
+
+**Organização**
+
+- O cardápio deixou de usar comentários para separar categorias: cada bloco é `inCategory("slug", [...])`, que acrescenta `categorySlug` aos pratos. O nome da categoria no código substitui o comentário, e o campo repetido saiu de 97 pratos. Os dados gerados são idênticos aos anteriores (comparação automatizada).
+- Constantes e funções usadas só dentro do próprio módulo deixaram de ser exportadas (`opening-hours.ts`, `surfaces.ts`). A superfície pública de cada módulo passa a ser o que outros arquivos realmente usam.
+- `SeuSergipeLogo.png` saiu do repositório: não era usado e continha "Bistrô". O original foi para `_referencias/`.
+
+**Ambiente (`src/lib/deployment.ts`)**: uma função pura, testada, resolve a URL pública e a permissão de indexação a partir das variáveis de ambiente. A URL vem de `SITE_URL` ou, na falta dela, do domínio de produção da Vercel. A indexação exige produção **e** `SITE_INDEXING=on`. Assim um deploy de produção antes do lançamento não aparece nos buscadores por engano. Uma URL inválida, ou sem https em produção, interrompe o build em vez de publicar metadados errados.
+
+**SEO técnico**: `metadataBase`, URLs canônicas por página, Open Graph com a foto do salão (1200 × 630, 123 KB) para a prévia de links no WhatsApp, `robots.txt` e `sitemap.xml` gerados no build.
+
+**Ícones**: arara laranja sobre verde profundo em `icon.svg` (abas), `favicon.ico` (16, 32 e 48 px, navegadores antigos) e `apple-icon.png` (180 px, tela inicial do iPhone, sem cantos arredondados porque o iOS aplica a própria máscara). No ícone da aba, o traço da arara é engrossado para continuar legível em 16 px; no ícone de 180 px o traço fica próximo do original.
+
+**Headers**: CSP passa a bloquear iframes (`frame-src 'none'`) e deixa de aceitar imagens `blob:`, que o site não usa. `Permissions-Policy` também nega pagamento e USB. O `'unsafe-inline'` em `script-src` permanece: os scripts inline do Next.js exigiriam nonce, o que obriga renderização dinâmica em todas as páginas e elimina a geração estática. Como o site não tem entrada de usuário renderizada no servidor, o ganho não compensa.
+
+**Node**: `engines.node` fixado em `22.x`, para que a Vercel use a mesma versão principal do desenvolvimento em vez de subir de versão sozinha.
+
 ---
 
 # Pendências
@@ -321,7 +339,7 @@ Os caminhos ficam em `brand-paths.ts`, desenhados inline com `currentColor`, par
 - Arquivo original da foto do salão
 - Aprovação dos textos da Seção 01
 - Autorização de imagem dos clientes na foto do salão e crédito do fotógrafo
-- Domínio
+- Domínio definitivo (configurar `SITE_URL` na Vercel, ver D23)
 - Último horário aceito para reserva em cada refeição (adotado: 30 minutos antes do fechamento) e intervalo entre horários (adotado: 30 minutos)
 - Corrigir no Perfil do Google a listagem geral de horários (quarta e domingo aparecem incoerentes)
 - Número de pessoas a partir do qual a reserva é tratada como grupo grande

@@ -2,16 +2,17 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
+import chefPhoto from "@/assets/images/chef-seichele-barboza.jpg";
+import salaoPhoto from "@/assets/images/salao-seu-sergipe.jpg";
 import { TerritoryLine } from "@/components/graphics/TerritoryLine";
 import { WaveDivider } from "@/components/graphics/WaveDivider";
 import { Section } from "@/components/layout/Section";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { Carousel } from "@/components/ui/Carousel";
 import { DishCard } from "@/components/ui/DishCard";
-import { TestimonialCard } from "@/components/ui/TestimonialCard";
 import { OrganicFrame } from "@/components/ui/OrganicFrame";
-import chefPhoto from "@/assets/images/chef-seichele-barboza.jpg";
-import salaoPhoto from "@/assets/images/salao-seu-sergipe.jpg";
+import { TestimonialCard } from "@/components/ui/TestimonialCard";
+import { deployment } from "@/config/deployment";
 import { ORGANIC_SHAPES, type OrganicShapeName } from "@/lib/organic-shapes";
 import type { Dish, Testimonial } from "@/types/content";
 
@@ -50,7 +51,7 @@ const EXAMPLE_TESTIMONIALS: Testimonial[] = [1, 2, 3].map((number) => ({
 const SHAPE_NAMES = Object.keys(ORGANIC_SHAPES) as OrganicShapeName[];
 
 export default function DesignSystemPage() {
-  if (process.env.VERCEL_ENV === "production") notFound();
+  if (deployment.isProduction) notFound();
 
   return (
     <main id="conteudo">

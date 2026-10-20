@@ -1,9 +1,15 @@
+import type { Metadata } from "next";
+
 import { WaveDivider } from "@/components/graphics/WaveDivider";
 import { ChefSection } from "@/sections/chef/ChefSection";
 import { ExperienceSection } from "@/sections/experience/ExperienceSection";
 import { LocationSection } from "@/sections/location/LocationSection";
 import { RestaurantIntro } from "@/sections/restaurant-intro/RestaurantIntro";
 import { TestimonialsSection } from "@/sections/testimonials/TestimonialsSection";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export default function HomePage() {
   return (

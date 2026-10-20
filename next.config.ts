@@ -6,9 +6,10 @@ const contentSecurityPolicy = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' blob: data:",
+  "img-src 'self' data:",
   "font-src 'self'",
   "connect-src 'self'",
+  "frame-src 'none'",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
@@ -23,12 +24,10 @@ const securityHeaders = [
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   {
     key: "Permissions-Policy",
-    value: "camera=(), microphone=(), geolocation=(), browsing-topics=()",
+    value: "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()",
   },
   { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
-  ...(isDev
-    ? []
-    : [{ key: "Strict-Transport-Security", value: "max-age=63072000" }]),
+  ...(isDev ? [] : [{ key: "Strict-Transport-Security", value: "max-age=63072000" }]),
 ];
 
 const nextConfig: NextConfig = {

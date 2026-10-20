@@ -1,8 +1,8 @@
 import type { OpeningHours, ServicePeriod, Weekday } from "@/types/content";
 
-export const RESTAURANT_TIME_ZONE = "America/Maceio";
+const RESTAURANT_TIME_ZONE = "America/Maceio";
 
-export const WEEKDAYS_BY_INDEX: readonly Weekday[] = [
+const WEEKDAYS_BY_INDEX: readonly Weekday[] = [
   "domingo",
   "segunda",
   "terca",
@@ -22,7 +22,7 @@ const DISPLAY_ORDER: readonly Weekday[] = [
   "domingo",
 ];
 
-export const WEEKDAY_LABELS: Record<Weekday, string> = {
+const WEEKDAY_LABELS: Record<Weekday, string> = {
   domingo: "domingo",
   segunda: "segunda",
   terca: "terça",
@@ -40,7 +40,7 @@ export function toMinutes(time: string): number {
   return Number(match[1]) * 60 + Number(match[2]);
 }
 
-export function fromMinutes(totalMinutes: number): string {
+function fromMinutes(totalMinutes: number): string {
   const hours = String(Math.floor(totalMinutes / 60)).padStart(2, "0");
   const minutes = String(totalMinutes % 60).padStart(2, "0");
   return `${hours}:${minutes}`;
@@ -174,8 +174,8 @@ export function weekdayFromIsoDate(isoDate: string): Weekday | undefined {
   return WEEKDAYS_BY_INDEX[date.getUTCDay()];
 }
 
-export const SLOT_INTERVAL_MINUTES = 30;
-export const LAST_SEATING_BEFORE_CLOSE_MINUTES = 30;
+const SLOT_INTERVAL_MINUTES = 30;
+const LAST_SEATING_BEFORE_CLOSE_MINUTES = 30;
 
 export type TimeSlotGroup = {
   label: string;
