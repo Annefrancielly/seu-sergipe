@@ -17,7 +17,7 @@ export function RestaurantIntro() {
       labelledBy="restaurante-titulo"
       className="overflow-hidden pt-10 pb-16 md:pt-14 md:pb-24"
     >
-      <TerritoryLine className="absolute top-1/3 -bottom-4 right-0 w-28 opacity-60 md:right-[6%] md:w-44" />
+      <TerritoryLine className="absolute top-[58%] -bottom-4 right-0 w-24 opacity-60 md:top-1/3 md:right-[6%] md:w-44" />
 
       <div className="relative mx-auto max-w-6xl px-6">
         <h1>
@@ -43,7 +43,7 @@ export function RestaurantIntro() {
           </div>
 
           <div className="md:col-span-6 lg:col-start-7">
-            <OrganicFrame shape="arco" className="mx-auto aspect-[4/5] w-full max-w-md md:max-w-none">
+            <OrganicFrame shape="arco" animated={false} className="mx-auto aspect-[4/5] w-full max-w-md md:max-w-none">
               <Image
                 src={salaoPhoto}
                 alt={restaurantIntro.photoAlt}

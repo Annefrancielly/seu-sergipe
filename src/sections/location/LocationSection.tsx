@@ -13,10 +13,10 @@ export function LocationSection() {
 
   return (
     <Section id="localizacao" surface="creme" labelledBy="localizacao-titulo" className="overflow-hidden py-secao">
-      <TerritoryLine variant="meandro" className="absolute inset-y-0 -left-6 w-24 opacity-50 md:left-[4%] md:w-32" />
+      <TerritoryLine variant="meandro" className="absolute inset-y-0 left-[4%] hidden w-32 opacity-50 md:block" />
 
       <div className="relative mx-auto grid max-w-6xl gap-12 px-6 md:grid-cols-12 md:gap-8">
-        <div className="md:col-span-6 lg:col-span-5">
+        <div className="surgir md:col-span-6 lg:col-span-5">
           <svg viewBox="0 0 48 48" aria-hidden="true" focusable="false" className="size-12 text-accent">
             <path
               className="traco-marca"
@@ -40,7 +40,7 @@ export function LocationSection() {
 
         <div
           data-surface="verde"
-          className="rounded-folha-inversa bg-surface p-7 text-ink sm:p-9 md:col-span-6 md:col-start-7"
+          className="surgir surgir-depois rounded-folha-inversa bg-surface p-7 text-ink sm:p-9 md:col-span-6 md:col-start-7"
         >
           <h3 className="font-display text-3xl">Horários</h3>
           <div className="mt-3">

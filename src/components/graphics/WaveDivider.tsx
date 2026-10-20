@@ -24,22 +24,25 @@ export function WaveDivider({
   withLine = false,
 }: WaveDividerProps) {
   const crest = WAVES[variant];
+  const svgClasses = cn("block h-(--altura-onda) w-full", flip && "-scale-x-100");
 
   return (
-    <div
-      aria-hidden="true"
-      data-surface={from}
-      className="relative -my-px bg-surface"
-    >
-      <svg
-        viewBox="0 0 1440 160"
-        preserveAspectRatio="none"
-        focusable="false"
-        className={cn("block h-(--altura-onda) w-full", flip && "-scale-x-100")}
-      >
-        <path d={`${crest} L1440 160 L0 160 Z`} className={surfaceFillClass[to]} />
-        {withLine && <path d={crest} className="traco-marca text-accent" />}
-      </svg>
+    <div aria-hidden="true" data-surface={from} className="relative -my-px bg-surface">
+      <div className="onda-chegar relative">
+        <svg viewBox="0 0 1440 160" preserveAspectRatio="none" focusable="false" className={svgClasses}>
+          <path d={`${crest} L1440 160 L0 160 Z`} className={surfaceFillClass[to]} />
+        </svg>
+        {withLine && (
+          <svg
+            viewBox="0 0 1440 160"
+            preserveAspectRatio="none"
+            focusable="false"
+            className={cn("traco-desenhar absolute inset-0 text-accent", svgClasses)}
+          >
+            <path d={crest} className="traco-marca" />
+          </svg>
+        )}
+      </div>
     </div>
   );
 }

@@ -122,9 +122,17 @@ export function ReservationProvider({ children }: { children: ReactNode }) {
         aria-labelledby={titleId}
         onClick={handleBackdropClick}
         data-surface="creme"
-        className="m-auto max-h-[92dvh] w-[min(34rem,calc(100%-2rem))] overflow-y-auto rounded-folha bg-surface p-0 text-ink backdrop:bg-verde-profundo/70"
+        className={
+          "painel-reserva m-auto max-h-[92dvh] w-[min(34rem,calc(100%_-_2rem))] max-w-none overflow-y-auto rounded-folha bg-surface p-0 text-ink backdrop:bg-verde-profundo/70 " +
+          "max-sm:mb-0 max-sm:max-h-[90dvh] max-sm:w-full max-sm:rounded-b-none max-sm:rounded-t-[2rem]"
+        }
       >
-        <form ref={formRef} onSubmit={handleSubmit} className="p-6 sm:p-8">
+        <div aria-hidden="true" className="mx-auto mt-3 h-1.5 w-12 rounded-full bg-ink/20 sm:hidden" />
+        <form
+          ref={formRef}
+          onSubmit={handleSubmit}
+          className="px-6 pt-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] sm:p-8"
+        >
           <div className="flex items-start justify-between gap-4">
             <h2 id={titleId} className="font-display text-3xl leading-tight">
               Vamos reservar sua mesa

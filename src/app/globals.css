@@ -90,12 +90,139 @@
   }
 }
 
+@keyframes surgir {
+  from {
+    opacity: 0;
+    translate: 0 2.5rem;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes moldura-abrir {
+  from {
+    opacity: 0;
+    scale: 0.9;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes onda-chegar {
+  from {
+    scale: 1 0.3;
+  }
+  to {
+    scale: 1 1;
+  }
+}
+
+@keyframes traco-da-esquerda {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
-    .revelar-na-rolagem {
-      animation: revelar-de-cima linear both;
+    .revelar-na-rolagem,
+    .surgir,
+    .moldura-abrir,
+    .onda-chegar,
+    .traco-desenhar {
+      animation-fill-mode: both;
       animation-timeline: view();
+    }
+
+    .revelar-na-rolagem {
+      animation-name: revelar-de-cima;
+      animation-timing-function: linear;
       animation-range: entry 0% exit 0%;
+    }
+
+    .surgir {
+      animation-name: surgir;
+      animation-timing-function: var(--ease-organic);
+      animation-range: entry 5% cover 30%;
+    }
+
+    .surgir-depois {
+      animation-range: entry 15% cover 38%;
+    }
+
+    .surgir-por-ultimo {
+      animation-range: entry 25% cover 46%;
+    }
+
+    .moldura-abrir {
+      animation-name: moldura-abrir;
+      animation-timing-function: var(--ease-organic);
+      animation-range: entry 0% cover 35%;
+    }
+
+    .onda-chegar {
+      transform-origin: bottom;
+      animation-name: onda-chegar;
+      animation-timing-function: var(--ease-organic);
+      animation-range: entry 0% cover 55%;
+    }
+
+    .traco-desenhar {
+      animation-name: traco-da-esquerda;
+      animation-timing-function: var(--ease-organic);
+      animation-range: entry 20% cover 60%;
+    }
+  }
+
+  .painel-reserva {
+    transition:
+      translate 450ms var(--ease-organic),
+      opacity 300ms ease,
+      overlay 450ms allow-discrete,
+      display 450ms allow-discrete;
+  }
+
+  .painel-reserva:not([open]) {
+    opacity: 0;
+    translate: 0 1.5rem;
+  }
+
+  @starting-style {
+    .painel-reserva[open] {
+      opacity: 0;
+      translate: 0 1.5rem;
+    }
+  }
+
+  .painel-reserva::backdrop {
+    transition:
+      background-color 450ms ease,
+      overlay 450ms allow-discrete,
+      display 450ms allow-discrete;
+  }
+
+  @starting-style {
+    .painel-reserva[open]::backdrop {
+      background-color: transparent;
+    }
+  }
+
+  @media (max-width: 639px) {
+    .painel-reserva:not([open]) {
+      translate: 0 100%;
+    }
+
+    @starting-style {
+      .painel-reserva[open] {
+        translate: 0 100%;
+      }
     }
   }
 }

@@ -10,6 +10,7 @@ import {
 type OrganicFrameProps = {
   shape?: OrganicShapeName;
   withAccent?: boolean;
+  animated?: boolean;
   className?: string;
   children: ReactNode;
 };
@@ -17,6 +18,7 @@ type OrganicFrameProps = {
 export function OrganicFrame({
   shape = "seixo",
   withAccent = true,
+  animated = true,
   className,
   children,
 }: OrganicFrameProps) {
@@ -34,7 +36,7 @@ export function OrganicFrame({
 
   return (
     <div className={cn("relative", className)}>
-      <div className="absolute inset-0" style={maskStyle}>
+      <div className={cn("absolute inset-0 overflow-hidden", animated && "moldura-abrir")} style={maskStyle}>
         {children}
       </div>
       {withAccent && (
@@ -43,7 +45,10 @@ export function OrganicFrame({
           preserveAspectRatio="none"
           aria-hidden="true"
           focusable="false"
-          className="pointer-events-none absolute -inset-3 size-[calc(100%_+_1.5rem)] overflow-visible text-accent sm:-inset-4 sm:size-[calc(100%_+_2rem)]"
+          className={cn(
+            "pointer-events-none absolute -inset-3 size-[calc(100%_+_1.5rem)] overflow-visible text-accent sm:-inset-4 sm:size-[calc(100%_+_2rem)]",
+            animated && "traco-desenhar",
+          )}
         >
           <path d={accentArc} className="traco-marca" />
         </svg>

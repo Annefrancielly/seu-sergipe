@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { Section } from "@/components/layout/Section";
 import { ReservationTrigger } from "@/components/reservation/ReservationTrigger";
+import { Carousel } from "@/components/ui/Carousel";
 import { OrganicFrame } from "@/components/ui/OrganicFrame";
 import { experienceIntro, tastingMenus } from "@/content/experience";
 
@@ -9,7 +10,7 @@ export function ExperienceSection() {
   return (
     <Section id="experiencia" surface="marrom" labelledBy="experiencia-titulo" className="py-secao">
       <div className="mx-auto grid max-w-6xl items-center gap-14 px-6 md:grid-cols-12 md:gap-8">
-        <div className="md:col-span-6 lg:col-span-5">
+        <div className="surgir md:col-span-6 lg:col-span-5">
           <h2 id="experiencia-titulo" className="font-display text-4xl leading-tight sm:text-5xl">
             {experienceIntro.title}
           </h2>
@@ -28,20 +29,20 @@ export function ExperienceSection() {
               alt={experienceIntro.photo.alt}
               fill
               sizes="(min-width: 768px) 45vw, 90vw"
-              className="object-cover"
+              className="scale-[1.35] object-cover"
             />
           </OrganicFrame>
         </div>
       </div>
 
-      <div className="mx-auto mt-20 max-w-6xl px-6">
-        <h3 className="font-display text-3xl">{experienceIntro.menusTitle}</h3>
-        <ul className="mt-8 grid gap-6 md:grid-cols-3">
+      <div className="mt-20">
+        <h3 className="surgir mx-auto max-w-6xl px-6 font-display text-3xl">{experienceIntro.menusTitle}</h3>
+        <Carousel label={experienceIntro.menusTitle} className="surgir surgir-depois mx-auto mt-8 max-w-6xl">
           {tastingMenus.map((menu, index) => (
-            <li
+            <div
               key={menu.slug}
               data-surface="verde"
-              className={`flex flex-col bg-surface p-7 text-ink ${index % 2 === 0 ? "rounded-folha" : "rounded-folha-inversa"}`}
+              className={`flex h-full flex-col bg-surface p-7 text-ink ${index % 2 === 0 ? "rounded-folha" : "rounded-folha-inversa"}`}
             >
               <p className="text-sm font-semibold uppercase tracking-[0.25em] text-emphasis">
                 {menu.steps} etapas
@@ -57,10 +58,10 @@ export function ExperienceSection() {
               >
                 Quero viver esta experiência
               </ReservationTrigger>
-            </li>
+            </div>
           ))}
-        </ul>
-        <p className="mt-6 text-sm">{experienceIntro.menusNote}</p>
+        </Carousel>
+        <p className="mx-auto mt-6 max-w-6xl px-6 text-sm">{experienceIntro.menusNote}</p>
       </div>
     </Section>
   );

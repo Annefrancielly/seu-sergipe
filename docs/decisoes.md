@@ -204,6 +204,38 @@ Seis avaliações de 5 estrelas, transcritas manualmente a partir de capturas do
 - **Sem datas:** o Google mostra datas relativas ("há 2 semanas"), que ficariam desatualizadas em uma página estática.
 - **Nota agregada:** 4,7 de 5 e "mais de 500 avaliações", conferidos em 19/10/2026 (512 avaliações). O texto usa "mais de 500" para continuar verdadeiro à medida que o número cresce. A nota precisa ser revisada periodicamente.
 
+## D19 — Ajustes de celular e transições acolhedoras
+
+Revisão feita no navegador com viewport de 375 × 812.
+
+**Ajustes de responsividade**
+
+- Seção 01: o fio do território passava por cima do texto; no celular ele começa abaixo do botão.
+- Seção 04: o fio fica oculto no celular, onde encostava no título.
+- Seção 03: a foto da etapa degustação, de fundo escuro, aparecia como uma mancha preta na moldura. A imagem foi ampliada (`scale-[1.35]`) para a cumbuca preencher a forma. A ampliação fazia a imagem ultrapassar a tela em 11 px (a máscara esconde o excesso visualmente, mas não o remove do layout), o que gera rolagem lateral no celular; a moldura passou a ter `overflow-hidden`, e o `body` recebeu `overflow-x-clip` como proteção geral.
+- Menus Degustação: passaram a usar o mesmo carrossel das Sugestões da Chef. No celular, isso economiza cerca de 700 px de rolagem; no desktop os três cards continuam lado a lado.
+- Logotipo provisório: espaçamento entre letras menor no celular.
+- Painel de reserva: vira uma "bottom sheet" no celular (preso à base, cantos superiores arredondados, alça visual) e respeita a área segura do iPhone (`env(safe-area-inset-bottom)` + `viewportFit: "cover"`).
+
+**Transições (somente CSS, sem JavaScript)**
+
+| Classe | Efeito | Faixa da rolagem |
+|---|---|---|
+| `onda-chegar` | A onda sobe da base como uma maré (`scale` vertical de 0,3 a 1) | `entry 0%` → `cover 55%` |
+| `traco-desenhar` | O traço laranja se desenha da esquerda para a direita | `entry 20%` → `cover 60%` |
+| `surgir` | Blocos de texto sobem 2,5 rem enquanto aparecem | `entry 5%` → `cover 30%` |
+| `surgir-depois` | Mesma animação, um pouco mais tarde (escalonamento) | `entry 15%` → `cover 38%` |
+| `moldura-abrir` | A foto abre de 90% para 100% do tamanho enquanto aparece | `entry 0%` → `cover 35%` |
+| `painel-reserva` | O painel desliza de baixo (celular) ou sobe 1,5 rem (desktop) ao abrir e ao fechar | Transição de 450 ms |
+
+Regras:
+
+- Tudo dentro de `prefers-reduced-motion: no-preference`; as animações de rolagem também exigem `@supports (animation-timeline: view())`. Sem suporte ou com movimento reduzido, o conteúdo aparece completo e parado.
+- A Seção 01 não recebe animação de entrada (D11). A moldura dela usa `animated={false}`, porque no desktop a foto está visível no carregamento e uma animação ligada à posição a deixaria parcialmente transparente.
+- A abertura do painel usa `@starting-style` e `transition-behavior: allow-discrete` para animar a entrada e a saída de um `<dialog>`, que alterna entre `display: none` e visível.
+
+Validado em Chromium (375 × 812): onda, traço e texto partindo do estado inicial e chegando ao final com a rolagem; painel deslizando de 100% a 0; com movimento reduzido, nenhuma animação aplicada.
+
 ---
 
 # Pendências

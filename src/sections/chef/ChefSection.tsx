@@ -29,7 +29,7 @@ export function ChefSection() {
           </OrganicFrame>
         </div>
 
-        <div className="md:col-span-6 md:col-start-7">
+        <div className="surgir md:col-span-6 md:col-start-7">
           <h2 id="chef-titulo" className="text-sm font-semibold uppercase tracking-[0.3em] text-emphasis">
             {chefIntro.title}
           </h2>
@@ -57,11 +57,11 @@ export function ChefSection() {
 
       {chefPicks.length > 0 && (
         <div className="mt-24">
-          <div className="mx-auto max-w-6xl px-6">
+          <div className="surgir mx-auto max-w-6xl px-6">
             <h3 className="font-display text-4xl">{chefPicksIntro.title}</h3>
             <p className="mt-3 text-lg">{chefPicksIntro.lead}</p>
           </div>
-          <Carousel label={chefPicksIntro.title} className="mx-auto mt-10 max-w-6xl">
+          <Carousel label={chefPicksIntro.title} className="surgir surgir-depois mx-auto mt-10 max-w-6xl">
             {chefPicks.map((dish) => (
               <DishCard key={dish.slug} dish={dish} />
             ))}

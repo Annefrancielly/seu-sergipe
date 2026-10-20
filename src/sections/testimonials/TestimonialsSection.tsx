@@ -15,7 +15,7 @@ export function TestimonialsSection() {
 
   return (
     <Section id="avaliacoes" surface="verde" labelledBy="avaliacoes-titulo" className="py-secao">
-      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 md:flex-row md:items-end md:justify-between">
+      <div className="surgir mx-auto flex max-w-6xl flex-col gap-8 px-6 md:flex-row md:items-end md:justify-between">
         <div>
           <h2 id="avaliacoes-titulo" className="font-display text-4xl leading-tight sm:text-5xl">
             {testimonialsIntro.title}
@@ -30,7 +30,7 @@ export function TestimonialsSection() {
       </div>
 
       {testimonials.length > 0 && (
-        <Carousel label="Avaliações de clientes" className="mx-auto mt-12 max-w-6xl">
+        <Carousel label="Avaliações de clientes" className="surgir surgir-depois mx-auto mt-12 max-w-6xl">
           {testimonials.map((testimonial, index) => (
             <TestimonialCard
               key={`${testimonial.author}-${index}`}
