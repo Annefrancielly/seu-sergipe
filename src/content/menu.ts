@@ -30,8 +30,8 @@ export const menuCategories: readonly MenuCategory[] = [
     cover: {
       src: "/images/pratos/quiabada-crocante.jpg",
       alt: "Quiabada crocante com flor azul em cumbuca branca.",
-      width: 933,
-      height: 1400,
+      width: 666,
+      height: 1000,
       objectPosition: "50% 60%",
     },
     notes: [AVISO_INSUMOS],
@@ -54,8 +54,8 @@ export const menuCategories: readonly MenuCategory[] = [
     cover: {
       src: "/images/pratos/moqueca-encontro-das-aguas.jpg",
       alt: "Panela com polvo, camarões e pimentões, finalizada com coentro.",
-      width: 720,
-      height: 1280,
+      width: 562,
+      height: 1000,
       objectPosition: "50% 72%",
     },
     notes: [AVISO_INSUMOS],
@@ -101,8 +101,8 @@ export const menuCategories: readonly MenuCategory[] = [
     cover: {
       src: "/images/pratos/amorosa.jpg",
       alt: "Sobremesa com merengue maçaricado e caldas sobre prato de cerâmica azul.",
-      width: 1400,
-      height: 933,
+      width: 1000,
+      height: 666,
     },
     notes: [AVISO_INSUMOS],
   },
@@ -181,8 +181,8 @@ export const dishes: readonly Dish[] = [
       photo: {
         src: "/images/pratos/quiabada-crocante.jpg",
         alt: "Bolinho empanado e dourado, coberto por lascas de queijo e uma flor azul, sobre emulsão verde em cumbuca branca.",
-        width: 933,
-        height: 1400,
+        width: 666,
+        height: 1000,
         objectPosition: "50% 60%",
       },
     },
@@ -408,8 +408,8 @@ export const dishes: readonly Dish[] = [
       photo: {
         src: "/images/pratos/moqueca-encontro-das-aguas.jpg",
         alt: "Panela escura com polvo, camarões e pimentões coloridos, finalizada com coentro, ao lado de uma panela de camarões com limão.",
-        width: 720,
-        height: 1280,
+        width: 562,
+        height: 1000,
         objectPosition: "50% 72%",
       },
     },
@@ -701,8 +701,8 @@ export const dishes: readonly Dish[] = [
       photo: {
         src: "/images/pratos/amorosa.jpg",
         alt: "Sobremesa com merengue maçaricado, frutinhas, creme amarelo e calda vermelha sobre prato de cerâmica azul.",
-        width: 1400,
-        height: 933,
+        width: 1000,
+        height: 666,
       },
     },
     {

@@ -9,7 +9,7 @@ O site transforma os destinos do link da bio em uma jornada visual e narrativa: 
 - [Next.js 16](https://nextjs.org/docs) com App Router e Turbopack
 - React 19 e TypeScript em modo estrito
 - Tailwind CSS 4
-- Deploy na Vercel
+- Site estático publicado na Cloudflare (Workers com arquivos estáticos)
 
 ## Requisitos
 
@@ -31,7 +31,7 @@ Acesse `http://localhost:3000`.
 |---|---|
 | `npm run dev` | Servidor de desenvolvimento |
 | `npm run build` | Build de produção (inclui checagem de tipos do Next) |
-| `npm run start` | Serve o build de produção localmente |
+| `npm run preview` | Gera o build e serve a pasta `out/` como na Cloudflare, com os headers de `_headers` (requer `wrangler`) |
 | `npm run typecheck` | Gera os tipos de rota do Next e roda o `tsc` |
 | `npm run lint` | ESLint com as regras de Core Web Vitals e TypeScript |
 | `npm run test` | Testes das funções puras com o test runner nativo do Node |
@@ -70,24 +70,32 @@ Para revisar os componentes, rode `npm run dev` e acesse `http://localhost:3000/
 - **Nenhum segredo no repositório.** As variáveis de ambiente estão documentadas em `.env.example` e nenhuma delas é secreta.
 - **Documentos de referência** (PDFs da marca e da chef) ficam em `_referencias/`, ignorada pelo Git, pois contêm dados pessoais e bancários.
 
-## Deploy na Vercel
+## Deploy na Cloudflare
 
-1. Importe o repositório na Vercel. O framework é detectado automaticamente e o build roda `npm run build`.
-2. Em **Project Settings → Environment Variables**, no ambiente **Production**:
-   - `SITE_URL`: endereço público definitivo (ex.: `https://www.dominio.com.br`). Sem ele, o site usa o domínio `*.vercel.app` do projeto.
-   - `SITE_INDEXING`: deixe vazio até o lançamento. Com `on`, libera a indexação.
-3. Antes de cada merge na `main`, rode `npm run check`.
+O build (`npm run build`) gera o site inteiro como arquivos estáticos na pasta `out/`. A Cloudflare publica essa pasta conforme `wrangler.jsonc`.
 
-**Enquanto `SITE_INDEXING` não for `on`**, todas as páginas saem com `noindex` e o `robots.txt` bloqueia os buscadores. Deploys de preview nunca são indexados, independentemente da variável.
+### Primeira configuração
 
-**Segurança.** Os headers HTTP (CSP, HSTS, `X-Frame-Options`, `Permissions-Policy` e outros) ficam em `next.config.ts`. A rota `/design-system` responde 404 em produção.
+1. No painel da Cloudflare, abra **Workers & Pages → Create → Import a repository** e escolha este repositório.
+2. Configure:
+   - **Build command:** `npm run build`
+   - **Deploy command:** `npx wrangler deploy` (padrão)
+   - **Production branch:** `main`
+3. Em **Settings → Build → Variables and secrets**, crie `SITE_URL` com o endereço público. No início, é o endereço `*.workers.dev` exibido pela Cloudflare; depois, o domínio definitivo. **Sem `SITE_URL`, o build de produção falha de propósito**, para não publicar links e prévias do WhatsApp apontando para o endereço errado.
+4. Deixe `SITE_INDEXING` vazio até o lançamento.
+
+Cada push na `main` publica a produção. Pushes em outras branches geram prévias, sempre bloqueadas para buscadores.
+
+### Segurança
+
+Os headers HTTP (CSP, HSTS, `X-Frame-Options`, `Permissions-Policy` e outros) ficam em `public/_headers`, aplicado pela Cloudflare a todas as respostas. Um teste automatizado impede que as diretivas essenciais sejam removidas por engano. No `npm run dev` esses headers não se aplicam; use `npm run preview` para conferir o comportamento de produção.
 
 ### Checklist de lançamento
 
-- [ ] Domínio configurado na Vercel e `SITE_URL` apontando para ele
+- [ ] Domínio apontado para o Worker e `SITE_URL` atualizado
 - [ ] Pendências de conteúdo de `docs/decisoes.md` resolvidas
-- [ ] `SITE_INDEXING=on` em Production e novo deploy
-- [ ] Conferir `/robots.txt`, `/sitemap.xml` e a prévia do link no WhatsApp
+- [ ] `SITE_INDEXING=on` nas variáveis de build e novo deploy
+- [ ] Conferir `/robots.txt`, `/sitemap.xml`, os headers da página e a prévia do link no WhatsApp
 
 ## Fluxo de trabalho
 

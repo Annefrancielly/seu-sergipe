@@ -298,6 +298,8 @@ Os caminhos ficam em `brand-paths.ts`, desenhados inline com `currentColor`, par
 
 ## D23 — Organização do código, segurança e preparação para a Vercel
 
+> A hospedagem, o ambiente e os headers desta decisão foram revistos na D24 (Cloudflare).
+
 **Organização**
 
 - O cardápio deixou de usar comentários para separar categorias: cada bloco é `inCategory("slug", [...])`, que acrescenta `categorySlug` aos pratos. O nome da categoria no código substitui o comentário, e o campo repetido saiu de 97 pratos. Os dados gerados são idênticos aos anteriores (comparação automatizada).
@@ -313,6 +315,20 @@ Os caminhos ficam em `brand-paths.ts`, desenhados inline com `currentColor`, par
 **Headers**: CSP passa a bloquear iframes (`frame-src 'none'`) e deixa de aceitar imagens `blob:`, que o site não usa. `Permissions-Policy` também nega pagamento e USB. O `'unsafe-inline'` em `script-src` permanece: os scripts inline do Next.js exigiriam nonce, o que obriga renderização dinâmica em todas as páginas e elimina a geração estática. Como o site não tem entrada de usuário renderizada no servidor, o ganho não compensa.
 
 **Node**: `engines.node` fixado em `22.x`, para que a Vercel use a mesma versão principal do desenvolvimento em vez de subir de versão sozinha.
+
+## D24 — Hospedagem na Cloudflare com site estático
+
+**Decisão**: o site passa da Vercel para a Cloudflare (Workers com arquivos estáticos, plano gratuito). O plano gratuito da Vercel não permite uso comercial, e o Pro custaria cerca de US$ 20/mês para um site que não precisa de servidor. Na Cloudflare, as requisições a arquivos estáticos são gratuitas e ilimitadas; o custo recorrente fica restrito ao domínio.
+
+**Exportação estática (`output: "export"`)**: o build gera HTML, CSS, JS e imagens em `out/`. Nada muda para o visitante: todas as páginas já eram geradas no build (D2), e as partes interativas (reserva, cards, carrossel, status de funcionamento) rodam no navegador. `robots.txt` e `sitemap.xml` são marcados como `force-static`, exigência da exportação.
+
+**O que a Vercel fazia e agora é feito pelo projeto**
+
+- **Headers de segurança**: saíram de `next.config.ts` (a exportação não os suporta) para `public/_headers`, formato lido pela Cloudflare. Os valores são os mesmos da D23, sem `'unsafe-eval'`, que só existia para o modo de desenvolvimento. `src/config/headers.test.ts` valida as diretivas essenciais e os limites da Cloudflare (100 regras, 2.000 caracteres por linha). Os arquivos com hash em `/_next/static/` ganham cache de um ano.
+- **Imagens**: sem servidor não há otimização sob demanda (`images.unoptimized`). As fotos foram redimensionadas para o maior tamanho em que aparecem e recomprimidas: de 1,2 MB para 0,7 MB no total. As versões anteriores estão em `_referencias/fotos-antes-da-cloudflare/`. Quando houver domínio próprio na Cloudflare, dá para voltar a gerar tamanhos por dispositivo com um loader de Image Transformations.
+- **Ambiente**: `resolveDeployment` reconhece a produção pela branch `main` (`WORKERS_CI_BRANCH`, definida pela Cloudflare) ou por `SITE_ENV`. Em produção, `SITE_URL` é obrigatório.
+
+**Limitação conhecida**: em produção, `/design-system` é gerada como página de "não encontrada", mas a hospedagem estática a entrega com status 200. Ela continua fora do sitemap e marcada como `noindex`.
 
 ---
 
@@ -339,7 +355,7 @@ Os caminhos ficam em `brand-paths.ts`, desenhados inline com `currentColor`, par
 - Arquivo original da foto do salão
 - Aprovação dos textos da Seção 01
 - Autorização de imagem dos clientes na foto do salão e crédito do fotógrafo
-- Domínio definitivo (configurar `SITE_URL` na Vercel, ver D23)
+- Domínio definitivo (configurar `SITE_URL` nas variáveis de build da Cloudflare, ver D24)
 - Último horário aceito para reserva em cada refeição (adotado: 30 minutos antes do fechamento) e intervalo entre horários (adotado: 30 minutos)
 - Corrigir no Perfil do Google a listagem geral de horários (quarta e domingo aparecem incoerentes)
 - Número de pessoas a partir do qual a reserva é tratada como grupo grande
