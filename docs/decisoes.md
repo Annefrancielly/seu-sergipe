@@ -330,18 +330,108 @@ Os caminhos ficam em `brand-paths.ts`, desenhados inline com `currentColor`, par
 
 **Limitação conhecida**: em produção, `/design-system` é gerada como página de "não encontrada", mas a hospedagem estática a entrega com status 200. Ela continua fora do sitemap e marcada como `noindex`.
 
+## D25 — Redesign intimista, etapa 1: paleta, fontes, menu do topo e abertura
+
+Pedidos da cliente na reunião de 1º/11 (plano completo no artifact "Seu Sergipe intimista"). Esta etapa cobre a fundação.
+
+**Paleta** (escolha da cliente para os fundos; demais tons ajustados por contraste)
+
+| Token | Valor | Papel |
+|---|---|---|
+| `musgo` | `#3D4233` | Fundo principal (superfície `verde`) |
+| `cafe` | `#4F2C1D` (Pantone 4625 C) | Fundo alternado (superfície `marrom`), texto sobre creme |
+| `ocre` | `#DBA341` | Destaques e botão de reserva sobre fundos escuros |
+| `barro` | `#8A3B22` | Destaques sobre creme, faixas e detalhes |
+| `creme` | `#FAE8DC` | Ponto de luz: texto sobre fundos escuros |
+
+Contrastes: creme sobre musgo 8,7:1 e sobre café 10,3:1; ocre sobre musgo 4,6:1 e sobre café 5,5:1; texto café sobre botão ocre 5,5:1. O barro não serve como botão sobre os fundos escuros (1,4 a 1,6:1). Os nomes das superfícies (`creme`, `verde`, `marrom`) foram mantidos para não espalhar renomeações pelo projeto; os nomes das cores-base mudaram.
+
+**Fontes provisórias**: Big Shoulders (no lugar de Tropicane) e DM Mono (no lugar de Silka Mono), via `next/font`, que baixa os arquivos no build e os serve do próprio site. As variáveis `--fonte-titulos` e `--fonte-texto` isolam a troca: quando as licenças forem compradas, só `src/app/fonts.ts` muda (para `next/font/local`).
+
+**Menu do topo (`SiteHeader`)**: logo fixa; transparente no topo e em vidro (musgo 70% + desfoque) após 24 px de rolagem. No computador (≥ 1024 px), links em linha e botão "Reservar". No celular, ícone de três linhas abre um `<dialog>` em tela cheia, que traz de graça foco preso, Esc para fechar e o resto da página inerte; a rolagem da página fica travada por `:root:has(.menu-movel[open])`. Itens em `src/config/navigation.ts`, por enquanto apontando só para destinos que existem.
+
+**Abertura (`HeroSection` + `HeroSlideshow`)**: três fotos em transição de opacidade de 1,4 s a cada 7 s, com a palavra correspondente (Arte, Sergipanidade, Gastronomia). Atende ao critério 2.2.2 da WCAG: botão de pausa visível, pausa ao passar o mouse ou focar um controle, e sem rotação automática para quem pede movimento reduzido. Leitores de tela recebem o `h1` com o nome da casa; a troca de destaque só é anunciada quando a apresentação está pausada. Fotos provisórias até a cliente enviar as três definitivas.
+
+**Consequências**: o logo saiu dos cabeçalhos das páginas do cardápio, e essas páginas começam abaixo do menu fixo. A página 404 passou a abrir em superfície escura, porque o menu transparente usa texto creme.
+
+## D26 — Atmosfera de luz de velas
+
+A cliente quer o site inteiro em fundos escuros, como um jantar à luz de velas, com o amarelo (ocre) e o creme apenas como pontos de luz e destaque.
+
+- **Padrão escuro**: o `:root` e o padrão do componente `Section` passaram para a superfície `verde` (musgo). A superfície `creme` continua disponível para pequenos pontos de luz, mas nenhuma seção a usa como fundo.
+- **Alternância**: musgo e café se revezam (abertura e A casa em musgo, Chef em café, Experiência em musgo, Localização em café, Avaliações em musgo, rodapé em café). As ondas continuam marcando a passagem, com o fio ocre como brilho. No cardápio, cabeçalho e corpo ficam no mesmo musgo, e a onda vira só o fio de luz.
+- **Luz de vela (`luz-de-vela`)**: gradiente radial ocre a 12% de opacidade, com posição ajustável por `--vela-x` e `--vela-y`, aplicado em A casa, Chef e Localização. É só CSS, sem imagem e sem custo de desempenho.
+- **Cartões sobre fundo escuro (`contorno-luz`)**: em vez de blocos creme, os cartões usam a outra cor escura com um contorno creme a 14%, como o reflexo de luz numa borda. Aplicado a avaliações, frente dos cards do cardápio e painel de reserva.
+- **Painel de reserva**: fundo café, campos com borda creme translúcida e foco em ocre. `color-scheme: dark` faz o calendário e a lista de horários nativos abrirem no tema escuro.
+- **Correção no carrossel**: textos só para leitor de tela (`sr-only`, que usa `position: absolute`) dentro dos cards escapavam da trilha rolável e alargavam o documento no celular para mais de 1.500 px. A trilha agora é `relative`, então esses elementos ficam contidos na área de rolagem.
+- **Correção no menu do topo**: o `cn` só concatena classes; `hidden` e `inline-flex` no mesmo elemento disputavam `display`. O botão "Reservar" do topo agora fica dentro de um `div` que controla a visibilidade.
+- **Abertura**: véu mais denso (`hero-veu`), com vinheta radial que escurece as bordas como numa sala iluminada por velas, e palavra dimensionada para "Sergipanidade" caber da tela de 320 px ao desktop.
+
+## D27 — Home minimalista, profundidade visual e páginas Chef, Eventos e Agenda
+
+**Direção da cliente**: home minimalista e objetiva, que direciona para páginas mais completas. Sofisticação vem de profundidade (sombras, vidro, movimento), não de cor chapada, que "fica com cara de cardápio de bar".
+
+**Linguagem de profundidade** (`globals.css`)
+
+- `sombra-profunda`: sombra quente em duas camadas (uma longa e difusa, outra curta) mais um filete de luz no topo, como objeto iluminado de cima por uma vela.
+- `vidro` e `vidro-cafe`: musgo ou café a 42–50% com desfoque de 18 px, contorno creme a 10% e brilho na borda superior. Só funciona com algo atrás para desfocar, por isso aparece sobre fotos.
+- `PhotoBackdrop`: a foto da própria seção, desfocada e esmaecida, por trás do conteúdo, com degradê que se funde à cor da seção nas bordas. É o "aesthetic glass" das referências: o vidro dos cartões desfoca essa foto.
+- Grão de filme: textura de ruído em SVG embutido, fixa sobre a página a 6% de opacidade e sem modo de mesclagem (que custaria caro no celular). Tira o aspecto digital das cores chapadas.
+
+**Home** (nesta ordem)
+
+1. Abertura com as três fotos.
+2. A casa, em texto curto.
+3. **Menus degustação**: cards de foto (4:5) com sombra, etapas e nome. "Descobrir" abre um painel de vidro com descrição curta, avisos (ex.: reserva prévia) e "Quero viver esta experiência". O painel abre por botão (`aria-expanded`), não só ao passar o mouse, para funcionar no toque e no teclado; o foco vai para o painel e volta ao botão. Preços saíram da home.
+4. **Sugestões da chef**, mínimas: foto redonda, nome e "Quero provar".
+5. **Portais** para as páginas novas (A chef, Eventos, Agenda): fotos grandes com legenda em vidro.
+6. **Visite-nos**: endereço, botões, horários em vidro e avaliações do Google, sobre a foto do salão desfocada. Substitui as seções Localização e Avaliações.
+
+**Páginas novas**: `/chef` (trajetória, citação em destaque, sugestões completas), `/eventos` (três formatos com pedido de orçamento pelo WhatsApp já identificando o formato) e `/agenda` (workshops vindos de `content/agenda.ts`, ordenados por data; sem datas cadastradas, mostra um convite para ser avisado pelo WhatsApp). As três usam `PageHero`: foto em tela quase cheia, véu de luz de velas e título em vidro.
+
+**Navegação**: Menus · Chef · Eventos · Agenda · Visite · Cardápio, também no rodapé. Sitemap atualizado.
+
+**Removidos**: `ChefSection`, `ExperienceSection`, `LocationSection`, `TestimonialsSection` e `content/experience.ts`, cujo conteúdo foi absorvido pelas seções e páginas novas.
+
+**Provisório**: fotos dos três menus degustação, dos portais e da agenda reaproveitam fotos de pratos. Os textos de eventos e da agenda foram escritos para a estrutura e precisam da aprovação da cliente.
+
 ---
 
 # Pendências
 
+## D28 — Ambientação escura (referências Preta Maria e D.O.M.) e fotos da casa
+
+- Fundos passam a ser versões quase pretas das cores escolhidas pela cliente: `musgo-noite` #151710 (superfície verde) e `cafe-noite` #1A0F0A (superfície marrom). Musgo #3D4233 e café #4F2C1D continuam como cor do vidro, dos painéis e da paleta oficial.
+- Creme segue como texto e ocre como destaque; contraste de creme sobre os novos fundos ≈ 16:1.
+- Vidro mais translúcido (musgo 30%, café 34%), sombras mais profundas, véu do hero e fundos fotográficos (30%) mais escuros, para que a luz venha das fotos e dos detalhes em ocre.
+- 13 fotos de ambientação otimizadas em `public/images/casa/` (originais preservados fora do repositório). Uso: hero (detalhe-pimenta, casa-noite, caldo-cuia), fundo dos menus (prato-ceramica), portais Eventos (mesa-montagem) e Agenda (cozinha-passe), Visite (fachada-noite), página Eventos (mesa-folha / mesa-montagem), página Agenda (cozinha-passe / prateleira-ceramica).
+- Fotos com clientes identificáveis não foram usadas.
+- Pendente: confirmar com a cliente quais fotos correspondem a cada menu degustação (Cabrunco e Origem ainda usam fotos provisórias); avaliar a foto do hero de Eventos, que mostra um celular sobre a mesa.
+
+## D29 — Acabamento de profundidade no fundo escuro
+
+- Sombras em camadas (4 níveis de preto, sem contorno claro externo). Em fundo quase preto, profundidade vem de luz e de bordas que se dissolvem, não de sombra marcada.
+- Nova utilidade `moldura-foto`: sobreposição com contorno interno de 1 px e vinheta interna, aplicada nos cards com foto (menus degustação e portais). Evita o "halo" claro nos cantos arredondados.
+- Carrossel com `pt-6 pb-20` compensados por margens negativas: a rolagem horizontal cortava a sombra dos cards numa linha reta.
+- `PhotoBackdrop` sem desfoque: foto nítida a 30%, recortada por máscara radial que zera nas bordas de cima e de baixo, garantindo emenda invisível com a seção vizinha. Removido da seção de menus (os cards já são fotos; o fundo usa luz de vela).
+- Véu do hero: o gradiente linear passa a ser a camada de cima, terminando opaco na cor da superfície; antes a vinheta escurecia a borda inferior e criava um degrau.
+- Vidro com gradiente diagonal (mais claro no alto, como reflexo), contornos internos mais discretos; granulação reduzida de 6% para 3,5%.
+- Ondas entre o topo e o conteúdo também em Eventos e Agenda.
+- Novas fotos: `jantar-flambado` (hero, Gastronomia) e `encontro-mesa` (portal e topo da Agenda). Pendente: autorização de uso de imagem das pessoas retratadas.
+- Segunda leva de fotos: `prato-coco` (hero, Arte — prato sobre cerâmica e cestaria), `chef-encontro` (portal Workshops e topo da Agenda), `encontro-mesa` passa ao topo de Eventos (substitui a foto com celular), `chef-retrato-sol` na moldura da página da chef, recortada acima do bordado do dólmã, que traz a assinatura antiga "Bistrô".
+- Nova utilidade `sombra-organica` (`filter: drop-shadow`): segue o contorno de molduras com máscara; `box-shadow` desenhava um retângulo atrás da forma orgânica.
+
 ## Bloqueiam o design
 - Wireframes
 - Vetores originais da agência para o logotipo e o selo (hoje vetorizados a partir de imagem, ver D22)
-- Arquivos e licença web de Tropicane e Silka (confirmar se a secundária é Silka Mono)
+- Licenças web de Tropicane (HeyFonts) e Silka (Atipo), compradas no nome da cliente; confirmar se a secundária é Silka Mono e se a Tropicane tem os acentos do português
 - Padronagens em vetor
 - Valores oficiais da paleta
 
 ## Bloqueiam o conteúdo
+- Três fotos definitivas para a abertura (horizontais, a partir de 1920 px)
+- Fotos dos três menus degustação, de eventos (salão montado) e de workshops
+- Aprovação dos textos de eventos e da agenda; primeiras datas de workshops
 - Confirmar o WhatsApp de reservas: (79) 98869-5326
 - Instagram oficial: o rodapé usa `@seusergipe`; confirmar (o cardápio também cita `@restaurante_seusergipe`)
 - E-mail público do restaurante: o rodapé usa `seusergipe@gmail.com`; confirmar

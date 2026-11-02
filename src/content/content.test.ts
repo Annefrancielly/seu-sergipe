@@ -2,8 +2,11 @@ import assert from "node:assert/strict";
 import { existsSync } from "node:fs";
 import { describe, it } from "node:test";
 
-import { findDuplicateSlugs, resolveDishes } from "../lib/menu.ts";
+import { isValidWorkshopDate } from "../lib/agenda.ts";
+import { dishesInCategory, findDuplicateSlugs, resolveDishes } from "../lib/menu.ts";
 import { toMinutes } from "../lib/opening-hours.ts";
+import { workshops } from "./agenda.ts";
+import { eventFormats } from "./events.ts";
 import { chefPickSlugs, dishes, menuCategories } from "./menu.ts";
 import { openingHours } from "./opening-hours.ts";
 import { testimonials } from "./testimonials.ts";
@@ -108,5 +111,27 @@ describe("integridade das avaliações", () => {
       fullSurnames.map((testimonial) => testimonial.author),
       [],
     );
+  });
+});
+
+describe("integridade da home e das páginas", () => {
+  it("todo menu degustação tem foto para o card da home", () => {
+    const withoutPhoto = dishesInCategory(dishes, "menu-degustacao").filter((menu) => !menu.photo);
+    assert.deepEqual(
+      withoutPhoto.map((menu) => menu.slug),
+      [],
+    );
+  });
+
+  it("os formatos de evento têm slugs únicos e descrição", () => {
+    assert.deepEqual(findDuplicateSlugs(eventFormats), []);
+    for (const format of eventFormats) assert.ok(format.description.trim().length > 0);
+  });
+
+  it("todo workshop tem data válida e horário no formato HH:MM", () => {
+    for (const workshop of workshops) {
+      assert.ok(isValidWorkshopDate(workshop.date), `data inválida em ${workshop.slug}`);
+      assert.match(workshop.time, /^\d{2}:\d{2}$/);
+    }
   });
 });

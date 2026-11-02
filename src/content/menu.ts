@@ -124,6 +124,12 @@ export const dishes: readonly Dish[] = [
         "A chef Seichele Barboza cria com exclusividade o menu para você. A vivência acontece em 10 etapas, com harmonização de drinks e em espaço exclusivo no Seu Sergipe.",
       prices: [reais(350)],
       tags: ["reserva-previa"],
+      photo: {
+        src: "/images/pratos/menu-degustacao-etapa.jpg",
+        alt: "Etapa do menu degustação servida em cumbuca de cerâmica artesanal.",
+        width: 1400,
+        height: 933,
+      },
     },
     {
       slug: "experiencia-do-cabrunco",
@@ -145,6 +151,13 @@ export const dishes: readonly Dish[] = [
         reais(250, "Harmonizado com drinks"),
         reais(270, "Harmonizado com vinho"),
       ],
+      photo: {
+        src: "/images/pratos/quiabada-crocante.jpg",
+        alt: "Quiabada crocante com flor azul em cumbuca branca.",
+        width: 666,
+        height: 1000,
+        objectPosition: "50% 60%",
+      },
     },
     {
       slug: "origem-sergipana",
@@ -158,6 +171,13 @@ export const dishes: readonly Dish[] = [
         reais(195, "Harmonizado com drinks"),
         reais(210, "Harmonizado com vinho"),
       ],
+      photo: {
+        src: "/images/pratos/moqueca-encontro-das-aguas.jpg",
+        alt: "Panela com polvo, camarões e pimentões, finalizada com coentro.",
+        width: 562,
+        height: 1000,
+        objectPosition: "50% 72%",
+      },
     },
   ]),
   ...inCategory("entradas", [

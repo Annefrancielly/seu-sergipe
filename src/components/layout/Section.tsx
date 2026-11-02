@@ -13,7 +13,7 @@ type SectionProps = {
 
 export function Section({
   id,
-  surface = "creme",
+  surface = "verde",
   labelledBy,
   className,
   children,

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { BrandSeal } from "@/components/brand/BrandSeal";
 import { InstagramIcon, WhatsAppIcon } from "@/components/graphics/SocialIcons";
 import { ReservationTrigger } from "@/components/reservation/ReservationTrigger";
+import { mainNavigation } from "@/config/navigation";
 import { siteConfig } from "@/config/site";
 import { openingHours } from "@/content/opening-hours";
 import { formatHour, groupOpeningHours } from "@/lib/opening-hours";
@@ -128,11 +129,13 @@ export function SiteFooter() {
           </p>
           <nav aria-label="Rodapé">
             <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-              <li>
-                <Link href="/cardapio" className={linkClasses}>
-                  Cardápio
-                </Link>
-              </li>
+              {mainNavigation.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className={linkClasses}>
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
               <li>
                 <a href="#conteudo" className={linkClasses}>
                   Voltar ao topo

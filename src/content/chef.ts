@@ -11,7 +11,7 @@ export const chefIntro = {
     "A base dos meus passos é a promoção da paz, da cultura e da educação. Esse tripé é a chave para a transformação do mundo.",
   signature: "Bonita & Cheirosa",
   photoAlt:
-    "Chef Seichele Barboza sorrindo, de braços cruzados, com dólmã preto diante de uma parede azul entre dois quadros.",
+    "Chef Seichele Barboza sorrindo ao pôr do sol, de óculos de lentes rosadas e dólmã claro.",
 } as const;
 
 export const chefPicksIntro = {

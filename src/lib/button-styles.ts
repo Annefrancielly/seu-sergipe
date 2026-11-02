@@ -1,4 +1,4 @@
-export type ButtonVariant = "primary" | "secondary" | "link";
+export type ButtonVariant = "primary" | "compact" | "secondary" | "link";
 
 const pillBase =
   "group inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-7 py-3 text-base font-semibold " +
@@ -7,6 +7,9 @@ const pillBase =
 
 export const buttonVariantClasses: Record<ButtonVariant, string> = {
   primary: `${pillBase} bg-action text-on-action`,
+  compact:
+    "group inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-action px-5 py-2 text-sm font-medium text-on-action " +
+    "transition-[translate,scale] duration-300 ease-organic motion-safe:hover:-translate-y-0.5 active:scale-[0.97]",
   secondary: `${pillBase} border-2 border-current text-ink hover:bg-ink/10`,
   link: "group inline-flex min-h-12 items-center gap-2 font-semibold underline decoration-1 underline-offset-4",
 };

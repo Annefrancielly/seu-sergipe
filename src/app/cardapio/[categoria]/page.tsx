@@ -2,14 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { BrandLogo } from "@/components/brand/BrandLogo";
 import { ArrowIcon } from "@/components/graphics/ArrowIcon";
 import { WaveDivider } from "@/components/graphics/WaveDivider";
 import { Section } from "@/components/layout/Section";
 import { FlipCard } from "@/components/menu/FlipCard";
 import { MenuList } from "@/components/menu/MenuList";
 import { ReservationTrigger } from "@/components/reservation/ReservationTrigger";
-import { siteConfig } from "@/config/site";
 import { dishes, menuCategories } from "@/content/menu";
 import { categoryNeighbors, dishesInCategory, groupDishes } from "@/lib/menu";
 
@@ -47,12 +45,9 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   return (
     <main id="conteudo">
-      <Section surface="verde" labelledBy="categoria-titulo" className="pt-10 pb-12 md:pt-14">
+      <Section surface="verde" labelledBy="categoria-titulo" className="pt-28 pb-12 md:pt-32">
         <div className="mx-auto max-w-5xl px-6">
-          <div className="flex items-start justify-between gap-6">
-            <Link href="/" className="inline-block" aria-label={`${siteConfig.name}: voltar ao início`}>
-              <BrandLogo size="sm" />
-            </Link>
+          <div className="flex justify-center md:justify-start">
             <Link
               href="/cardapio"
               className="group inline-flex min-h-12 items-center gap-2 text-sm font-semibold"
@@ -61,16 +56,16 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               Sumário
             </Link>
           </div>
-          <h1 id="categoria-titulo" className="mt-12 font-display text-5xl leading-tight sm:text-6xl text-center md:text-left">
+          <h1 id="categoria-titulo" className="mt-6 font-display text-5xl leading-tight uppercase sm:text-6xl text-center md:text-left">
             {category.name}
           </h1>
           <p className="mx-auto mt-4 max-w-md text-center text-lg leading-relaxed md:mx-0 md:text-left">{category.description}</p>
         </div>
       </Section>
 
-      <WaveDivider from="verde" to="creme" withLine />
+      <WaveDivider from="verde" to="verde" withLine />
 
-      <Section surface="creme" className="pt-6 pb-secao">
+      <Section surface="verde" className="pt-6 pb-secao">
         <div className="mx-auto max-w-5xl px-6">
           {groups.map((group, groupIndex) => (
             <section
@@ -143,7 +138,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         </div>
       </Section>
 
-      <WaveDivider from="creme" to="marrom" withLine />
+      <WaveDivider from="verde" to="marrom" withLine />
     </main>
   );
 }

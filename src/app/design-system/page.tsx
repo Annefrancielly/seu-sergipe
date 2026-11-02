@@ -22,10 +22,12 @@ export const metadata: Metadata = {
 };
 
 const PALETTE = [
-  { name: "Verde profundo", token: "verde-profundo", hex: "#003122", swatch: "bg-verde-profundo" },
-  { name: "Marrom terroso", token: "marrom-terroso", hex: "#84431D", swatch: "bg-marrom-terroso" },
-  { name: "Laranja quente", token: "laranja-quente", hex: "#F69719", swatch: "bg-laranja-quente" },
-  { name: "Vermelho telha", token: "vermelho-telha", hex: "#DA4324", swatch: "bg-vermelho-telha" },
+  { name: "Verde musgo", token: "musgo", hex: "#3D4233", swatch: "bg-musgo" },
+  { name: "Café", token: "cafe", hex: "#4F2C1D", swatch: "bg-cafe" },
+  { name: "Musgo noite", token: "musgo-noite", hex: "#151710", swatch: "bg-musgo-noite" },
+  { name: "Café noite", token: "cafe-noite", hex: "#1A0F0A", swatch: "bg-cafe-noite" },
+  { name: "Ocre", token: "ocre", hex: "#DBA341", swatch: "bg-ocre" },
+  { name: "Barro", token: "barro", hex: "#8A3B22", swatch: "bg-barro" },
   { name: "Creme", token: "creme", hex: "#FAE8DC", swatch: "bg-creme" },
 ] as const;
 
@@ -89,7 +91,7 @@ export default function DesignSystemPage() {
             {PALETTE.map((color) => (
               <li key={color.token}>
                 <div
-                  className={`aspect-square rounded-folha border border-verde-profundo/15 ${color.swatch}`}
+                  className={`aspect-square rounded-folha border border-cafe/15 ${color.swatch}`}
                 />
                 <p className="mt-3 font-semibold">{color.name}</p>
                 <p className="font-mono text-sm">{color.hex}</p>

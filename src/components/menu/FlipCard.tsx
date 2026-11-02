@@ -52,7 +52,7 @@ export function FlipCard({ dish, shape = "folha" }: FlipCardProps) {
           data-surface="verde"
           inert={flipped}
           className={cn(
-            "[grid-area:1/1] bg-surface text-ink [backface-visibility:hidden]",
+            "contorno-luz [grid-area:1/1] bg-surface text-ink [backface-visibility:hidden]",
             radius,
             flipped && "motion-reduce:invisible",
           )}

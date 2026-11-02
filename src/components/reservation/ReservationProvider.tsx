@@ -46,8 +46,8 @@ export function useReservation(): ReservationContextValue | null {
 }
 
 const fieldClasses =
-  "mt-2 block w-full rounded-2xl border-2 border-verde-profundo/70 bg-white/50 px-4 py-3 text-base " +
-  "transition-colors focus:border-verde-profundo";
+  "mt-2 block w-full rounded-2xl border-2 border-ink/30 bg-ink/5 px-4 py-3 text-base " +
+  "transition-colors focus:border-accent";
 
 const labelClasses = "block text-sm font-semibold";
 
@@ -121,9 +121,9 @@ export function ReservationProvider({ children }: { children: ReactNode }) {
         ref={dialogRef}
         aria-labelledby={titleId}
         onClick={handleBackdropClick}
-        data-surface="creme"
+        data-surface="marrom"
         className={
-          "painel-reserva m-auto max-h-[92dvh] w-[min(34rem,calc(100%_-_2rem))] max-w-none overflow-y-auto rounded-folha bg-surface p-0 text-ink backdrop:bg-verde-profundo/70 " +
+          "painel-reserva contorno-luz m-auto max-h-[92dvh] w-[min(34rem,calc(100%_-_2rem))] max-w-none overflow-y-auto rounded-folha bg-surface p-0 text-ink [color-scheme:dark] backdrop:bg-black/60 " +
           "max-sm:mb-0 max-sm:max-h-[90dvh] max-sm:w-full max-sm:rounded-b-none max-sm:rounded-t-[2rem]"
         }
       >
@@ -153,7 +153,7 @@ export function ReservationProvider({ children }: { children: ReactNode }) {
             Preencha os dados e a mensagem chega pronta no WhatsApp.
           </p>
           {intro && (
-            <p className="mt-4 rounded-2xl bg-verde-profundo/8 px-4 py-3 text-sm">
+            <p className="mt-4 rounded-2xl bg-ink/8 px-4 py-3 text-sm">
               <span className="font-semibold text-emphasis">Seu interesse: </span>
               {intro}
             </p>

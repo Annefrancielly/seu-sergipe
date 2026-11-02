@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 
 import { WaveDivider } from "@/components/graphics/WaveDivider";
-import { ChefSection } from "@/sections/chef/ChefSection";
-import { ExperienceSection } from "@/sections/experience/ExperienceSection";
-import { LocationSection } from "@/sections/location/LocationSection";
+import { ChefPicksSection } from "@/sections/chef-picks/ChefPicksSection";
+import { HeroSection } from "@/sections/hero/HeroSection";
+import { PortalsSection } from "@/sections/portals/PortalsSection";
 import { RestaurantIntro } from "@/sections/restaurant-intro/RestaurantIntro";
-import { TestimonialsSection } from "@/sections/testimonials/TestimonialsSection";
+import { TastingMenusSection } from "@/sections/tasting-menus/TastingMenusSection";
+import { VisitSection } from "@/sections/visit/VisitSection";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -14,15 +15,16 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <main id="conteudo">
+      <HeroSection />
       <RestaurantIntro />
-      <WaveDivider from="verde" to="creme" withLine />
-      <ChefSection />
-      <WaveDivider from="creme" to="marrom" variant="ampla" flip />
-      <ExperienceSection />
-      <WaveDivider from="marrom" to="creme" withLine />
-      <LocationSection />
-      <WaveDivider from="creme" to="verde" variant="ampla" />
-      <TestimonialsSection />
+      <WaveDivider from="verde" to="marrom" withLine />
+      <TastingMenusSection />
+      <WaveDivider from="marrom" to="verde" variant="ampla" flip />
+      <ChefPicksSection />
+      <WaveDivider from="verde" to="marrom" withLine />
+      <PortalsSection />
+      <WaveDivider from="marrom" to="verde" variant="ampla" />
+      <VisitSection />
       <WaveDivider from="verde" to="marrom" withLine />
     </main>
   );

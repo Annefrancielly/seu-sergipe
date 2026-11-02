@@ -18,8 +18,7 @@ export function TestimonialCard({ testimonial, shape = "folha" }: TestimonialCar
 
   return (
     <figure
-      data-surface="creme"
-      className={`flex h-full flex-col bg-surface p-7 text-ink ${shape === "folha" ? "rounded-folha" : "rounded-folha-inversa"}`}
+      className={`vidro-cafe flex h-full flex-col p-7 ${shape === "folha" ? "rounded-folha" : "rounded-folha-inversa"}`}
     >
       {rating && (
         <div className="flex items-center gap-1 text-accent">

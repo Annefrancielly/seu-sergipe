@@ -7,3 +7,7 @@ export function reservationHref(intro?: string): string {
     buildReservationMessage({ intro }, siteConfig.name),
   );
 }
+
+export function whatsappHref(message: string): string {
+  return buildWhatsAppUrl(siteConfig.contact.whatsappNumber, message);
+}

@@ -6,8 +6,8 @@ export default function NotFound() {
   return (
     <main id="conteudo">
       <div
-        data-surface="creme"
-        className="grid min-h-[70dvh] place-items-center bg-surface px-6 py-secao text-ink"
+        data-surface="verde"
+        className="grid min-h-[70dvh] place-items-center bg-surface px-6 pt-32 pb-secao text-ink"
       >
         <div className="max-w-prose text-center">
           <h1 className="font-display text-4xl">Esse caminho não leva a lugar nenhum</h1>
@@ -20,7 +20,7 @@ export default function NotFound() {
           </Link>
         </div>
       </div>
-      <WaveDivider from="creme" to="marrom" withLine />
+      <WaveDivider from="verde" to="marrom" withLine />
     </main>
   );
 }

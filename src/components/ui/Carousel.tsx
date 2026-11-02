@@ -86,7 +86,7 @@ export function Carousel({ label, children, className }: CarouselProps) {
       <ul
         ref={trackRef}
         tabIndex={0}
-        className="flex snap-x snap-mandatory scroll-px-6 gap-5 overflow-x-auto overscroll-x-contain px-6 pb-4 [scrollbar-width:none] sm:gap-6 [&::-webkit-scrollbar]:hidden"
+        className="relative flex snap-x snap-mandatory scroll-px-6 gap-5 -mt-6 -mb-16 overflow-x-auto overscroll-x-contain px-6 pt-6 pb-20 [scrollbar-width:none] sm:gap-6 [&::-webkit-scrollbar]:hidden"
       >
         {slides.map((slide, slideIndex) => (
           <li

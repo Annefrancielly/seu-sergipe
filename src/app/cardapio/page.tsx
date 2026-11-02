@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 
-import { BrandLogo } from "@/components/brand/BrandLogo";
 import { WaveDivider } from "@/components/graphics/WaveDivider";
 import { Section } from "@/components/layout/Section";
 import { CategoryCard } from "@/components/menu/CategoryCard";
 import { ReservationTrigger } from "@/components/reservation/ReservationTrigger";
-import { siteConfig } from "@/config/site";
 import { menuCategories } from "@/content/menu";
 
 export const metadata: Metadata = {
@@ -18,12 +15,9 @@ export const metadata: Metadata = {
 export default function MenuPage() {
   return (
     <main id="conteudo">
-      <Section surface="verde" labelledBy="cardapio-titulo" className="pt-10 pb-14 md:pt-14">
+      <Section surface="verde" labelledBy="cardapio-titulo" className="pt-32 pb-14 md:pt-36">
         <div className="mx-auto max-w-5xl px-6 text-center md:text-left">
-          <Link href="/" className="inline-block" aria-label={`${siteConfig.name}: voltar ao início`}>
-            <BrandLogo size="sm" />
-          </Link>
-          <h1 id="cardapio-titulo" className="mt-12 font-display text-5xl sm:text-6xl">
+          <h1 id="cardapio-titulo" className="font-display text-5xl uppercase sm:text-6xl">
             Cardápio
           </h1>
           <p className="mx-auto mt-4 max-w-md text-lg leading-relaxed md:mx-0">
@@ -32,9 +26,9 @@ export default function MenuPage() {
         </div>
       </Section>
 
-      <WaveDivider from="verde" to="creme" withLine />
+      <WaveDivider from="verde" to="verde" withLine />
 
-      <Section surface="creme" labelledBy="sumario-titulo" className="pt-6 pb-secao">
+      <Section surface="verde" labelledBy="sumario-titulo" className="pt-6 pb-secao">
         <div className="mx-auto max-w-5xl px-6">
           <h2 id="sumario-titulo" className="text-center text-sm font-semibold uppercase tracking-[0.3em] text-emphasis md:text-left">
             Sumário
@@ -56,7 +50,7 @@ export default function MenuPage() {
         </div>
       </Section>
 
-      <WaveDivider from="creme" to="marrom" withLine />
+      <WaveDivider from="verde" to="marrom" withLine />
     </main>
   );
 }

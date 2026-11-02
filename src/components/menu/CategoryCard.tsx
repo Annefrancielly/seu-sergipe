@@ -9,8 +9,6 @@ type CategoryCardProps = {
   index: number;
 };
 
-const PLACEHOLDER_SURFACES = ["verde", "marrom"] as const;
-
 export function CategoryCard({ category, index }: CategoryCardProps) {
   const radius = index % 2 === 0 ? "rounded-folha" : "rounded-folha-inversa";
 
@@ -29,7 +27,7 @@ export function CategoryCard({ category, index }: CategoryCardProps) {
           />
         ) : (
           <span
-            data-surface={PLACEHOLDER_SURFACES[index % 2]}
+            data-surface="marrom"
             className="flex size-full items-center justify-center bg-surface text-accent"
           >
             <svg viewBox="0 0 100 100" aria-hidden="true" focusable="false" className="size-3/5">

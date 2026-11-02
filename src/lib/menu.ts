@@ -1,12 +1,12 @@
 import type { Dish, MenuCategory } from "@/types/content";
 
-export function findDuplicateSlugs(dishes: readonly Dish[]): string[] {
+export function findDuplicateSlugs(items: readonly { slug: string }[]): string[] {
   const seen = new Set<string>();
   const duplicates = new Set<string>();
 
-  for (const dish of dishes) {
-    if (seen.has(dish.slug)) duplicates.add(dish.slug);
-    seen.add(dish.slug);
+  for (const { slug } of items) {
+    if (seen.has(slug)) duplicates.add(slug);
+    seen.add(slug);
   }
 
   return [...duplicates];

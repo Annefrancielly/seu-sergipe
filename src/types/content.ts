@@ -59,6 +59,20 @@ export type OpeningHours = {
   periods: readonly ServicePeriod[];
 };
 
+export type EventFormat = {
+  slug: string;
+  title: string;
+  description: string;
+};
+
+export type Workshop = {
+  slug: string;
+  title: string;
+  date: string;
+  time: string;
+  description: string;
+};
+
 export type Testimonial = {
   author: string;
   text: string;

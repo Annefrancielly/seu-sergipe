@@ -3,7 +3,7 @@ import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/cn";
 
 type BrandLogoProps = {
-  size?: "lg" | "sm";
+  size?: "lg" | "sm" | "header";
   withTagline?: boolean;
   className?: string;
 };
@@ -11,6 +11,7 @@ type BrandLogoProps = {
 const LOGO_WIDTHS = {
   lg: "w-44 sm:w-52 md:w-60",
   sm: "w-28 sm:w-32",
+  header: "w-[4.5rem] lg:w-20",
 } as const;
 
 export function BrandLogo({ size = "lg", withTagline = size === "lg", className }: BrandLogoProps) {
