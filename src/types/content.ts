@@ -65,10 +65,12 @@ export type EventFormat = {
 
 export type Workshop = {
   slug: string;
-  title: string;
   date: string;
   time: string;
-  description: string;
+  text: {
+    pt: { title: string; description: string };
+    en: { title: string; description: string };
+  };
 };
 
 export type Testimonial = {

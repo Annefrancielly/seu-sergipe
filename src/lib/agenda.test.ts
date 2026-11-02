@@ -3,11 +3,20 @@ import { describe, it } from "node:test";
 
 import { formatWorkshopDate, isValidWorkshopDate, sortWorkshops } from "./agenda.ts";
 
-const workshop = (slug: string, date: string, time: string) => ({ slug, title: slug, date, time, description: "" });
+const workshop = (slug: string, date: string, time: string) => ({
+  slug,
+  date,
+  time,
+  text: { pt: { title: slug, description: "" }, en: { title: slug, description: "" } },
+});
 
 describe("agenda", () => {
   it("formata a data em português sem deslocamento de fuso", () => {
     assert.equal(formatWorkshopDate("2026-12-05"), "05 de dez");
+  });
+
+  it("formata a data em inglês", () => {
+    assert.equal(formatWorkshopDate("2026-12-05", "en"), "Dec 5");
   });
 
   it("devolve o texto original quando a data é inválida", () => {

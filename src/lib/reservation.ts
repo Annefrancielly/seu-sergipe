@@ -1,3 +1,5 @@
+import type { Locale } from "@/i18n/config";
+
 export type ReservationRequest = {
   intro?: string;
   name?: string;
@@ -32,7 +34,30 @@ export function sanitizeField(value: string | undefined): string | undefined {
   return clean.length > 0 ? clean : undefined;
 }
 
-export function formatReservationDate(isoDate: string): string | undefined {
+const MESSAGE_LABELS: Record<Locale, Record<"greeting" | "name" | "date" | "time" | "guests" | "occasion" | "notes", string>> = {
+  pt: {
+    greeting: "Olá! Gostaria de reservar uma mesa no",
+    name: "Nome",
+    date: "Data",
+    time: "Horário",
+    guests: "Pessoas",
+    occasion: "Ocasião",
+    notes: "Observações",
+  },
+  en: {
+    greeting: "Hello! I would like to book a table at",
+    name: "Name",
+    date: "Date",
+    time: "Time",
+    guests: "Guests",
+    occasion: "Occasion",
+    notes: "Notes",
+  },
+};
+
+const DATE_LOCALES: Record<Locale, string> = { pt: "pt-BR", en: "en-US" };
+
+export function formatReservationDate(isoDate: string, locale: Locale = "pt"): string | undefined {
   const match = ISO_DATE_PATTERN.exec(isoDate);
   if (!match) return undefined;
 
@@ -47,20 +72,24 @@ export function formatReservationDate(isoDate: string): string | undefined {
     date.getUTCDate() === day;
   if (!isRealDate) return undefined;
 
-  return new Intl.DateTimeFormat("pt-BR", {
+  return new Intl.DateTimeFormat(DATE_LOCALES[locale], {
     weekday: "long",
-    day: "2-digit",
-    month: "2-digit",
+    day: locale === "en" ? "numeric" : "2-digit",
+    month: locale === "en" ? "long" : "2-digit",
     timeZone: "UTC",
   }).format(date);
 }
 
-export function formatReservationTime(time: string): string | undefined {
+export function formatReservationTime(time: string, locale: Locale = "pt"): string | undefined {
   const match = TIME_PATTERN.exec(time);
   if (!match) return undefined;
 
   const hours = Number(match[1]);
   const minutes = match[2];
+  if (locale === "en") {
+    const hour12 = hours % 12 === 0 ? 12 : hours % 12;
+    return `${hour12}:${minutes} ${hours < 12 ? "AM" : "PM"}`;
+  }
   return minutes === "00" ? `${hours}h` : `${hours}h${minutes}`;
 }
 
@@ -76,27 +105,29 @@ function isValidGuestCount(guests: number | undefined): guests is number {
 export function buildReservationMessage(
   request: ReservationRequest,
   restaurantName: string,
+  locale: Locale = "pt",
 ): string {
-  const lines = [`Olá! Gostaria de reservar uma mesa no ${restaurantName}.`];
+  const labels = MESSAGE_LABELS[locale];
+  const lines = [`${labels.greeting} ${restaurantName}.`];
 
   const intro = sanitizeField(request.intro);
   if (intro) lines.push(intro);
 
   const details: string[] = [];
   const name = sanitizeField(request.name);
-  const date = request.date ? formatReservationDate(request.date) : undefined;
-  const time = request.time ? formatReservationTime(request.time) : undefined;
+  const date = request.date ? formatReservationDate(request.date, locale) : undefined;
+  const time = request.time ? formatReservationTime(request.time, locale) : undefined;
   const occasion = sanitizeField(request.occasion);
   const notes = sanitizeField(request.notes);
 
-  if (name) details.push(`• Nome: ${name}`);
-  if (date) details.push(`• Data: ${date}`);
-  if (time) details.push(`• Horário: ${time}`);
+  if (name) details.push(`• ${labels.name}: ${name}`);
+  if (date) details.push(`• ${labels.date}: ${date}`);
+  if (time) details.push(`• ${labels.time}: ${time}`);
   if (isValidGuestCount(request.guests)) {
-    details.push(`• Pessoas: ${request.guests}`);
+    details.push(`• ${labels.guests}: ${request.guests}`);
   }
-  if (occasion) details.push(`• Ocasião: ${occasion}`);
-  if (notes) details.push(`• Observações: ${notes}`);
+  if (occasion) details.push(`• ${labels.occasion}: ${occasion}`);
+  if (notes) details.push(`• ${labels.notes}: ${notes}`);
 
   if (details.length > 0) lines.push("", ...details);
 

@@ -1,12 +1,14 @@
 import { TastingMenuCard } from "@/components/menu/TastingMenuCard";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { Carousel } from "@/components/ui/Carousel";
-import { tastingMenusIntro } from "@/content/home";
-import { dishes } from "@/content/menu";
+import { homeContent } from "@/content/home";
+import { getMenu } from "@/content/menu-localized";
+import { type Locale, localizePath } from "@/i18n/config";
 import { DISH_TAG_LABELS, dishesInCategory, interestPhrase } from "@/lib/menu";
 
-export function TastingMenusSection() {
-  const menus = dishesInCategory(dishes, "menu-degustacao");
+export function TastingMenusSection({ locale }: { locale: Locale }) {
+  const tastingMenusIntro = homeContent[locale].tastingMenus;
+  const menus = dishesInCategory(getMenu(locale).dishes, "menu-degustacao");
 
   return (
     <section
@@ -30,9 +32,9 @@ export function TastingMenusSection() {
             name={menu.name}
             steps={menu.steps}
             description={menu.description}
-            details={(menu.tags ?? []).map((tag) => DISH_TAG_LABELS[tag])}
+            details={(menu.tags ?? []).map((tag) => DISH_TAG_LABELS[locale][tag])}
             photo={menu.photo}
-            interest={interestPhrase(menu)}
+            interest={interestPhrase(menu, locale)}
             labels={{
               reveal: tastingMenusIntro.revealLabel,
               close: tastingMenusIntro.closeLabel,
@@ -44,8 +46,8 @@ export function TastingMenusSection() {
 
       <div className="mx-auto mt-6 flex max-w-6xl flex-col items-center gap-2 px-6 text-center md:flex-row md:justify-between md:text-left">
         <p className="text-sm text-ink/80">{tastingMenusIntro.note}</p>
-        <ButtonLink href="/cardapio#menu-degustacao" variant="link" withArrow>
-          Detalhes no cardápio
+        <ButtonLink href={localizePath(locale, "/cardapio#menu-degustacao")} variant="link" withArrow>
+          {tastingMenusIntro.detailsLabel}
         </ButtonLink>
       </div>
     </section>

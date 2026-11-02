@@ -3,10 +3,11 @@ import Link from "next/link";
 import { BrandSeal } from "@/components/brand/BrandSeal";
 import { InstagramIcon, WhatsAppIcon } from "@/components/graphics/SocialIcons";
 import { ReservationTrigger } from "@/components/reservation/ReservationTrigger";
-import { mainNavigation } from "@/config/navigation";
 import { siteConfig } from "@/config/site";
 import { openingHours } from "@/content/opening-hours";
-import { formatHour, groupOpeningHours } from "@/lib/opening-hours";
+import { type Locale, localizePath } from "@/i18n/config";
+import { ui } from "@/i18n/ui";
+import { formatHourRange, groupOpeningHours, periodLabel } from "@/lib/opening-hours";
 import { buildWhatsAppUrl } from "@/lib/reservation";
 
 const linkClasses = "underline decoration-1 underline-offset-4 hover:decoration-2";
@@ -15,9 +16,10 @@ const iconCircleClasses =
   "inline-flex size-12 shrink-0 items-center justify-center rounded-full border-2 border-current " +
   "transition-[background-color,scale] duration-300 ease-organic group-hover:bg-ink/10 group-active:scale-95";
 
-export function SiteFooter() {
+export function SiteFooter({ locale }: { locale: Locale }) {
   const { address, contact, links } = siteConfig;
-  const rows = groupOpeningHours(openingHours);
+  const t = ui[locale];
+  const rows = groupOpeningHours(openingHours, locale);
   const year = new Date().getFullYear();
 
   return (
@@ -29,38 +31,38 @@ export function SiteFooter() {
               <span className="sr-only">{siteConfig.name} — {siteConfig.tagline}</span>
               <BrandSeal className="mx-auto w-40 md:mx-0 md:w-44" />
             </p>
-            <p className="mx-auto mt-6 max-w-xs font-display text-xl leading-snug md:mx-0">
-              Aqui, é tudo nosso. É sergipanidade em todos os sentidos.
+            <p lang="pt-BR" className="mx-auto mt-6 max-w-xs font-display text-xl leading-snug md:mx-0">
+              {t.footer.motto}
             </p>
-            <ReservationTrigger className="mt-8">Faça sua reserva</ReservationTrigger>
+            <ReservationTrigger className="mt-8">{t.footer.reserve}</ReservationTrigger>
           </div>
 
           <div className="lg:col-span-3">
-            <h2 className={headingClasses}>Visite</h2>
+            <h2 className={headingClasses}>{t.footer.visit}</h2>
             <address className="mt-4 not-italic leading-relaxed">
               {address.street}
               <br />
               {address.neighborhood}, {address.city} – {address.state}
               <br />
-              CEP {address.postalCode}
+              {t.footer.postalCode} {address.postalCode}
             </address>
             <a href={links.maps} target="_blank" rel="noopener noreferrer" className={`mt-3 inline-block ${linkClasses}`}>
-              Como chegar<span className="sr-only"> (abre o Google Maps em nova aba)</span>
+              {t.footer.directions}<span className="sr-only"> {t.footer.directionsNewTab}</span>
             </a>
           </div>
 
           <div className="lg:col-span-2">
-            <h2 className={headingClasses}>Horários</h2>
+            <h2 className={headingClasses}>{t.footer.hours}</h2>
             <dl className="mt-4 space-y-3 leading-relaxed">
               {rows.map((row) => (
                 <div key={row.days}>
                   <dt className="font-semibold">{row.days}</dt>
                   {row.periods.length === 0 ? (
-                    <dd>Fechado</dd>
+                    <dd>{t.hours.closed}</dd>
                   ) : (
                     row.periods.map((period) => (
                       <dd key={period.label}>
-                        {period.label}: {formatHour(period.opens)} às {formatHour(period.closes)}
+                        {periodLabel(period.label, locale)}: {formatHourRange(period.opens, period.closes, locale)}
                       </dd>
                     ))
                   )}
@@ -70,7 +72,7 @@ export function SiteFooter() {
           </div>
 
           <div className="lg:col-span-3">
-            <h2 className={headingClasses}>Fale com a gente</h2>
+            <h2 className={headingClasses}>{t.footer.contact}</h2>
             <ul className="mt-4 inline-flex flex-col items-start gap-3 text-left md:flex md:flex-row md:flex-wrap md:items-center md:gap-x-5">
               <li>
                 <a
@@ -84,7 +86,7 @@ export function SiteFooter() {
                   </span>
                   <span className="sr-only">WhatsApp: </span>
                   {contact.phoneDisplay}
-                  <span className="sr-only"> (abre em nova aba)</span>
+                  <span className="sr-only"> {t.newTab}</span>
                 </a>
               </li>
               <li>
@@ -98,13 +100,13 @@ export function SiteFooter() {
                     <InstagramIcon />
                   </span>
                   Instagram
-                  <span className="sr-only"> {links.instagram.handle} (abre em nova aba)</span>
+                  <span className="sr-only"> {links.instagram.handle} {t.newTab}</span>
                 </a>
               </li>
             </ul>
             <dl className="mt-6 space-y-4">
               <div>
-                <dt className="text-sm">Restaurante</dt>
+                <dt className="text-sm">{t.footer.restaurantEmail}</dt>
                 <dd className="mt-1">
                   <a href={`mailto:${links.email}`} className={`break-all ${linkClasses}`}>
                     {links.email}
@@ -112,7 +114,7 @@ export function SiteFooter() {
                 </dd>
               </div>
               <div>
-                <dt className="text-sm">Contato comercial da chef</dt>
+                <dt className="text-sm">{t.footer.chefEmail}</dt>
                 <dd className="mt-1">
                   <a href={`mailto:${links.chefBusinessEmail}`} className={`break-all ${linkClasses}`}>
                     {links.chefBusinessEmail}
@@ -127,18 +129,18 @@ export function SiteFooter() {
           <p>
             © {year} {siteConfig.name} · {siteConfig.tagline}
           </p>
-          <nav aria-label="Rodapé">
+          <nav aria-label={t.navigation.footer}>
             <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-              {mainNavigation.map((item) => (
+              {t.navigation.items.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className={linkClasses}>
+                  <Link href={localizePath(locale, item.href)} className={linkClasses}>
                     {item.label}
                   </Link>
                 </li>
               ))}
               <li>
                 <a href="#conteudo" className={linkClasses}>
-                  Voltar ao topo
+                  {t.footer.backToTop}
                 </a>
               </li>
             </ul>

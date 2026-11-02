@@ -1,14 +1,13 @@
+import type { Locale } from "@/i18n/config";
 import type { Testimonial } from "@/types/content";
 
-export const testimonialsIntro = {
-  title: "O que nossos clientes dizem",
-  lead: "Histórias de quem já sentou à nossa mesa.",
-  reviewsLabel: "Ver avaliações no Google",
-} as const;
+export const testimonialsText: Record<Locale, { reviewsLabel: string; countLabel: string }> = {
+  pt: { reviewsLabel: "Ver avaliações no Google", countLabel: "mais de 500 avaliações" },
+  en: { reviewsLabel: "See reviews on Google", countLabel: "over 500 reviews" },
+};
 
 export const googleRatingSummary = {
   rating: 4.7,
-  countLabel: "mais de 500 avaliações",
   checkedAt: "2026-10-19",
 } as const;
 

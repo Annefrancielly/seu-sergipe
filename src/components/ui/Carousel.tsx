@@ -3,6 +3,7 @@
 import { Children, type ReactNode, useCallback, useEffect, useRef, useState } from "react";
 
 import { ArrowIcon } from "@/components/graphics/ArrowIcon";
+import { useLocale } from "@/i18n/LocaleProvider";
 import { type CarouselState, clampSlideIndex, getCarouselState } from "@/lib/carousel";
 import { cn } from "@/lib/cn";
 
@@ -28,6 +29,7 @@ function getSlideOffsets(track: HTMLElement): number[] {
 
 export function Carousel({ label, children, className }: CarouselProps) {
   const trackRef = useRef<HTMLUListElement>(null);
+  const { t } = useLocale();
   const [state, setState] = useState<CarouselState>(INITIAL_STATE);
   const slides = Children.toArray(children);
   const total = slides.length;
@@ -79,7 +81,7 @@ export function Carousel({ label, children, className }: CarouselProps) {
   return (
     <div
       role="region"
-      aria-roledescription="carrossel"
+      aria-roledescription={t.carousel.roleDescription}
       aria-label={label}
       className={cn("relative", className)}
     >
@@ -91,8 +93,8 @@ export function Carousel({ label, children, className }: CarouselProps) {
         {slides.map((slide, slideIndex) => (
           <li
             key={slideIndex}
-            aria-roledescription="slide"
-            aria-label={`${slideIndex + 1} de ${total}`}
+            aria-roledescription={t.carousel.slideRoleDescription}
+            aria-label={t.carousel.position(slideIndex + 1, total)}
             className="shrink-0 basis-[82%] snap-start sm:basis-[46%] lg:basis-[31%]"
           >
             {slide}
@@ -107,13 +109,13 @@ export function Carousel({ label, children, className }: CarouselProps) {
         )}
       >
         <p aria-live="polite" className="mr-auto font-mono text-sm tabular-nums">
-          {state.index + 1} de {total}
+          {t.carousel.position(state.index + 1, total)}
         </p>
         <button
           type="button"
           onClick={() => goTo(state.index - 1)}
           disabled={state.atStart}
-          aria-label="Anterior"
+          aria-label={t.carousel.previous}
           className={controlClasses}
         >
           <ArrowIcon className="rotate-180" />
@@ -122,7 +124,7 @@ export function Carousel({ label, children, className }: CarouselProps) {
           type="button"
           onClick={() => goTo(state.index + 1)}
           disabled={state.atEnd}
-          aria-label="Próximo"
+          aria-label={t.carousel.next}
           className={controlClasses}
         >
           <ArrowIcon />

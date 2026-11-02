@@ -16,12 +16,14 @@ import {
 
 import { siteConfig } from "@/config/site";
 import { openingHours } from "@/content/opening-hours";
+import { useLocale } from "@/i18n/LocaleProvider";
 import { buttonVariantClasses } from "@/lib/button-styles";
 import {
   type TimeSlotGroup,
   availableTimeSlots,
   formatHour,
   getZonedIsoDate,
+  periodLabel,
 } from "@/lib/opening-hours";
 import {
   MAX_GUESTS,
@@ -61,6 +63,9 @@ export function ReservationProvider({ children }: { children: ReactNode }) {
   const [slotGroups, setSlotGroups] = useState<TimeSlotGroup[]>([]);
   const titleId = useId();
   const slotsHintId = useId();
+  const occasionsId = useId();
+  const { locale, t } = useLocale();
+  const copy = t.reservation;
 
   const selectDate = useCallback((isoDate: string) => {
     setDate(isoDate);
@@ -96,7 +101,7 @@ export function ReservationProvider({ children }: { children: ReactNode }) {
     const request = readReservationForm(new FormData(event.currentTarget), intro);
     const url = buildWhatsAppUrl(
       siteConfig.contact.whatsappNumber,
-      buildReservationMessage(request, siteConfig.name),
+      buildReservationMessage(request, siteConfig.name, locale),
     );
 
     const whatsappWindow = window.open(url, "_blank");
@@ -135,12 +140,12 @@ export function ReservationProvider({ children }: { children: ReactNode }) {
         >
           <div className="flex items-start justify-between gap-4">
             <h2 id={titleId} className="font-display text-3xl leading-tight">
-              Vamos reservar sua mesa
+              {copy.title}
             </h2>
             <button
               type="button"
               onClick={close}
-              aria-label="Fechar"
+              aria-label={copy.close}
               className="-mr-2 -mt-1 inline-flex size-11 shrink-0 items-center justify-center rounded-full hover:bg-ink/10"
             >
               <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" className="size-5">
@@ -150,22 +155,22 @@ export function ReservationProvider({ children }: { children: ReactNode }) {
           </div>
 
           <p className="mt-3 leading-relaxed">
-            Preencha os dados e a mensagem chega pronta no WhatsApp.
+            {copy.intro}
           </p>
           {intro && (
             <p className="mt-4 rounded-2xl bg-ink/8 px-4 py-3 text-sm">
-              <span className="font-semibold text-emphasis">Seu interesse: </span>
+              <span className="font-semibold text-emphasis">{copy.interest} </span>
               {intro}
             </p>
           )}
 
           <div className="mt-6 grid gap-5 sm:grid-cols-2">
             <label className={`${labelClasses} sm:col-span-2`}>
-              Seu nome
+              {copy.name}
               <input ref={nameInputRef} name="name" type="text" required autoComplete="name" maxLength={80} className={fieldClasses} />
             </label>
             <label className={labelClasses}>
-              Data
+              {copy.date}
               <input
                 name="date"
                 type="date"
@@ -177,7 +182,7 @@ export function ReservationProvider({ children }: { children: ReactNode }) {
               />
             </label>
             <label className={labelClasses}>
-              Horário
+              {copy.time}
               <select
                 key={date}
                 name="time"
@@ -187,13 +192,13 @@ export function ReservationProvider({ children }: { children: ReactNode }) {
                 className={fieldClasses}
               >
                 <option value="" disabled>
-                  {!date ? "Escolha a data primeiro" : hasSlots ? "Selecione" : "Sem horários"}
+                  {!date ? copy.pickDateFirst : hasSlots ? copy.selectTime : copy.noTimes}
                 </option>
                 {slotGroups.map((group) => (
-                  <optgroup key={group.label} label={group.label}>
+                  <optgroup key={group.label} label={periodLabel(group.label, locale)}>
                     {group.slots.map((slot) => (
                       <option key={slot} value={slot}>
-                        {formatHour(slot)}
+                        {formatHour(slot, locale)}
                       </option>
                     ))}
                   </optgroup>
@@ -202,11 +207,11 @@ export function ReservationProvider({ children }: { children: ReactNode }) {
             </label>
             {date && !hasSlots && (
               <p id={slotsHintId} role="status" className="text-sm sm:col-span-2">
-                Não temos horários disponíveis nesta data. Que tal escolher outro dia?
+                {copy.noTimesHint}
               </p>
             )}
             <label className={labelClasses}>
-              Pessoas
+              {copy.guests}
               <input
                 name="guests"
                 type="number"
@@ -219,32 +224,31 @@ export function ReservationProvider({ children }: { children: ReactNode }) {
               />
             </label>
             <label className={labelClasses}>
-              Ocasião <span className="font-normal">(opcional)</span>
-              <input name="occasion" type="text" maxLength={80} list="ocasioes" className={fieldClasses} />
-              <datalist id="ocasioes">
-                <option value="Aniversário" />
-                <option value="Encontro a dois" />
-                <option value="Comemoração em família" />
-                <option value="Almoço de negócios" />
+              {copy.occasion} <span className="font-normal">{copy.optional}</span>
+              <input name="occasion" type="text" maxLength={80} list={occasionsId} className={fieldClasses} />
+              <datalist id={occasionsId}>
+                {copy.occasions.map((occasion) => (
+                  <option key={occasion} value={occasion} />
+                ))}
               </datalist>
             </label>
             <label className={`${labelClasses} sm:col-span-2`}>
-              Observações <span className="font-normal">(opcional)</span>
+              {copy.notes} <span className="font-normal">{copy.optional}</span>
               <textarea
                 name="notes"
                 rows={3}
                 maxLength={280}
-                placeholder="Ex.: restrições alimentares, pedidos especiais"
+                placeholder={copy.notesPlaceholder}
                 className={fieldClasses}
               />
             </label>
           </div>
 
           <button type="submit" className={`${buttonVariantClasses.primary} mt-8 w-full`}>
-            Continuar no WhatsApp
+            {copy.submit}
           </button>
           <p className="mt-4 text-center text-sm">
-            Sua reserva é confirmada pela nossa equipe no WhatsApp.
+            {copy.confirmation}
           </p>
         </form>
       </dialog>

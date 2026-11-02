@@ -430,6 +430,17 @@ A cliente quer o site inteiro em fundos escuros, como um jantar à luz de velas,
 - Cardápio vira uma página única no estilo tradicional: nome, pontilhado, preço e descrição breve do cardápio impresso; índice fixo de categorias com âncoras; preços com rótulo (individual/casal, harmonizações) em linha própria. Zero JavaScript na página.
 - Removidos: rota `/cardapio/[categoria]`, `CategoryCard`, `FlipCard`, `categoryNeighbors` e o campo `layout` das categorias. Links antigos para categorias passam a âncoras (`/cardapio#menu-degustacao`). As narrativas (`story`) não aparecem na lista.
 
+## D31 — Site bilíngue (português e inglês americano)
+
+- Rotas por idioma: `src/app/[lang]` gera /pt e /en no build estático (`generateStaticParams`, `dynamicParams = false`). O layout raiz só repassa o conteúdo; o `<html lang>` vem do layout de idioma (`SiteShell`).
+- O endereço raiz (/) escolhe o idioma pelo navegador (português → /pt, demais → /en), com /pt como alternativa sem JavaScript.
+- Textos de interface em `src/i18n/ui.ts` (tipados: o inglês precisa ter as mesmas chaves do português). Conteúdo das páginas em `content/*.ts` como `Record<Locale, ...>`. Cardápio: dados e preços num só lugar (`menu.ts`), textos em inglês em `menu.en.ts`, combinados por `getMenu(locale)`.
+- Componentes cliente leem o idioma por `useLocale()`; componentes de servidor recebem `locale` por props.
+- Botão PT | EN no topo, em todas as larguras; troca para a mesma página no outro idioma.
+- SEO: `canonical` e `hreflang` (pt-BR, en-US, x-default) em cada página; sitemap com as duas versões.
+- Avaliações do Google ficam no original, com aviso em inglês. Nomes de pratos ficam em português; glossário de ingredientes no cardápio em inglês. Decisões em `docs/glossario-en.md`.
+- Testes garantem que todo prato, categoria, grupo e rótulo de preço tem versão em inglês.
+
 ## Bloqueiam o design
 - Wireframes
 - Vetores originais da agência para o logotipo e o selo (hoje vetorizados a partir de imagem, ver D22)

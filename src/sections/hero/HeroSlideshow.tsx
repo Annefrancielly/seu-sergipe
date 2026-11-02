@@ -3,6 +3,7 @@
 import Image, { type StaticImageData } from "next/image";
 import { type ReactNode, useEffect, useState, useSyncExternalStore } from "react";
 
+import { useLocale } from "@/i18n/LocaleProvider";
 import { cn } from "@/lib/cn";
 
 export type HeroSlide = {
@@ -40,6 +41,7 @@ export function HeroSlideshow({ slides, intervalMs = 7000, children }: HeroSlide
   const [choice, setChoice] = useState<PlaybackChoice>("auto");
   const [holding, setHolding] = useState(false);
   const reduceMotion = usePrefersReducedMotion();
+  const { t } = useLocale();
   const playing = choice === "auto" ? !reduceMotion : choice === "playing";
   const total = slides.length;
   const current = slides[active];
@@ -84,6 +86,7 @@ export function HeroSlideshow({ slides, intervalMs = 7000, children }: HeroSlide
         <p
           key={current?.word}
           aria-hidden="true"
+          lang="pt-BR"
           className="hero-palavra font-display text-[clamp(2.75rem,10.5vw,8.5rem)] leading-[0.9] font-semibold uppercase"
         >
           {current?.word}
@@ -93,7 +96,7 @@ export function HeroSlideshow({ slides, intervalMs = 7000, children }: HeroSlide
 
         <div className="mt-10 flex items-center justify-between gap-6">
           <p aria-live={playing ? "off" : "polite"} className="sr-only">
-            {current ? `Destaque ${active + 1} de ${total}: ${current.word}` : ""}
+            {current ? t.hero.status(active + 1, total, current.word) : ""}
           </p>
           <div className="flex items-center gap-1">
             {slides.map((slide, index) => (
@@ -104,9 +107,7 @@ export function HeroSlideshow({ slides, intervalMs = 7000, children }: HeroSlide
                 aria-current={index === active ? "true" : undefined}
                 className="group flex h-11 items-center px-1"
               >
-                <span className="sr-only">
-                  Mostrar destaque {index + 1}: {slide.word}
-                </span>
+                <span className="sr-only">{t.hero.show(index + 1, slide.word)}</span>
                 <span
                   aria-hidden="true"
                   className={cn(
@@ -122,7 +123,7 @@ export function HeroSlideshow({ slides, intervalMs = 7000, children }: HeroSlide
             onClick={() => setChoice(playing ? "paused" : "playing")}
             className="inline-flex size-11 items-center justify-center rounded-full border border-ink/40 transition-colors hover:border-ink"
           >
-            <span className="sr-only">{playing ? "Pausar apresentação de fotos" : "Retomar apresentação de fotos"}</span>
+            <span className="sr-only">{playing ? t.hero.pause : t.hero.resume}</span>
             <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" className="size-4">
               {playing ? (
                 <path className="traco-marca" d="M9 6 L9 18 M15 6 L15 18" />

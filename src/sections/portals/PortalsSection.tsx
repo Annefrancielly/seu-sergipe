@@ -4,45 +4,32 @@ import Link from "next/link";
 import chefPhoto from "@/assets/images/chef-seichele-barboza.jpg";
 import { ArrowIcon } from "@/components/graphics/ArrowIcon";
 import { Section } from "@/components/layout/Section";
-import { portalsIntro } from "@/content/home";
+import { homeContent } from "@/content/home";
+import { type Locale, localizePath } from "@/i18n/config";
 
-type Portal = {
+type PortalKey = "chef" | "events" | "agenda";
+
+type PortalLayout = {
+  key: PortalKey;
   href: string;
-  eyebrow: string;
-  title: string;
-  text: string;
   image: StaticImageData | string;
   position?: string;
 };
 
-const portals: readonly Portal[] = [
-  {
-    href: "/chef",
-    eyebrow: "A chef",
-    title: "Seichele Barboza",
-    text: "A história e a cozinha de quem conduz a casa.",
-    image: chefPhoto,
-    position: "50% 25%",
-  },
-  {
-    href: "/eventos",
-    eyebrow: "Eventos",
-    title: "Celebre aqui",
-    text: "Corporativo, casamentos e aniversários.",
-    image: "/images/casa/mesa-montagem.jpg",
-    position: "60% 50%",
-  },
-  {
-    href: "/agenda",
-    eyebrow: "Agenda da chef",
-    title: "Workshops",
-    text: "Encontros na cozinha com a chef.",
-    image: "/images/casa/chef-encontro.jpg",
-    position: "50% 40%",
-  },
+const PORTALS: readonly PortalLayout[] = [
+  { key: "chef", href: "/chef", image: chefPhoto, position: "50% 25%" },
+  { key: "events", href: "/eventos", image: "/images/casa/mesa-montagem.jpg", position: "60% 50%" },
+  { key: "agenda", href: "/agenda", image: "/images/casa/chef-encontro.jpg", position: "50% 40%" },
 ];
 
-export function PortalsSection() {
+export function PortalsSection({ locale }: { locale: Locale }) {
+  const portalsIntro = homeContent[locale].portals;
+  const portals = PORTALS.map((portal) => ({
+    ...portal,
+    ...portalsIntro[portal.key],
+    href: localizePath(locale, portal.href),
+  }));
+
   return (
     <Section id="conheca" surface="marrom" labelledBy="conheca-titulo" className="luz-de-vela py-secao [--vela-x:50%] [--vela-y:40%]">
       <div className="mx-auto max-w-6xl px-6">

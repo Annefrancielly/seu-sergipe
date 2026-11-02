@@ -4,21 +4,21 @@ import { PhotoBackdrop } from "@/components/graphics/PhotoBackdrop";
 import { WaveDivider } from "@/components/graphics/WaveDivider";
 import { PageHero } from "@/components/layout/PageHero";
 import { ButtonLink } from "@/components/ui/ButtonLink";
-import { eventFormats, eventsIntro } from "@/content/events";
+import { eventsContent } from "@/content/events";
+import { type LocaleParams, pageMetadata, resolveLocale } from "@/i18n/server";
 import { whatsappHref } from "@/lib/whatsapp";
 
-export const metadata: Metadata = {
-  title: "Eventos",
-  description: eventsIntro.lead,
-  alternates: { canonical: "/eventos" },
-};
+export async function generateMetadata({ params }: LocaleParams): Promise<Metadata> {
+  const locale = await resolveLocale(params);
+  const { title, lead } = eventsContent[locale];
+  return pageMetadata({ locale, path: "/eventos", title, description: lead });
+}
 
-const quoteMessage = (format?: string) =>
-  format
-    ? `Olá! Vim pelo site do Seu Sergipe e quero um orçamento de evento: ${format}.`
-    : "Olá! Vim pelo site do Seu Sergipe e quero um orçamento de evento.";
-
-export default function EventsPage() {
+export default async function EventsPage({ params }: LocaleParams) {
+  const locale = await resolveLocale(params);
+  const eventsIntro = eventsContent[locale];
+  const eventFormats = eventsIntro.formats;
+  const quoteMessage = eventsIntro.quoteMessage;
   return (
     <main id="conteudo">
       <PageHero
@@ -38,7 +38,7 @@ export default function EventsPage() {
       >
         <PhotoBackdrop image="/images/casa/mesa-montagem.jpg" />
         <h2 id="formatos-titulo" className="sr-only">
-          Formatos de evento
+          {eventsIntro.formatsTitle}
         </h2>
         <ul className="mx-auto grid max-w-6xl gap-5 px-6 md:grid-cols-3">
           {eventFormats.map((format, index) => (
@@ -51,7 +51,7 @@ export default function EventsPage() {
               </span>
               <h3 className="mt-6 font-display text-3xl leading-none font-semibold uppercase">{format.title}</h3>
               <p className="mt-4 leading-relaxed">{format.description}</p>
-              <ButtonLink href={whatsappHref(quoteMessage(format.title))} variant="link" withArrow className="mt-auto pt-6">
+              <ButtonLink href={whatsappHref(quoteMessage(format.title))} variant="link" withArrow locale={locale} className="mt-auto pt-6">
                 {eventsIntro.quoteLabel}
               </ButtonLink>
             </li>
@@ -61,7 +61,7 @@ export default function EventsPage() {
         <div className="surgir mx-auto mt-16 max-w-2xl px-6 text-center">
           <h2 className="font-display text-4xl leading-none font-semibold uppercase">{eventsIntro.closingTitle}</h2>
           <p className="mt-4 text-lg leading-relaxed">{eventsIntro.closing}</p>
-          <ButtonLink href={whatsappHref(quoteMessage())} withArrow className="mt-8">
+          <ButtonLink href={whatsappHref(quoteMessage())} withArrow locale={locale} className="mt-8">
             {eventsIntro.quoteLabel}
           </ButtonLink>
         </div>

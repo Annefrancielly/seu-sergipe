@@ -1,3 +1,4 @@
+import type { Locale } from "@/i18n/config";
 import type { OpeningHours, ServicePeriod, Weekday } from "@/types/content";
 
 const RESTAURANT_TIME_ZONE = "America/Maceio";
@@ -22,15 +23,35 @@ const DISPLAY_ORDER: readonly Weekday[] = [
   "domingo",
 ];
 
-const WEEKDAY_LABELS: Record<Weekday, string> = {
-  domingo: "domingo",
-  segunda: "segunda",
-  terca: "terça",
-  quarta: "quarta",
-  quinta: "quinta",
-  sexta: "sexta",
-  sabado: "sábado",
+const WEEKDAY_LABELS: Record<Locale, Record<Weekday, string>> = {
+  pt: {
+    domingo: "domingo",
+    segunda: "segunda",
+    terca: "terça",
+    quarta: "quarta",
+    quinta: "quinta",
+    sexta: "sexta",
+    sabado: "sábado",
+  },
+  en: {
+    domingo: "Sunday",
+    segunda: "Monday",
+    terca: "Tuesday",
+    quarta: "Wednesday",
+    quinta: "Thursday",
+    sexta: "Friday",
+    sabado: "Saturday",
+  },
 };
+
+const PERIOD_LABELS_EN: Record<string, string> = {
+  Almoço: "Lunch",
+  Jantar: "Dinner",
+};
+
+export function periodLabel(label: string, locale: Locale = "pt"): string {
+  return locale === "en" ? (PERIOD_LABELS_EN[label] ?? label) : label;
+}
 
 const TIME_PATTERN = /^([01]\d|2[0-3]):([0-5]\d)$/;
 
@@ -46,9 +67,21 @@ function fromMinutes(totalMinutes: number): string {
   return `${hours}:${minutes}`;
 }
 
-export function formatHour(time: string): string {
-  const [hours = "", minutes = ""] = time.split(":");
-  return minutes === "00" ? `${Number(hours)}h` : `${Number(hours)}h${minutes}`;
+export function formatHour(time: string, locale: Locale = "pt"): string {
+  const [hoursText = "", minutes = ""] = time.split(":");
+  const hours = Number(hoursText);
+  if (locale === "en") {
+    const suffix = hours < 12 ? "AM" : "PM";
+    const hour12 = hours % 12 === 0 ? 12 : hours % 12;
+    return minutes === "00" ? `${hour12} ${suffix}` : `${hour12}:${minutes} ${suffix}`;
+  }
+  return minutes === "00" ? `${hours}h` : `${hours}h${minutes}`;
+}
+
+export function formatHourRange(opens: string, closes: string, locale: Locale = "pt"): string {
+  return locale === "en"
+    ? `${formatHour(opens, locale)} – ${formatHour(closes, locale)}`
+    : `${formatHour(opens, locale)} às ${formatHour(closes, locale)}`;
 }
 
 function capitalize(text: string): string {
@@ -68,7 +101,7 @@ export type OpeningHoursRow = {
   periods: readonly ServicePeriod[];
 };
 
-export function groupOpeningHours(hours: readonly OpeningHours[]): OpeningHoursRow[] {
+export function groupOpeningHours(hours: readonly OpeningHours[], locale: Locale = "pt"): OpeningHoursRow[] {
   const groups: { days: Weekday[]; periods: readonly ServicePeriod[] }[] = [];
 
   for (const day of DISPLAY_ORDER) {
@@ -82,10 +115,12 @@ export function groupOpeningHours(hours: readonly OpeningHours[]): OpeningHoursR
   }
 
   return groups.map(({ days, periods }) => {
-    const first = WEEKDAY_LABELS[days[0] as Weekday];
-    const lastDay = WEEKDAY_LABELS[days.at(-1) as Weekday];
+    const labels = WEEKDAY_LABELS[locale];
+    const first = labels[days[0] as Weekday];
+    const lastDay = labels[days.at(-1) as Weekday];
+    const [and, through] = locale === "en" ? ["and", "to"] : ["e", "a"];
     const label =
-      days.length === 1 ? first : days.length === 2 ? `${first} e ${lastDay}` : `${first} a ${lastDay}`;
+      days.length === 1 ? first : days.length === 2 ? `${first} ${and} ${lastDay}` : `${first} ${through} ${lastDay}`;
     return { days: capitalize(label), periods };
   });
 }
@@ -148,18 +183,31 @@ export function getOpenStatus(hours: readonly OpeningHours[], now: ZonedMoment):
   return { state: "unknown" };
 }
 
-export function describeOpenStatus(status: OpenStatus): string | undefined {
+export function describeOpenStatus(status: OpenStatus, locale: Locale = "pt"): string | undefined {
   switch (status.state) {
-    case "open":
-      return `Aberto agora · ${status.period.label.toLowerCase()} até ${formatHour(status.period.closes)}`;
+    case "open": {
+      const period = periodLabel(status.period.label, locale).toLowerCase();
+      const closes = formatHour(status.period.closes, locale);
+      return locale === "en" ? `Open now · ${period} until ${closes}` : `Aberto agora · ${period} até ${closes}`;
+    }
     case "closed": {
+      const opens = formatHour(status.period.opens, locale);
+      if (locale === "en") {
+        const when =
+          status.daysAhead === 0
+            ? "today"
+            : status.daysAhead === 1
+              ? "tomorrow"
+              : `on ${WEEKDAY_LABELS.en[status.weekday]}`;
+        return `Closed now · opens ${when} at ${opens}`;
+      }
       const when =
         status.daysAhead === 0
           ? "hoje"
           : status.daysAhead === 1
             ? "amanhã"
-            : WEEKDAY_LABELS[status.weekday];
-      return `Fechado agora · abre ${when} às ${formatHour(status.period.opens)}`;
+            : WEEKDAY_LABELS.pt[status.weekday];
+      return `Fechado agora · abre ${when} às ${opens}`;
     }
     case "unknown":
       return undefined;

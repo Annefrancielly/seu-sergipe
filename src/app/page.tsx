@@ -1,31 +1,27 @@
-import type { Metadata } from "next";
+import Link from "next/link";
 
-import { WaveDivider } from "@/components/graphics/WaveDivider";
-import { ChefPicksSection } from "@/sections/chef-picks/ChefPicksSection";
-import { HeroSection } from "@/sections/hero/HeroSection";
-import { PortalsSection } from "@/sections/portals/PortalsSection";
-import { RestaurantIntro } from "@/sections/restaurant-intro/RestaurantIntro";
-import { TastingMenusSection } from "@/sections/tasting-menus/TastingMenusSection";
-import { VisitSection } from "@/sections/visit/VisitSection";
+import { siteConfig } from "@/config/site";
+import { defaultLocale, localizePath } from "@/i18n/config";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/" },
-};
+const fallbackPath = localizePath(defaultLocale, "/");
 
-export default function HomePage() {
+const chooseLanguage = `(function(){var l=(navigator.languages&&navigator.languages[0])||navigator.language||"";location.replace(/^pt/i.test(l)?"/pt":"/en");})();`;
+
+export default function LanguageRedirect() {
   return (
-    <main id="conteudo">
-      <HeroSection />
-      <RestaurantIntro />
-      <WaveDivider from="verde" to="marrom" withLine />
-      <TastingMenusSection />
-      <WaveDivider from="marrom" to="verde" variant="ampla" flip />
-      <ChefPicksSection />
-      <WaveDivider from="verde" to="marrom" withLine />
-      <PortalsSection />
-      <WaveDivider from="marrom" to="verde" variant="ampla" />
-      <VisitSection />
-      <WaveDivider from="verde" to="marrom" withLine />
-    </main>
+    <html lang="pt-BR">
+      <body>
+        <title>{`${siteConfig.name} — ${siteConfig.tagline}`}</title>
+        <meta name="robots" content="noindex, follow" />
+        <link rel="canonical" href={fallbackPath} />
+        <script dangerouslySetInnerHTML={{ __html: chooseLanguage }} />
+        <noscript>
+          <meta httpEquiv="refresh" content={`0; url=${fallbackPath}`} />
+        </noscript>
+        <p>
+          <Link href="/pt">Seu Sergipe em português</Link> · <Link href="/en">Seu Sergipe in English</Link>
+        </p>
+      </body>
+    </html>
   );
 }

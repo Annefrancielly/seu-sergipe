@@ -6,8 +6,9 @@ import { isValidWorkshopDate } from "../lib/agenda.ts";
 import { dishesInCategory, findDuplicateSlugs, resolveDishes } from "../lib/menu.ts";
 import { toMinutes } from "../lib/opening-hours.ts";
 import { workshops } from "./agenda.ts";
-import { eventFormats } from "./events.ts";
+import { eventsContent } from "./events.ts";
 import { chefPickSlugs, dishes, menuCategories } from "./menu.ts";
+import { categoriesEn, dishesEn, groupsEn, priceLabelsEn } from "./menu.en.ts";
 import { openingHours } from "./opening-hours.ts";
 import { testimonials } from "./testimonials.ts";
 
@@ -120,9 +121,14 @@ describe("integridade da home e das páginas", () => {
     );
   });
 
-  it("os formatos de evento têm slugs únicos e descrição", () => {
-    assert.deepEqual(findDuplicateSlugs(eventFormats), []);
-    for (const format of eventFormats) assert.ok(format.description.trim().length > 0);
+  it("os formatos de evento têm slugs únicos e descrição nos dois idiomas", () => {
+    const { pt, en } = eventsContent;
+    assert.deepEqual(findDuplicateSlugs(pt.formats), []);
+    assert.deepEqual(
+      en.formats.map((format) => format.slug),
+      pt.formats.map((format) => format.slug),
+    );
+    for (const format of [...pt.formats, ...en.formats]) assert.ok(format.description.trim().length > 0);
   });
 
   it("todo workshop tem data válida e horário no formato HH:MM", () => {
@@ -130,5 +136,58 @@ describe("integridade da home e das páginas", () => {
       assert.ok(isValidWorkshopDate(workshop.date), `data inválida em ${workshop.slug}`);
       assert.match(workshop.time, /^\d{2}:\d{2}$/);
     }
+  });
+});
+
+const BRAND_ITEM_LISTS = new Set(["sodas-seu-sergipe"]);
+
+describe("versão em inglês do cardápio", () => {
+  it("toda categoria tem nome e descrição em inglês", () => {
+    const missing = menuCategories.filter((category) => !categoriesEn[category.slug]);
+    assert.deepEqual(
+      missing.map((category) => category.slug),
+      [],
+    );
+  });
+
+  it("todo prato com descrição tem descrição em inglês", () => {
+    const missing = dishes.filter((dish) => dish.description && !dishesEn[dish.slug]?.description);
+    assert.deepEqual(
+      missing.map((dish) => dish.slug),
+      [],
+    );
+  });
+
+  it("toda observação, lista de itens e foto de prato tem versão em inglês", () => {
+    const missing = dishes.filter((dish) => {
+      const text = dishesEn[dish.slug];
+      const needsNote = /[a-zà-ú]{3}/i.test(dish.note ?? "") && !text?.note;
+      const needsItems = dish.items !== undefined && !BRAND_ITEM_LISTS.has(dish.slug) && dish.categorySlug !== "bebidas" && !text?.items;
+      const needsAlt = dish.photo !== undefined && !text?.photoAlt;
+      return needsNote || needsItems || needsAlt;
+    });
+    assert.deepEqual(
+      missing.map((dish) => dish.slug),
+      [],
+    );
+  });
+
+  it("listas traduzidas têm o mesmo número de itens do original", () => {
+    for (const dish of dishes) {
+      const items = dishesEn[dish.slug]?.items;
+      if (items) assert.equal(items.length, dish.items?.length, dish.slug);
+    }
+  });
+
+  it("todo grupo e rótulo de preço tem tradução", () => {
+    const groups = [...new Set(dishes.map((dish) => dish.group).filter((group) => group !== undefined))];
+    const labels = [...new Set(dishes.flatMap((dish) => dish.prices ?? []).map((price) => price.label).filter((label) => label !== undefined))];
+    assert.deepEqual(groups.filter((group) => !groupsEn[group]), []);
+    assert.deepEqual(labels.filter((label) => !priceLabelsEn[label]), []);
+  });
+
+  it("não traduz pratos inexistentes", () => {
+    const slugs = new Set(dishes.map((dish) => dish.slug));
+    assert.deepEqual(Object.keys(dishesEn).filter((slug) => !slugs.has(slug)), []);
   });
 });

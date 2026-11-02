@@ -2,6 +2,8 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { ArrowIcon } from "@/components/graphics/ArrowIcon";
+import type { Locale } from "@/i18n/config";
+import { ui } from "@/i18n/ui";
 import { arrowMotionClasses, type ButtonVariant, buttonVariantClasses } from "@/lib/button-styles";
 import { cn } from "@/lib/cn";
 
@@ -10,6 +12,7 @@ type ButtonLinkProps = {
   children: ReactNode;
   variant?: ButtonVariant;
   withArrow?: boolean;
+  locale?: Locale;
   className?: string;
 };
 
@@ -22,6 +25,7 @@ export function ButtonLink({
   children,
   variant = "primary",
   withArrow = false,
+  locale = "pt",
   className,
 }: ButtonLinkProps) {
   const classes = cn(buttonVariantClasses[variant], className);
@@ -36,7 +40,7 @@ export function ButtonLink({
     return (
       <a href={href} target="_blank" rel="noopener noreferrer" className={classes}>
         {content}
-        <span className="sr-only"> (abre em nova aba)</span>
+        <span className="sr-only"> {ui[locale].newTab}</span>
       </a>
     );
   }

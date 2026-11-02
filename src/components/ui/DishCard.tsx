@@ -2,13 +2,17 @@ import Image from "next/image";
 
 import { ReservationTrigger } from "@/components/reservation/ReservationTrigger";
 import { OrganicFrame } from "@/components/ui/OrganicFrame";
+import type { Locale } from "@/i18n/config";
+import { ui } from "@/i18n/ui";
 import type { Dish } from "@/types/content";
 
 type DishCardProps = {
   dish: Dish;
+  locale?: Locale;
 };
 
-export function DishCard({ dish }: DishCardProps) {
+export function DishCard({ dish, locale = "pt" }: DishCardProps) {
+  const t = ui[locale].dish;
   return (
     <article id={dish.slug} className="flex h-full flex-col">
       {dish.photo && (
@@ -31,7 +35,7 @@ export function DishCard({ dish }: DishCardProps) {
         <details className="group mt-4">
           <summary className="cursor-pointer list-none font-semibold text-emphasis [&::-webkit-details-marker]:hidden">
             <span className="underline decoration-1 underline-offset-4 group-open:no-underline">
-              Conhecer a história
+              {t.story}
             </span>
           </summary>
           <p className="mt-3 leading-relaxed">{dish.story}</p>
@@ -40,11 +44,11 @@ export function DishCard({ dish }: DishCardProps) {
 
       <ReservationTrigger
         variant="link"
-        intro={`Vi ${dish.name} no site e quero provar!`}
+        intro={t.tasteIntro(dish.name)}
         srContext={`: ${dish.name}`}
         className="mt-auto self-start pt-6"
       >
-        Quero provar
+        {t.taste}
       </ReservationTrigger>
     </article>
   );

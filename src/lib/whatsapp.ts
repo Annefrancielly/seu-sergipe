@@ -1,10 +1,11 @@
 import { siteConfig } from "@/config/site";
+import type { Locale } from "@/i18n/config";
 import { buildReservationMessage, buildWhatsAppUrl } from "@/lib/reservation";
 
-export function reservationHref(intro?: string): string {
+export function reservationHref(intro?: string, locale: Locale = "pt"): string {
   return buildWhatsAppUrl(
     siteConfig.contact.whatsappNumber,
-    buildReservationMessage({ intro }, siteConfig.name),
+    buildReservationMessage({ intro }, siteConfig.name, locale),
   );
 }
 

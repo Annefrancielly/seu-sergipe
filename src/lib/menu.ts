@@ -1,4 +1,5 @@
-import type { Dish } from "@/types/content";
+import type { Locale } from "@/i18n/config";
+import type { Dish, DishTag } from "@/types/content";
 
 export function findDuplicateSlugs(items: readonly { slug: string }[]): string[] {
   const seen = new Set<string>();
@@ -51,13 +52,28 @@ export function groupDishes(dishes: readonly Dish[]): DishGroup[] {
   return groups;
 }
 
-export const DISH_TAG_LABELS: Record<NonNullable<Dish["tags"]>[number], string> = {
-  "reserva-previa": "Somente com reserva prévia",
-  "sem-alcool": "Sem álcool",
-  "consultar-disponibilidade": "Consulte a disponibilidade",
+export const DISH_TAG_LABELS: Record<Locale, Record<DishTag, string>> = {
+  pt: {
+    "reserva-previa": "Somente com reserva prévia",
+    "sem-alcool": "Sem álcool",
+    "consultar-disponibilidade": "Consulte a disponibilidade",
+  },
+  en: {
+    "reserva-previa": "Advance booking required",
+    "sem-alcool": "Alcohol-free",
+    "consultar-disponibilidade": "Ask about availability",
+  },
 };
 
-export function interestPhrase(dish: Dish): string {
+export function interestPhrase(dish: Dish, locale: Locale = "pt"): string {
+  if (locale === "en") {
+    if (dish.categorySlug === "menu-degustacao") {
+      return dish.name.startsWith("Menu")
+        ? `I'm interested in ${dish.name}.`
+        : `I'm interested in the ${dish.name} tasting menu.`;
+    }
+    return `I saw ${dish.name} on the menu and would like to try it!`;
+  }
   if (dish.categorySlug === "menu-degustacao") {
     return dish.name.startsWith("Menu")
       ? `Tenho interesse no ${dish.name}.`

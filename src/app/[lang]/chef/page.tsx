@@ -11,23 +11,29 @@ import { ButtonLink } from "@/components/ui/ButtonLink";
 import { Carousel } from "@/components/ui/Carousel";
 import { DishCard } from "@/components/ui/DishCard";
 import { OrganicFrame } from "@/components/ui/OrganicFrame";
-import { chefIntro, chefPicksIntro } from "@/content/chef";
-import { chefPickSlugs, dishes } from "@/content/menu";
+import { chefContent } from "@/content/chef";
+import { chefPickSlugs } from "@/content/menu";
+import { getMenu } from "@/content/menu-localized";
+import { localizePath } from "@/i18n/config";
+import { type LocaleParams, pageMetadata, resolveLocale } from "@/i18n/server";
 import { resolveDishes } from "@/lib/menu";
 
-export const metadata: Metadata = {
-  title: `Chef ${chefIntro.name}`,
-  description: chefIntro.lead,
-  alternates: { canonical: "/chef" },
-};
+export async function generateMetadata({ params }: LocaleParams): Promise<Metadata> {
+  const locale = await resolveLocale(params);
+  const chefIntro = chefContent[locale];
+  return pageMetadata({ locale, path: "/chef", title: `Chef ${chefIntro.name}`, description: chefIntro.lead });
+}
 
-export default function ChefPage() {
-  const picks = resolveDishes(chefPickSlugs, dishes);
+export default async function ChefPage({ params }: LocaleParams) {
+  const locale = await resolveLocale(params);
+  const chefIntro = chefContent[locale];
+  const chefPicksIntro = chefIntro.picks;
+  const picks = resolveDishes(chefPickSlugs, getMenu(locale).dishes);
 
   return (
     <main id="conteudo">
       <PageHero
-        eyebrow="A chef"
+        eyebrow={chefIntro.eyebrow}
         title={chefIntro.name}
         lead={chefIntro.lead}
         image={chefPhoto}
@@ -40,7 +46,7 @@ export default function ChefPage() {
         <div className="mx-auto grid max-w-6xl items-center gap-14 px-6 md:grid-cols-12 md:gap-8">
           <div className="surgir md:col-span-6">
             <h2 id="historia-titulo" className="text-xs uppercase tracking-[0.3em] text-emphasis">
-              Trajetória
+              {chefIntro.historyTitle}
             </h2>
             {chefIntro.paragraphs.map((paragraph) => (
               <p key={paragraph} className="mt-5 text-lg leading-relaxed">
@@ -84,15 +90,15 @@ export default function ChefPage() {
           </div>
           <Carousel label={chefPicksIntro.title} className="surgir surgir-depois mx-auto mt-10 max-w-6xl">
             {picks.map((dish) => (
-              <DishCard key={dish.slug} dish={dish} />
+              <DishCard key={dish.slug} dish={dish} locale={locale} />
             ))}
           </Carousel>
           <div className="mx-auto mt-10 flex max-w-6xl flex-wrap items-center justify-center gap-4 px-6 md:justify-start">
-            <ReservationTrigger intro="Vim pela página da chef e quero reservar uma mesa.">
+            <ReservationTrigger intro={chefPicksIntro.reservationIntro}>
               {chefPicksIntro.reserveLabel}
             </ReservationTrigger>
-            <ButtonLink href="/agenda" variant="secondary">
-              Agenda da chef
+            <ButtonLink href={localizePath(locale, "/agenda")} variant="secondary">
+              {chefPicksIntro.agendaLabel}
             </ButtonLink>
           </div>
         </Section>

@@ -4,6 +4,7 @@ import type { MouseEvent, ReactNode } from "react";
 
 import { ArrowIcon } from "@/components/graphics/ArrowIcon";
 import { useReservation } from "@/components/reservation/ReservationProvider";
+import { useLocale } from "@/i18n/LocaleProvider";
 import { arrowMotionClasses, type ButtonVariant, buttonVariantClasses } from "@/lib/button-styles";
 import { cn } from "@/lib/cn";
 import { reservationHref } from "@/lib/whatsapp";
@@ -28,6 +29,7 @@ export function ReservationTrigger({
   className,
 }: ReservationTriggerProps) {
   const reservation = useReservation();
+  const { locale } = useLocale();
 
   const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
     if (!reservation) return;
@@ -38,7 +40,7 @@ export function ReservationTrigger({
 
   return (
     <a
-      href={reservationHref(intro)}
+      href={reservationHref(intro, locale)}
       target="_blank"
       rel="noopener noreferrer"
       aria-haspopup={reservation ? "dialog" : undefined}

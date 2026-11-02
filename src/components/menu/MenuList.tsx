@@ -1,3 +1,5 @@
+import type { Locale } from "@/i18n/config";
+import { ui } from "@/i18n/ui";
 import { DISH_TAG_LABELS } from "@/lib/menu";
 import { formatPrice } from "@/lib/price";
 import type { Dish, Price } from "@/types/content";
@@ -17,9 +19,10 @@ function Prices({ prices }: { prices: readonly Price[] }) {
 
 type MenuListProps = {
   dishes: readonly Dish[];
+  locale: Locale;
 };
 
-export function MenuList({ dishes }: MenuListProps) {
+export function MenuList({ dishes, locale }: MenuListProps) {
   return (
     <ul className="mt-4">
       {dishes.map((dish) => {
@@ -31,7 +34,7 @@ export function MenuList({ dishes }: MenuListProps) {
               <span className="min-w-0 font-semibold uppercase tracking-[0.06em]">
                 {dish.name}
                 {dish.steps !== undefined && (
-                  <span className="ml-2 text-xs font-normal tracking-[0.2em] text-emphasis">{dish.steps} etapas</span>
+                  <span className="ml-2 text-xs font-normal tracking-[0.2em] text-emphasis">{ui[locale].dish.steps(dish.steps)}</span>
                 )}
               </span>
               <span aria-hidden="true" className="min-w-6 flex-1 border-b border-dotted border-ink/25" />
@@ -46,7 +49,7 @@ export function MenuList({ dishes }: MenuListProps) {
             )}
             {(dish.note || dish.tags) && (
               <p className="mt-1.5 text-xs italic text-ink/55">
-                {[dish.note, ...(dish.tags ?? []).map((tag) => DISH_TAG_LABELS[tag])].filter(Boolean).join(" · ")}
+                {[dish.note, ...(dish.tags ?? []).map((tag) => DISH_TAG_LABELS[locale][tag])].filter(Boolean).join(" · ")}
               </p>
             )}
           </li>

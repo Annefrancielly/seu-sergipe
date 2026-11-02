@@ -158,3 +158,29 @@ describe("readReservationForm", () => {
     assert.equal(readReservationForm(form).name, undefined);
   });
 });
+
+describe("mensagem de reserva em inglês", () => {
+  it("monta a mensagem com rótulos, data e hora em inglês", () => {
+    const message = buildReservationMessage(
+      { name: "Ana", date: "2026-12-05", time: "19:30", guests: 2 },
+      "Seu Sergipe",
+      "en",
+    );
+    assert.equal(
+      message,
+      [
+        "Hello! I would like to book a table at Seu Sergipe.",
+        "",
+        "• Name: Ana",
+        "• Date: Saturday, December 5",
+        "• Time: 7:30 PM",
+        "• Guests: 2",
+      ].join("\n"),
+    );
+  });
+
+  it("formata a hora em inglês", () => {
+    assert.equal(formatReservationTime("12:00", "en"), "12:00 PM");
+    assert.equal(formatReservationDate("2026-02-30", "en"), undefined);
+  });
+});

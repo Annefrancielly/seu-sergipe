@@ -1,8 +1,10 @@
 import { TerritoryLine } from "@/components/graphics/TerritoryLine";
 import { Section } from "@/components/layout/Section";
-import { restaurantIntro } from "@/content/home";
+import { homeContent } from "@/content/home";
+import type { Locale } from "@/i18n/config";
 
-export function RestaurantIntro() {
+export function RestaurantIntro({ locale }: { locale: Locale }) {
+  const restaurantIntro = homeContent[locale].intro;
   return (
     <Section id="restaurante" surface="verde" labelledBy="restaurante-titulo" className="luz-de-vela overflow-hidden py-secao">
       <TerritoryLine className="absolute -top-8 -bottom-4 left-[44%] hidden w-20 opacity-50 md:block" />

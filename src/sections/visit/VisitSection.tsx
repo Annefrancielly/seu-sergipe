@@ -5,19 +5,22 @@ import { ButtonLink } from "@/components/ui/ButtonLink";
 import { Carousel } from "@/components/ui/Carousel";
 import { TestimonialCard } from "@/components/ui/TestimonialCard";
 import { siteConfig } from "@/config/site";
-import { visitIntro } from "@/content/home";
+import { homeContent } from "@/content/home";
 import { openingHours } from "@/content/opening-hours";
-import { googleRatingSummary, testimonials, testimonialsIntro } from "@/content/testimonials";
-import { formatHour, groupOpeningHours } from "@/lib/opening-hours";
+import { googleRatingSummary, testimonials, testimonialsText } from "@/content/testimonials";
+import { type Locale, localeMeta } from "@/i18n/config";
+import { ui } from "@/i18n/ui";
+import { formatHourRange, groupOpeningHours, periodLabel } from "@/lib/opening-hours";
 
-const ratingFormatter = new Intl.NumberFormat("pt-BR", {
-  minimumFractionDigits: 1,
-  maximumFractionDigits: 1,
-});
-
-export function VisitSection() {
+export function VisitSection({ locale }: { locale: Locale }) {
   const { address } = siteConfig;
-  const rows = groupOpeningHours(openingHours);
+  const visitIntro = homeContent[locale].visit;
+  const reviewsText = testimonialsText[locale];
+  const rows = groupOpeningHours(openingHours, locale);
+  const ratingFormatter = new Intl.NumberFormat(localeMeta[locale].intl, {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  });
 
   return (
     <section
@@ -41,7 +44,7 @@ export function VisitSection() {
           </address>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4 md:justify-start">
             <ReservationTrigger>{visitIntro.reserveLabel}</ReservationTrigger>
-            <ButtonLink href={siteConfig.links.maps} variant="secondary">
+            <ButtonLink href={siteConfig.links.maps} variant="secondary" locale={locale}>
               {visitIntro.directionsLabel}
             </ButtonLink>
           </div>
@@ -49,7 +52,7 @@ export function VisitSection() {
 
         <div className="surgir surgir-depois vidro rounded-[1.75rem] p-7 sm:p-9 md:col-span-6 md:col-start-7">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <h3 className="font-display text-3xl font-semibold uppercase">Horários</h3>
+            <h3 className="font-display text-3xl font-semibold uppercase">{visitIntro.hoursTitle}</h3>
             <OpenStatus />
           </div>
           <dl className="mt-5 space-y-5">
@@ -58,15 +61,13 @@ export function VisitSection() {
                 <dt className="text-xs uppercase tracking-[0.24em] text-emphasis">{row.days}</dt>
                 <dd className="mt-2">
                   {row.periods.length === 0 ? (
-                    <p>Fechado</p>
+                    <p>{ui[locale].hours.closed}</p>
                   ) : (
                     <ul className="space-y-1">
                       {row.periods.map((period) => (
                         <li key={period.label} className="flex justify-between gap-6 border-b border-ink/15 pb-1">
-                          <span>{period.label}</span>
-                          <span className="tabular-nums">
-                            {formatHour(period.opens)} às {formatHour(period.closes)}
-                          </span>
+                          <span>{periodLabel(period.label, locale)}</span>
+                          <span className="tabular-nums">{formatHourRange(period.opens, period.closes, locale)}</span>
                         </li>
                       ))}
                     </ul>
@@ -87,18 +88,18 @@ export function VisitSection() {
                 {ratingFormatter.format(googleRatingSummary.rating)}
               </span>
               <span className="text-sm">
-                de 5 no Google · {googleRatingSummary.countLabel}
+                {visitIntro.ratingSuffix} · {reviewsText.countLabel}
               </span>
             </p>
           </div>
-          <Carousel label="Avaliações de clientes" className="surgir surgir-depois mx-auto mt-8 max-w-6xl">
+          <Carousel label={visitIntro.reviewsCarousel} className="surgir surgir-depois mx-auto mt-8 max-w-6xl">
             {testimonials.map((testimonial, index) => (
-              <TestimonialCard key={`${testimonial.author}-${index}`} testimonial={testimonial} />
+              <TestimonialCard key={`${testimonial.author}-${index}`} testimonial={testimonial} locale={locale} />
             ))}
           </Carousel>
           <div className="mx-auto mt-4 max-w-6xl px-6 text-center md:text-left">
-            <ButtonLink href={siteConfig.links.googleReviews} variant="link" withArrow>
-              {testimonialsIntro.reviewsLabel}
+            <ButtonLink href={siteConfig.links.googleReviews} variant="link" withArrow locale={locale}>
+              {reviewsText.reviewsLabel}
             </ButtonLink>
           </div>
         </div>

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useId, useRef, useState } from "react";
 
 import { ReservationTrigger } from "@/components/reservation/ReservationTrigger";
+import { useLocale } from "@/i18n/LocaleProvider";
 import { cn } from "@/lib/cn";
 import type { ImageAsset } from "@/types/content";
 
@@ -23,7 +24,8 @@ export function TastingMenuCard({ name, steps, description, details, photo, inte
   const openButtonRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const panelId = useId();
-  const stepsLabel = steps === undefined ? undefined : `${steps} etapas`;
+  const { t } = useLocale();
+  const stepsLabel = steps === undefined ? undefined : t.dish.steps(steps);
 
   useEffect(() => {
     if (!hasInteracted.current) return;
@@ -88,7 +90,7 @@ export function TastingMenuCard({ name, steps, description, details, photo, inte
         ref={panelRef}
         id={panelId}
         role="group"
-        aria-label={`Sobre o ${name}`}
+        aria-label={t.dish.about(name)}
         tabIndex={-1}
         inert={!open}
         className={cn(

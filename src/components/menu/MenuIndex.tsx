@@ -2,12 +2,13 @@ import type { MenuCategory } from "@/types/content";
 
 type MenuIndexProps = {
   categories: readonly MenuCategory[];
+  label: string;
 };
 
-export function MenuIndex({ categories }: MenuIndexProps) {
+export function MenuIndex({ categories, label }: MenuIndexProps) {
   return (
     <nav
-      aria-label="Seções do cardápio"
+      aria-label={label}
       data-surface="verde"
       className="sticky top-[calc(5rem+env(safe-area-inset-top))] z-30 border-y border-ink/[0.06] bg-musgo-noite/85 text-ink backdrop-blur-md"
     >

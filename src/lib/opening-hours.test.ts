@@ -142,3 +142,20 @@ describe("weekdayFromIsoDate", () => {
     assert.equal(weekdayFromIsoDate("data"), undefined);
   });
 });
+
+describe("horários em inglês", () => {
+  it("usa o relógio de 12 horas", () => {
+    assert.equal(formatHour("12:00", "en"), "12 PM");
+    assert.equal(formatHour("18:30", "en"), "6:30 PM");
+    assert.equal(formatHour("09:00", "en"), "9 AM");
+  });
+
+  it("descreve o status de funcionamento em inglês", () => {
+    const status = getOpenStatus(hours, { weekday: "segunda", minutes: 13 * 60 });
+    assert.equal(describeOpenStatus(status, "en"), "Open now · lunch until 3 PM");
+  });
+
+  it("agrupa os dias em inglês", () => {
+    assert.equal(groupOpeningHours(hours, "en")[0]?.days, "Monday to Saturday");
+  });
+});

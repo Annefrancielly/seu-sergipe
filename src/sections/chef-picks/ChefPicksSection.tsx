@@ -3,12 +3,16 @@ import Image from "next/image";
 import { Section } from "@/components/layout/Section";
 import { ReservationTrigger } from "@/components/reservation/ReservationTrigger";
 import { ButtonLink } from "@/components/ui/ButtonLink";
-import { chefPicksMini } from "@/content/home";
-import { chefPickSlugs, dishes } from "@/content/menu";
+import { homeContent } from "@/content/home";
+import { chefPickSlugs } from "@/content/menu";
+import { getMenu } from "@/content/menu-localized";
+import { type Locale, localizePath } from "@/i18n/config";
+import { ui } from "@/i18n/ui";
 import { resolveDishes } from "@/lib/menu";
 
-export function ChefPicksSection() {
-  const picks = resolveDishes(chefPickSlugs, dishes);
+export function ChefPicksSection({ locale }: { locale: Locale }) {
+  const chefPicksMini = homeContent[locale].chefPicks;
+  const picks = resolveDishes(chefPickSlugs, getMenu(locale).dishes);
   if (picks.length === 0) return null;
 
   return (
@@ -18,7 +22,7 @@ export function ChefPicksSection() {
           <h2 id="sugestoes-titulo" className="text-xs uppercase tracking-[0.3em] text-emphasis">
             {chefPicksMini.eyebrow}
           </h2>
-          <ButtonLink href="/cardapio" variant="link" withArrow>
+          <ButtonLink href={localizePath(locale, "/cardapio")} variant="link" withArrow>
             {chefPicksMini.menuLabel}
           </ButtonLink>
         </div>
@@ -46,7 +50,7 @@ export function ChefPicksSection() {
                 <ReservationTrigger
                   variant="link"
                   withArrow={false}
-                  intro={`Vi ${dish.name} nas sugestões da chef e quero provar!`}
+                  intro={ui[locale].dish.pickIntro(dish.name)}
                   srContext={`: ${dish.name}`}
                 >
                   {chefPicksMini.tasteLabel}

@@ -1,12 +1,12 @@
+import type { Locale } from "@/i18n/config";
 import type { Workshop } from "@/types/content";
 
 const ISO_DATE = /^(\d{4})-(\d{2})-(\d{2})$/;
 
-const dateFormatter = new Intl.DateTimeFormat("pt-BR", {
-  day: "2-digit",
-  month: "short",
-  timeZone: "UTC",
-});
+const dateFormatters: Record<Locale, Intl.DateTimeFormat> = {
+  pt: new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "short", timeZone: "UTC" }),
+  en: new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "UTC" }),
+};
 
 function parseIsoDate(isoDate: string): Date | undefined {
   const match = ISO_DATE.exec(isoDate);
@@ -16,9 +16,9 @@ function parseIsoDate(isoDate: string): Date | undefined {
   return date.getUTCDate() === day ? date : undefined;
 }
 
-export function formatWorkshopDate(isoDate: string): string {
+export function formatWorkshopDate(isoDate: string, locale: Locale = "pt"): string {
   const date = parseIsoDate(isoDate);
-  return date ? dateFormatter.format(date).replace(".", "") : isoDate;
+  return date ? dateFormatters[locale].format(date).replace(".", "") : isoDate;
 }
 
 export function sortWorkshops(workshops: readonly Workshop[]): Workshop[] {
