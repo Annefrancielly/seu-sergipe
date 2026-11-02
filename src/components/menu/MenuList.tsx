@@ -1,5 +1,19 @@
+import { DISH_TAG_LABELS } from "@/lib/menu";
 import { formatPrice } from "@/lib/price";
-import type { Dish } from "@/types/content";
+import type { Dish, Price } from "@/types/content";
+
+function Prices({ prices }: { prices: readonly Price[] }) {
+  return (
+    <span className="flex shrink-0 flex-wrap items-baseline justify-end gap-x-4 gap-y-1">
+      {prices.map((price) => (
+        <span key={`${price.label ?? ""}-${price.amountInCents}`} className="inline-flex items-baseline gap-1.5 whitespace-nowrap">
+          {price.label && <span className="text-xs text-ink/60">{price.label}</span>}
+          <span className="font-display text-xl tabular-nums text-emphasis">{formatPrice(price.amountInCents)}</span>
+        </span>
+      ))}
+    </span>
+  );
+}
 
 type MenuListProps = {
   dishes: readonly Dish[];
@@ -7,23 +21,37 @@ type MenuListProps = {
 
 export function MenuList({ dishes }: MenuListProps) {
   return (
-    <ul>
-      {dishes.map((dish) => (
-        <li key={dish.slug} id={dish.slug} className="py-2.5">
-          <div className="flex items-baseline gap-3">
-            <span className="font-semibold">{dish.name}</span>
-            <span aria-hidden="true" className="flex-1 border-b border-dotted border-ink/30" />
-            {dish.prices?.map((price) => (
-              <span key={price.amountInCents} className="font-display text-lg tabular-nums text-emphasis">
-                {formatPrice(price.amountInCents)}
+    <ul className="mt-4">
+      {dishes.map((dish) => {
+        const labelledPrices = (dish.prices?.length ?? 0) > 1;
+
+        return (
+          <li key={dish.slug} id={dish.slug} className="scroll-mt-16 py-4">
+            <div className="flex items-baseline gap-3">
+              <span className="min-w-0 font-semibold uppercase tracking-[0.06em]">
+                {dish.name}
+                {dish.steps !== undefined && (
+                  <span className="ml-2 text-xs font-normal tracking-[0.2em] text-emphasis">{dish.steps} etapas</span>
+                )}
               </span>
-            ))}
-          </div>
-          {dish.description && <p className="mt-1 text-sm">{dish.description}</p>}
-          {dish.items && <p className="mt-1 text-sm">{dish.items.join(" · ")}</p>}
-          {dish.note && <p className="mt-1 text-sm italic">{dish.note}</p>}
-        </li>
-      ))}
+              <span aria-hidden="true" className="min-w-6 flex-1 border-b border-dotted border-ink/25" />
+              {dish.prices && !labelledPrices && <Prices prices={dish.prices} />}
+            </div>
+            {dish.description && <p className="mt-1.5 max-w-[38rem] text-sm leading-relaxed text-ink/70">{dish.description}</p>}
+            {dish.items && <p className="mt-1.5 max-w-[38rem] text-sm leading-relaxed text-ink/60">{dish.items.join(" · ")}</p>}
+            {dish.prices && labelledPrices && (
+              <div className="mt-2">
+                <Prices prices={dish.prices} />
+              </div>
+            )}
+            {(dish.note || dish.tags) && (
+              <p className="mt-1.5 text-xs italic text-ink/55">
+                {[dish.note, ...(dish.tags ?? []).map((tag) => DISH_TAG_LABELS[tag])].filter(Boolean).join(" · ")}
+              </p>
+            )}
+          </li>
+        );
+      })}
     </ul>
   );
 }

@@ -17,7 +17,10 @@ export function TerritoryLine({ variant = "descida", className }: TerritoryLineP
       preserveAspectRatio="none"
       aria-hidden="true"
       focusable="false"
-      className={cn("pointer-events-none text-accent revelar-na-rolagem", className)}
+      className={cn(
+        "pointer-events-none text-accent revelar-na-rolagem [mask-image:linear-gradient(to_bottom,transparent,#000_18%,#000_82%,transparent)]",
+        className,
+      )}
     >
       <path d={PATHS[variant]} className="traco-marca" />
     </svg>

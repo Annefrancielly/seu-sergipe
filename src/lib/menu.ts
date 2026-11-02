@@ -1,4 +1,4 @@
-import type { Dish, MenuCategory } from "@/types/content";
+import type { Dish } from "@/types/content";
 
 export function findDuplicateSlugs(items: readonly { slug: string }[]): string[] {
   const seen = new Set<string>();
@@ -49,20 +49,6 @@ export function groupDishes(dishes: readonly Dish[]): DishGroup[] {
   }
 
   return groups;
-}
-
-export type CategoryNeighbors = {
-  previous?: MenuCategory;
-  next?: MenuCategory;
-};
-
-export function categoryNeighbors(
-  categories: readonly MenuCategory[],
-  slug: string,
-): CategoryNeighbors {
-  const index = categories.findIndex((category) => category.slug === slug);
-  if (index === -1) return {};
-  return { previous: categories[index - 1], next: categories[index + 1] };
 }
 
 export const DISH_TAG_LABELS: Record<NonNullable<Dish["tags"]>[number], string> = {

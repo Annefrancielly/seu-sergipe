@@ -421,6 +421,15 @@ A cliente quer o site inteiro em fundos escuros, como um jantar à luz de velas,
 - Segunda leva de fotos: `prato-coco` (hero, Arte — prato sobre cerâmica e cestaria), `chef-encontro` (portal Workshops e topo da Agenda), `encontro-mesa` passa ao topo de Eventos (substitui a foto com celular), `chef-retrato-sol` na moldura da página da chef, recortada acima do bordado do dólmã, que traz a assinatura antiga "Bistrô".
 - Nova utilidade `sombra-organica` (`filter: drop-shadow`): segue o contorno de molduras com máscara; `box-shadow` desenhava um retângulo atrás da forma orgânica.
 
+## D30 — Emendas invisíveis, topo das páginas em duas colunas e cardápio tradicional
+
+- `luz-de-vela` usa `ellipse closest-side`: o brilho chega a zero antes de tocar qualquer borda da seção, então não há mais degrau de cor na emenda com a onda ou com a seção vizinha.
+- O contorno de Sergipe (`TerritoryLine`) ganhou máscara de fade em cima e embaixo; antes era cortado reto pela borda da seção.
+- Removida a animação de escala das ondas (`onda-chegar`): achatava o desenho durante a rolagem e dava sensação de tremor.
+- `PageHero`: a versão em duas colunas foi testada e descartada a pedido (a foto em tela cheia combina mais com a proposta). Mantida a foto em tela cheia com a caixa de vidro no desktop (altura 88svh) e, no celular, o texto direto sobre o véu, sem caixa cobrindo os rostos. Enquadramento por página: Eventos `encontro-mesa` a 38% (antes 45%, cabeças cortadas no topo); Agenda `chef-encontro` a 44% (rosto da chef acima da caixa).
+- Cardápio vira uma página única no estilo tradicional: nome, pontilhado, preço e descrição breve do cardápio impresso; índice fixo de categorias com âncoras; preços com rótulo (individual/casal, harmonizações) em linha própria. Zero JavaScript na página.
+- Removidos: rota `/cardapio/[categoria]`, `CategoryCard`, `FlipCard`, `categoryNeighbors` e o campo `layout` das categorias. Links antigos para categorias passam a âncoras (`/cardapio#menu-degustacao`). As narrativas (`story`) não aparecem na lista.
+
 ## Bloqueiam o design
 - Wireframes
 - Vetores originais da agência para o logotipo e o selo (hoje vetorizados a partir de imagem, ver D22)

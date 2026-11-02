@@ -77,9 +77,9 @@
 
 @utility luz-de-vela {
   background-image: radial-gradient(
-    ellipse 55% 45% at var(--vela-x, 82%) var(--vela-y, 18%),
+    ellipse closest-side at var(--vela-x, 72%) var(--vela-y, 50%),
     rgb(219 163 65 / 0.1),
-    transparent 70%
+    transparent
   );
 }
 
@@ -172,15 +172,6 @@
   }
 }
 
-@keyframes onda-chegar {
-  from {
-    scale: 1 0.3;
-  }
-  to {
-    scale: 1 1;
-  }
-}
-
 @keyframes palavra-chegar {
   from {
     opacity: 0;
@@ -208,7 +199,6 @@
     .revelar-na-rolagem,
     .surgir,
     .moldura-abrir,
-    .onda-chegar,
     .traco-desenhar {
       animation-fill-mode: both;
       animation-timeline: view();
@@ -238,13 +228,6 @@
       animation-name: moldura-abrir;
       animation-timing-function: var(--ease-organic);
       animation-range: entry 0% cover 35%;
-    }
-
-    .onda-chegar {
-      transform-origin: bottom;
-      animation-name: onda-chegar;
-      animation-timing-function: var(--ease-organic);
-      animation-range: entry 0% cover 55%;
     }
 
     .traco-desenhar {

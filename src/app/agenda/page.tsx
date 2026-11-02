@@ -21,7 +21,7 @@ export default function AgendaPage() {
 
   return (
     <main id="conteudo">
-      <PageHero eyebrow={agendaIntro.eyebrow} title={agendaIntro.title} lead={agendaIntro.lead} image={AGENDA_PHOTO} imagePosition="50% 38%" />
+      <PageHero eyebrow={agendaIntro.eyebrow} title={agendaIntro.title} lead={agendaIntro.lead} image={AGENDA_PHOTO} imagePosition="50% 44%" />
 
       <WaveDivider from="verde" to="marrom" withLine />
 

@@ -2,50 +2,77 @@ import type { Metadata } from "next";
 
 import { WaveDivider } from "@/components/graphics/WaveDivider";
 import { Section } from "@/components/layout/Section";
-import { CategoryCard } from "@/components/menu/CategoryCard";
+import { MenuIndex } from "@/components/menu/MenuIndex";
+import { MenuList } from "@/components/menu/MenuList";
 import { ReservationTrigger } from "@/components/reservation/ReservationTrigger";
-import { menuCategories } from "@/content/menu";
+import { dishes, menuCategories } from "@/content/menu";
+import { dishesInCategory, groupDishes } from "@/lib/menu";
 
 export const metadata: Metadata = {
   title: "Cardápio",
-  description: "Navegue pelo cardápio do Seu Sergipe: menus degustação, entradas, pratos principais, moquecas, drinks e sobremesas.",
+  description: "O cardápio do Seu Sergipe: menus degustação, entradas, pratos principais, moquecas, drinks, bebidas e sobremesas.",
   alternates: { canonical: "/cardapio" },
 };
 
 export default function MenuPage() {
   return (
     <main id="conteudo">
-      <Section surface="verde" labelledBy="cardapio-titulo" className="pt-32 pb-14 md:pt-36">
-        <div className="mx-auto max-w-5xl px-6 text-center md:text-left">
-          <h1 id="cardapio-titulo" className="font-display text-5xl uppercase sm:text-6xl">
+      <Section surface="verde" labelledBy="cardapio-titulo" className="luz-de-vela pt-36 pb-12 [--vela-x:50%] [--vela-y:60%] md:pt-40">
+        <div className="mx-auto max-w-3xl px-6 text-center">
+          <p className="text-xs uppercase tracking-[0.3em] text-emphasis">Casa de Cultura &amp; Arte Gastronômica</p>
+          <h1 id="cardapio-titulo" className="mt-3 font-display text-6xl leading-none font-semibold uppercase sm:text-7xl">
             Cardápio
           </h1>
-          <p className="mx-auto mt-4 max-w-md text-lg leading-relaxed md:mx-0">
+          <p className="mx-auto mt-5 max-w-md text-lg leading-relaxed">
             Navegue pelo nosso cardápio e descubra as sensações que preparamos para você.
           </p>
         </div>
       </Section>
 
-      <WaveDivider from="verde" to="verde" withLine />
+      <MenuIndex categories={menuCategories} />
 
-      <Section surface="verde" labelledBy="sumario-titulo" className="pt-6 pb-secao">
-        <div className="mx-auto max-w-5xl px-6">
-          <h2 id="sumario-titulo" className="text-center text-sm font-semibold uppercase tracking-[0.3em] text-emphasis md:text-left">
-            Sumário
-          </h2>
-          <ul className="mt-6 grid grid-cols-3 gap-x-3 gap-y-6 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8">
-            {menuCategories.map((category, index) => (
-              <li key={category.slug} className="surgir">
-                <CategoryCard category={category} index={index} />
-              </li>
-            ))}
-          </ul>
+      <Section surface="verde" className="pb-secao">
+        <div className="mx-auto max-w-3xl px-6">
+          {menuCategories.map((category, index) => {
+            const groups = groupDishes(dishesInCategory(dishes, category.slug));
+            const titleId = `${category.slug}-titulo`;
 
-          <div className="surgir mt-16 flex flex-col items-center gap-4 text-center md:text-left md:items-start">
-            <p className="font-display text-2xl">Já sabe o que vai pedir?</p>
-            <ReservationTrigger intro="Vim pelo cardápio do site e quero reservar uma mesa.">
-              Faça sua reserva
-            </ReservationTrigger>
+            return (
+              <section key={category.slug} id={category.slug} aria-labelledby={titleId} className="scroll-mt-16 pt-20">
+                <header className="text-center">
+                  <p aria-hidden="true" className="font-display text-lg text-emphasis">
+                    {String(index + 1).padStart(2, "0")}
+                  </p>
+                  <h2 id={titleId} className="mt-1 font-display text-4xl leading-none font-semibold uppercase sm:text-5xl">
+                    {category.name}
+                  </h2>
+                  <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-ink/70">{category.description}</p>
+                  <span aria-hidden="true" className="mx-auto mt-6 block h-px w-16 bg-accent/60" />
+                </header>
+
+                {groups.map((group) => (
+                  <div key={group.title ?? "itens"} className="mt-8">
+                    {group.title && (
+                      <h3 className="text-center text-xs uppercase tracking-[0.3em] text-emphasis">{group.title}</h3>
+                    )}
+                    <MenuList dishes={group.dishes} />
+                  </div>
+                ))}
+
+                {category.notes && (
+                  <div className="mt-6 space-y-1.5 text-center text-xs italic leading-relaxed text-ink/55">
+                    {category.notes.map((note) => (
+                      <p key={note}>{note}</p>
+                    ))}
+                  </div>
+                )}
+              </section>
+            );
+          })}
+
+          <div className="mt-24 flex flex-col items-center gap-4 text-center">
+            <p className="font-display text-3xl uppercase">Bateu vontade?</p>
+            <ReservationTrigger intro="Vim pelo cardápio do site e quero reservar uma mesa.">Faça sua reserva</ReservationTrigger>
           </div>
         </div>
       </Section>

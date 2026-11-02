@@ -28,7 +28,7 @@ export function WaveDivider({
 
   return (
     <div aria-hidden="true" data-surface={from} className="relative -my-px bg-surface">
-      <div className="onda-chegar relative">
+      <div className="relative">
         <svg viewBox="0 0 1440 160" preserveAspectRatio="none" focusable="false" className={svgClasses}>
           <path d={`${crest} L1440 160 L0 160 Z`} className={surfaceFillClass[to]} />
         </svg>

@@ -44,7 +44,7 @@ export function TastingMenusSection() {
 
       <div className="mx-auto mt-6 flex max-w-6xl flex-col items-center gap-2 px-6 text-center md:flex-row md:justify-between md:text-left">
         <p className="text-sm text-ink/80">{tastingMenusIntro.note}</p>
-        <ButtonLink href="/cardapio/menu-degustacao" variant="link" withArrow>
+        <ButtonLink href="/cardapio#menu-degustacao" variant="link" withArrow>
           Detalhes no cardápio
         </ButtonLink>
       </div>

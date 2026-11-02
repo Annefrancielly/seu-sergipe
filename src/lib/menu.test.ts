@@ -4,7 +4,6 @@ import { describe, it } from "node:test";
 import type { Dish } from "@/types/content";
 
 import {
-  categoryNeighbors,
   findDuplicateSlugs,
   groupDishes,
   interestPhrase,
@@ -70,26 +69,6 @@ describe("groupDishes", () => {
     const groups = groupDishes([dish("a"), dish("b")]);
     assert.equal(groups.length, 1);
     assert.equal(groups[0]?.title, undefined);
-  });
-});
-
-describe("categoryNeighbors", () => {
-  const categories = ["a", "b", "c"].map((slug) => ({
-    slug,
-    name: slug,
-    description: "",
-    layout: "cards" as const,
-  }));
-
-  it("encontra a categoria anterior e a próxima", () => {
-    const { previous, next } = categoryNeighbors(categories, "b");
-    assert.equal(previous?.slug, "a");
-    assert.equal(next?.slug, "c");
-  });
-
-  it("não tem anterior na primeira nem próxima na última", () => {
-    assert.equal(categoryNeighbors(categories, "a").previous, undefined);
-    assert.equal(categoryNeighbors(categories, "c").next, undefined);
   });
 });
 

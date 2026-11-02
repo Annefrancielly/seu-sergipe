@@ -13,7 +13,6 @@ export const menuCategories: readonly MenuCategory[] = [
     slug: "menu-degustacao",
     name: "Menu Degustação",
     description: "Uma viagem em etapas pelos sabores de Sergipe, guiada pela chef.",
-    layout: "cards",
     cover: {
       src: "/images/pratos/menu-degustacao-etapa.jpg",
       alt: "Etapa do menu degustação servida em cumbuca de cerâmica artesanal.",
@@ -26,7 +25,6 @@ export const menuCategories: readonly MenuCategory[] = [
     slug: "entradas",
     name: "Entradas & Snacks",
     description: "Para abrir o apetite e começar a conversa.",
-    layout: "cards",
     cover: {
       src: "/images/pratos/quiabada-crocante.jpg",
       alt: "Quiabada crocante com flor azul em cumbuca branca.",
@@ -40,7 +38,6 @@ export const menuCategories: readonly MenuCategory[] = [
     slug: "pratos-principais",
     name: "Pratos Principais",
     description: "Cozinha autoral e cozinha de origem, lado a lado.",
-    layout: "cards",
     notes: [
       "Você é vegano ou vegetariano? Podemos reinventar os pratos da cozinha autoral. Surpreenda-se com as possibilidades.",
       AVISO_INSUMOS,
@@ -50,7 +47,6 @@ export const menuCategories: readonly MenuCategory[] = [
     slug: "moquecas",
     name: "Moquecas",
     description: "No leite de coco, com pirão, vinagrete e farofa.",
-    layout: "cards",
     cover: {
       src: "/images/pratos/moqueca-encontro-das-aguas.jpg",
       alt: "Panela com polvo, camarões e pimentões, finalizada com coentro.",
@@ -64,14 +60,12 @@ export const menuCategories: readonly MenuCategory[] = [
     slug: "pratos-infantis",
     name: "Pratos Infantis",
     description: "Pensados para os pequenos viajantes.",
-    layout: "cards",
     notes: [AVISO_INSUMOS],
   },
   {
     slug: "hamburgueres",
     name: "Hambúrgueres",
     description: "Tradições sergipanas entre duas fatias de pão.",
-    layout: "cards",
     notes: [
       "Todos os hambúrgueres são servidos com pão tostado na manteiga, queijo coalho maçaricado, emulsão de coentro, picles de maxixe e vinagrete de caju.",
       AVISO_INSUMOS,
@@ -81,14 +75,12 @@ export const menuCategories: readonly MenuCategory[] = [
     slug: "drinks",
     name: "Drinks",
     description: "Frutas da terra, gin sergipano e cachaça de Capela.",
-    layout: "cards",
     notes: ["Os drinks podem ser servidos sem álcool. É só pedir ao garçom."],
   },
   {
     slug: "bebidas",
     name: "Bebidas",
     description: "Cervejas, doses, vinhos, sucos e cafés.",
-    layout: "list",
     notes: [
       "Buscamos novidades para nossa carta de vinhos: consulte nossos garçons ou visite nossa adega para conhecer rótulos exclusivos.",
     ],
@@ -97,7 +89,6 @@ export const menuCategories: readonly MenuCategory[] = [
     slug: "sobremesas",
     name: "Sobremesas",
     description: "O clássico encontra o sabor típico de Sergipe.",
-    layout: "cards",
     cover: {
       src: "/images/pratos/amorosa.jpg",
       alt: "Sobremesa com merengue maçaricado e caldas sobre prato de cerâmica azul.",

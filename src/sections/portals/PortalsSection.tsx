@@ -44,7 +44,7 @@ const portals: readonly Portal[] = [
 
 export function PortalsSection() {
   return (
-    <Section id="conheca" surface="marrom" labelledBy="conheca-titulo" className="luz-de-vela py-secao [--vela-x:50%] [--vela-y:0%]">
+    <Section id="conheca" surface="marrom" labelledBy="conheca-titulo" className="luz-de-vela py-secao [--vela-x:50%] [--vela-y:40%]">
       <div className="mx-auto max-w-6xl px-6">
         <div className="surgir text-center md:text-left">
           <p className="text-xs uppercase tracking-[0.3em] text-emphasis">{portalsIntro.eyebrow}</p>

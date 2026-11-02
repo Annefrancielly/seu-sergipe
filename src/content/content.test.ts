@@ -48,12 +48,9 @@ describe("regras do cardápio", () => {
     );
   });
 
-  it("todo item de categoria em cards tem descrição para o verso do card", () => {
-    const cardCategories = new Set(
-      menuCategories.filter((category) => category.layout === "cards").map((category) => category.slug),
-    );
+  it("todo prato e drink tem descrição no cardápio", () => {
     const withoutDescription = dishes.filter(
-      (dish) => cardCategories.has(dish.categorySlug) && !dish.description,
+      (dish) => dish.categorySlug !== "bebidas" && !dish.description,
     );
     assert.deepEqual(
       withoutDescription.map((dish) => dish.slug),

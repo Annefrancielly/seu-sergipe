@@ -13,13 +13,11 @@ export type Price = {
   amountInCents: number;
 };
 
-export type MenuCategoryLayout = "cards" | "list";
 
 export type MenuCategory = {
   slug: string;
   name: string;
   description: string;
-  layout: MenuCategoryLayout;
   cover?: ImageAsset;
   notes?: readonly string[];
 };

@@ -26,7 +26,7 @@ export default function EventsPage() {
         title={eventsIntro.title}
         lead={eventsIntro.lead}
         image="/images/casa/encontro-mesa.jpg"
-        imagePosition="50% 45%"
+        imagePosition="50% 38%"
       />
 
       <WaveDivider from="verde" to="marrom" withLine />
