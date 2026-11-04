@@ -9,7 +9,7 @@ import { type HeroSlide, HeroSlideshow } from "@/sections/hero/HeroSlideshow";
 const SLIDE_IMAGES: readonly Omit<HeroSlide, "word">[] = [
   { image: "/images/casa/prato-coco.jpg", objectPosition: "55% 45%" },
   { image: "/images/casa/casa-noite.jpg", objectPosition: "40% 55%" },
-  { image: "/images/casa/jantar-flambado.jpg", objectPosition: "48% 40%" },
+  { image: "/images/casa/caldo-cuia.jpg", objectPosition: "40% 55%" },
 ];
 
 export function HeroSection({ locale }: { locale: Locale }) {

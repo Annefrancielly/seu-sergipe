@@ -2,10 +2,10 @@ import assert from "node:assert/strict";
 import { existsSync } from "node:fs";
 import { describe, it } from "node:test";
 
-import { isValidWorkshopDate } from "../lib/agenda.ts";
+import { isValidAgendaDate } from "../lib/agenda.ts";
 import { dishesInCategory, findDuplicateSlugs, resolveDishes } from "../lib/menu.ts";
 import { toMinutes } from "../lib/opening-hours.ts";
-import { workshops } from "./agenda.ts";
+import { agendaItems } from "./agenda.ts";
 import { eventsContent } from "./events.ts";
 import { chefPickSlugs, dishes, menuCategories } from "./menu.ts";
 import { categoriesEn, dishesEn, groupsEn, priceLabelsEn } from "./menu.en.ts";
@@ -131,10 +131,13 @@ describe("integridade da home e das páginas", () => {
     for (const format of [...pt.formats, ...en.formats]) assert.ok(format.description.trim().length > 0);
   });
 
-  it("todo workshop tem data válida e horário no formato HH:MM", () => {
-    for (const workshop of workshops) {
-      assert.ok(isValidWorkshopDate(workshop.date), `data inválida em ${workshop.slug}`);
-      assert.match(workshop.time, /^\d{2}:\d{2}$/);
+  it("todo item da agenda tem datas válidas, horários HH:MM e título nos dois idiomas", () => {
+    assert.deepEqual(findDuplicateSlugs(agendaItems), []);
+    for (const item of agendaItems) {
+      assert.ok(isValidAgendaDate(item.date), `data inválida em ${item.slug}`);
+      if (item.until) assert.ok(isValidAgendaDate(item.until) && item.until >= item.date, `fim inválido em ${item.slug}`);
+      for (const time of [item.time, item.endTime]) if (time) assert.match(time, /^\d{2}:\d{2}$/);
+      assert.ok(item.text.pt.title.trim() && item.text.en.title.trim(), `título ausente em ${item.slug}`);
     }
   });
 });

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 
+import guestsPhotoOne from "@/assets/images/chef-convidados-1.jpg";
+import guestsPhotoTwo from "@/assets/images/chef-convidados-2.jpg";
 import chefPortraitSun from "@/assets/images/chef-retrato-sol.jpg";
 import chefPhoto from "@/assets/images/chef-seichele-barboza.jpg";
 import { WaveDivider } from "@/components/graphics/WaveDivider";
@@ -76,6 +78,34 @@ export default async function ChefPage({ params }: LocaleParams) {
             {chefIntro.name} · <span className="text-emphasis">{chefIntro.signature}</span>
           </figcaption>
         </figure>
+
+        <div className="mx-auto mt-24 max-w-6xl px-6">
+          <div className="surgir text-center md:text-left">
+            <h2 id="encontros-titulo" className="font-display text-4xl leading-none font-semibold uppercase sm:text-5xl">
+              {chefIntro.guests.title}
+            </h2>
+            <p className="mt-3 text-lg">{chefIntro.guests.lead}</p>
+          </div>
+          <ul aria-labelledby="encontros-titulo" className="mt-10 grid gap-5 md:grid-cols-12 md:items-end">
+            {[
+              { image: guestsPhotoOne, alt: chefIntro.guests.photoAlts[0], layout: "aspect-[16/9] md:col-span-7", position: "50% 35%" },
+              { image: guestsPhotoTwo, alt: chefIntro.guests.photoAlts[1], layout: "aspect-[4/5] md:col-span-5", position: "50% 30%" },
+            ].map((photo) => (
+              <li key={photo.image.src} className={`surgir sombra-profunda relative overflow-hidden rounded-[1.75rem] ${photo.layout}`}>
+                <Image
+                  src={photo.image}
+                  alt={photo.alt ?? ""}
+                  fill
+                  placeholder="blur"
+                  sizes="(min-width: 768px) 50vw, 90vw"
+                  className="object-cover"
+                  style={{ objectPosition: photo.position }}
+                />
+                <span aria-hidden="true" className="moldura-foto" />
+              </li>
+            ))}
+          </ul>
+        </div>
       </Section>
 
       <WaveDivider from="marrom" to="verde" variant="ampla" flip />

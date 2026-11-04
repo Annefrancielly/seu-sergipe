@@ -34,7 +34,7 @@ const pt = {
     linkLabel: "Conhecer",
     chef: { eyebrow: "A chef", title: "Seichele Barboza", text: "A história e a cozinha de quem conduz a casa." },
     events: { eyebrow: "Eventos", title: "Celebre aqui", text: "Corporativo, casamentos e aniversários." },
-    agenda: { eyebrow: "Agenda da chef", title: "Workshops", text: "Encontros na cozinha com a chef." },
+    agenda: { eyebrow: "Agenda", title: "Programação", text: "Música, cafés e workshops com a chef." },
   },
   visit: {
     eyebrow: "Visite-nos",
@@ -84,7 +84,7 @@ const en: HomeContent = {
     linkLabel: "Explore",
     chef: { eyebrow: "The chef", title: "Seichele Barboza", text: "The story and the cooking of the woman who leads the house." },
     events: { eyebrow: "Events", title: "Celebrate here", text: "Corporate events, weddings and birthdays." },
-    agenda: { eyebrow: "Chef's workshops", title: "Workshops", text: "Hands-on sessions in the kitchen with the chef." },
+    agenda: { eyebrow: "Agenda", title: "What's on", text: "Music, breakfasts and workshops with the chef." },
   },
   visit: {
     eyebrow: "Visit us",

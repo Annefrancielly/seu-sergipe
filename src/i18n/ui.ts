@@ -111,7 +111,7 @@ const en: UiStrings = {
       { label: "Tasting", href: "/#menus" },
       { label: "Chef", href: "/chef" },
       { label: "Events", href: "/eventos" },
-      { label: "Workshops", href: "/agenda" },
+      { label: "What's on", href: "/agenda" },
       { label: "Visit", href: "/#visite" },
       { label: "Menu", href: "/cardapio" },
     ],

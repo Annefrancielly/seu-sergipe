@@ -441,6 +441,17 @@ A cliente quer o site inteiro em fundos escuros, como um jantar à luz de velas,
 - Avaliações do Google ficam no original, com aviso em inglês. Nomes de pratos ficam em português; glossário de ingredientes no cardápio em inglês. Decisões em `docs/glossario-en.md`.
 - Testes garantem que todo prato, categoria, grupo e rótulo de preço tem versão em inglês.
 
+## D32 — Agenda de eventos e workshops, encontros da chef e troca de foto
+
+- A página /agenda deixa de listar só workshops e passa a ser a programação da casa: cada item (`AgendaItem` em `types/content.ts`) tem tipo (`evento` ou `workshop`), data, fim opcional (`until`, para programações recorrentes), horários e preço opcionais, e textos em português e inglês.
+- Os itens vivem em `content/agenda.ts`, ordenados por data. A lista (`components/agenda/AgendaList.tsx`) esconde no navegador o que já passou, pela data de Aracaju; no HTML estático aparecem todos, para não divergir na hidratação. Sem itens futuros, mostra a chamada "Quero ser avisado" pelo WhatsApp.
+- Cada item tem botão "Quero participar" que abre o WhatsApp com o nome e a data preenchidos. Não há inscrição nem pagamento no site.
+- Nomes próprios de eventos da casa ficam em português no inglês (ex.: "Domingos à mesa Seu Sergipe").
+- Rótulos: "Agenda" no menu em português, "What's on" em inglês; portal da home "Programação".
+- Página da chef ganha a galeria "Encontros à mesa" com duas fotos de convidados. As legendas não citam nomes até a chef enviar os nomes e as autorizações de uso de imagem.
+- A foto do casal (jantar flambado) sai da abertura por falta de autorização de imagem e é apagada de `public/` (a exportação estática publica tudo o que está lá). Entra o caldo na cuia.
+- Pendências: fim do Café da manhã aos domingos (adotado 31/01/2027, "edição especial de 3 meses"), horários de 08/11 e 28/11, preço do Blues & Soul, confirmar o que é "Merine" (local da Aula do Mar), programação de dezembro.
+
 ## Bloqueiam o design
 - Wireframes
 - Vetores originais da agência para o logotipo e o selo (hoje vetorizados a partir de imagem, ver D22)
@@ -466,6 +477,7 @@ A cliente quer o site inteiro em fundos escuros, como um jantar à luz de velas,
 - Aprovação dos textos da Seção 01
 - Autorização de imagem dos clientes na foto do salão e crédito do fotógrafo
 - Domínio definitivo (configurar `SITE_URL` nas variáveis de build da Cloudflare, ver D24)
+- Nomes e autorização de uso de imagem dos convidados da galeria "Encontros à mesa" e das pessoas nas fotos de eventos e workshops
 - Último horário aceito para reserva em cada refeição (adotado: 30 minutos antes do fechamento) e intervalo entre horários (adotado: 30 minutos)
 - Corrigir no Perfil do Google a listagem geral de horários (quarta e domingo aparecem incoerentes)
 - Número de pessoas a partir do qual a reserva é tratada como grupo grande

@@ -63,14 +63,22 @@ export type EventFormat = {
   description: string;
 };
 
-export type Workshop = {
+export type AgendaText = {
+  title: string;
+  description?: string;
+  schedule?: string;
+  location?: string;
+};
+
+export type AgendaItem = {
   slug: string;
+  kind: "evento" | "workshop";
   date: string;
-  time: string;
-  text: {
-    pt: { title: string; description: string };
-    en: { title: string; description: string };
-  };
+  until?: string;
+  time?: string;
+  endTime?: string;
+  priceInCents?: number;
+  text: { pt: AgendaText; en: AgendaText };
 };
 
 export type Testimonial = {

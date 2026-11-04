@@ -19,7 +19,15 @@ const pt = {
     lead: "Cada prato guarda uma história. Comece por estas.",
     reserveLabel: "Reserve sua mesa",
     reservationIntro: "Vim pela página da chef e quero reservar uma mesa.",
-    agendaLabel: "Agenda da chef",
+    agendaLabel: "Ver a programação",
+  },
+  guests: {
+    title: "Encontros à mesa",
+    lead: "Personalidades que já passaram pelo Seu Sergipe.",
+    photoAlts: [
+      "Chef Seichele Barboza ao lado de dois convidados.",
+      "Chef Seichele Barboza abraçada a um convidado.",
+    ],
   },
 };
 
@@ -44,7 +52,15 @@ const en: ChefContent = {
     lead: "Every dish holds a story. Start with these.",
     reserveLabel: "Book your table",
     reservationIntro: "I found you through the chef's page and would like to book a table.",
-    agendaLabel: "Chef's workshops",
+    agendaLabel: "See what's on",
+  },
+  guests: {
+    title: "Guests at our table",
+    lead: "Notable personalities who have visited Seu Sergipe.",
+    photoAlts: [
+      "Chef Seichele Barboza standing between two guests.",
+      "Chef Seichele Barboza hugging a guest.",
+    ],
   },
 };
 

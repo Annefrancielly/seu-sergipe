@@ -1,5 +1,5 @@
 import type { Locale } from "@/i18n/config";
-import type { Workshop } from "@/types/content";
+import type { AgendaItem } from "@/types/content";
 
 const ISO_DATE = /^(\d{4})-(\d{2})-(\d{2})$/;
 
@@ -16,15 +16,23 @@ function parseIsoDate(isoDate: string): Date | undefined {
   return date.getUTCDate() === day ? date : undefined;
 }
 
-export function formatWorkshopDate(isoDate: string, locale: Locale = "pt"): string {
+export function formatAgendaDate(isoDate: string, locale: Locale = "pt"): string {
   const date = parseIsoDate(isoDate);
   return date ? dateFormatters[locale].format(date).replace(".", "") : isoDate;
 }
 
-export function sortWorkshops(workshops: readonly Workshop[]): Workshop[] {
-  return workshops.toSorted((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
+export function isValidAgendaDate(isoDate: string): boolean {
+  return parseIsoDate(isoDate) !== undefined;
 }
 
-export function isValidWorkshopDate(isoDate: string): boolean {
-  return parseIsoDate(isoDate) !== undefined;
+export function lastDayOf(item: AgendaItem): string {
+  return item.until ?? item.date;
+}
+
+export function sortAgenda(items: readonly AgendaItem[]): AgendaItem[] {
+  return items.toSorted((a, b) => `${a.date} ${a.time ?? ""}`.localeCompare(`${b.date} ${b.time ?? ""}`));
+}
+
+export function upcomingAgenda(items: readonly AgendaItem[], today: string): AgendaItem[] {
+  return sortAgenda(items.filter((item) => lastDayOf(item) >= today));
 }
