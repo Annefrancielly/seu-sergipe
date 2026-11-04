@@ -456,7 +456,8 @@ A cliente quer o site inteiro em fundos escuros, como um jantar à luz de velas,
 
 - Arquivos recebidos da designer em 04/11/2026: `Tropicane.otf` (um único peso, Regular 400) e `silka-regularitalic-webfont.ttf` (só o itálico regular).
 - Tropicane: acentos do português completos (á à â ã é ê í ó ô õ ú ü ç). Faltam `·`, `º` e `ª`, que o navegador busca na fonte seguinte da pilha. Convertida para WOFF (24 KB) em `src/assets/fonts/` e carregada por `next/font/local` em `src/app/fonts.ts`, servida pelo próprio site.
-- Como só existe o peso 400, `font-synthesis-weight: none` no `html` impede o navegador de "engrossar" a fonte nos títulos que usam `font-semibold`.
+- A Tropicane traz dois desenhos no mesmo arquivo: o ornamental nas maiúsculas e um condensado, mais limpo, nas minúsculas (que também é todo em caixa-alta). Por escolha da Anne (04/11), o site usa o desenho das minúsculas: `.font-display { text-transform: lowercase }` na camada base, e as classes `uppercase` e `font-semibold` saíram dos elementos com `font-display`. O texto no HTML continua como foi escrito, então leitores de tela e buscadores não são afetados.
+- Peso sempre o original (400): `font-synthesis-weight: none` no `html` impede o negrito sintético.
 - Silka não foi integrada: só com o itálico não há texto corrido. DM Mono segue provisória no corpo.
 - Recomendação em aberto: a Tropicane é ornamental; frases longas em `font-display` (abertura, citação da chef, frase do rodapé, título do painel de reserva, página 404) leem melhor na fonte de texto.
 - Os arquivos de fonte não vão para o repositório antes da confirmação da licença web e da visibilidade do repositório no GitHub.

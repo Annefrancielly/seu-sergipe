@@ -325,6 +325,10 @@
     font-synthesis-weight: none;
   }
 
+  .font-display {
+    text-transform: lowercase;
+  }
+
   a,
   button,
   summary,

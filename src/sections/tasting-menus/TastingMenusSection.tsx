@@ -19,7 +19,7 @@ export function TastingMenusSection({ locale }: { locale: Locale }) {
     >
       <div className="surgir mx-auto max-w-6xl px-6 text-center md:text-left">
         <p className="text-xs uppercase tracking-[0.3em] text-emphasis">{tastingMenusIntro.eyebrow}</p>
-        <h2 id="menus-titulo" className="mt-3 font-display text-4xl leading-none font-semibold uppercase sm:text-6xl">
+        <h2 id="menus-titulo" className="mt-3 font-display text-4xl leading-none sm:text-6xl">
           {tastingMenusIntro.title}
         </h2>
         <p className="mt-4 text-lg">{tastingMenusIntro.lead}</p>

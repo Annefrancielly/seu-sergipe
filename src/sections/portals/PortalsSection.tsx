@@ -35,7 +35,7 @@ export function PortalsSection({ locale }: { locale: Locale }) {
       <div className="mx-auto max-w-6xl px-6">
         <div className="surgir text-center md:text-left">
           <p className="text-xs uppercase tracking-[0.3em] text-emphasis">{portalsIntro.eyebrow}</p>
-          <h2 id="conheca-titulo" className="mt-3 font-display text-4xl leading-none font-semibold uppercase sm:text-6xl">
+          <h2 id="conheca-titulo" className="mt-3 font-display text-4xl leading-none sm:text-6xl">
             {portalsIntro.title}
           </h2>
         </div>
@@ -62,7 +62,7 @@ export function PortalsSection({ locale }: { locale: Locale }) {
                 <span aria-hidden="true" className="moldura-foto -z-10" />
                 <span className="vidro-cafe block rounded-[1.25rem] p-5">
                   <span className="block text-xs uppercase tracking-[0.3em] text-emphasis">{portal.eyebrow}</span>
-                  <span className="mt-2 block font-display text-3xl leading-none font-semibold uppercase">{portal.title}</span>
+                  <span className="mt-2 block font-display text-3xl leading-none">{portal.title}</span>
                   <span className="mt-2 block text-sm leading-relaxed">{portal.text}</span>
                   <span className="mt-4 inline-flex items-center gap-2 text-xs uppercase tracking-[0.24em]">
                     {portalsIntro.linkLabel}

@@ -34,7 +34,7 @@ export function VisitSection({ locale }: { locale: Locale }) {
       <div className="mx-auto grid max-w-6xl gap-10 px-6 md:grid-cols-12 md:gap-8">
         <div className="surgir text-center md:col-span-5 md:text-left">
           <p className="text-xs uppercase tracking-[0.3em] text-emphasis">{visitIntro.eyebrow}</p>
-          <h2 id="visite-titulo" className="mt-3 font-display text-4xl leading-none font-semibold uppercase sm:text-6xl">
+          <h2 id="visite-titulo" className="mt-3 font-display text-4xl leading-none sm:text-6xl">
             {visitIntro.title}
           </h2>
           <address className="mt-6 text-lg not-italic leading-relaxed">
@@ -52,7 +52,7 @@ export function VisitSection({ locale }: { locale: Locale }) {
 
         <div className="surgir surgir-depois vidro rounded-[1.75rem] p-7 sm:p-9 md:col-span-6 md:col-start-7">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <h3 className="font-display text-3xl font-semibold uppercase">{visitIntro.hoursTitle}</h3>
+            <h3 className="font-display text-3xl">{visitIntro.hoursTitle}</h3>
             <OpenStatus />
           </div>
           <dl className="mt-5 space-y-5">
@@ -82,7 +82,7 @@ export function VisitSection({ locale }: { locale: Locale }) {
       {testimonials.length > 0 && (
         <div className="mt-20">
           <div className="surgir mx-auto flex max-w-6xl flex-col items-center gap-4 px-6 text-center md:flex-row md:items-end md:justify-between md:text-left">
-            <h3 className="font-display text-3xl leading-none font-semibold uppercase sm:text-4xl">{visitIntro.reviewsTitle}</h3>
+            <h3 className="font-display text-3xl leading-none sm:text-4xl">{visitIntro.reviewsTitle}</h3>
             <p className="flex items-baseline gap-2">
               <span className="font-display text-5xl leading-none text-emphasis">
                 {ratingFormatter.format(googleRatingSummary.rating)}

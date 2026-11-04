@@ -49,7 +49,7 @@ export default async function EventsPage({ params }: LocaleParams) {
               <span aria-hidden="true" className="font-display text-5xl leading-none text-accent">
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <h3 className="mt-6 font-display text-3xl leading-none font-semibold uppercase">{format.title}</h3>
+              <h3 className="mt-6 font-display text-3xl leading-none">{format.title}</h3>
               <p className="mt-4 leading-relaxed">{format.description}</p>
               <ButtonLink href={whatsappHref(quoteMessage(format.title))} variant="link" withArrow locale={locale} className="mt-auto pt-6">
                 {eventsIntro.quoteLabel}
@@ -59,7 +59,7 @@ export default async function EventsPage({ params }: LocaleParams) {
         </ul>
 
         <div className="surgir mx-auto mt-16 max-w-2xl px-6 text-center">
-          <h2 className="font-display text-4xl leading-none font-semibold uppercase">{eventsIntro.closingTitle}</h2>
+          <h2 className="font-display text-4xl leading-none">{eventsIntro.closingTitle}</h2>
           <p className="mt-4 text-lg leading-relaxed">{eventsIntro.closing}</p>
           <ButtonLink href={whatsappHref(quoteMessage())} withArrow locale={locale} className="mt-8">
             {eventsIntro.quoteLabel}

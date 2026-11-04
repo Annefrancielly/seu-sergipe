@@ -55,7 +55,7 @@ export default async function MenuPage({ params }: LocaleParams) {
       <Section surface="verde" labelledBy="cardapio-titulo" className="luz-de-vela pt-36 pb-12 [--vela-x:50%] [--vela-y:60%] md:pt-40">
         <div className="mx-auto max-w-3xl px-6 text-center">
           <p className="text-xs uppercase tracking-[0.3em] text-emphasis">Casa de Cultura &amp; Arte Gastronômica</p>
-          <h1 id="cardapio-titulo" className="mt-3 font-display text-6xl leading-none font-semibold uppercase sm:text-7xl">
+          <h1 id="cardapio-titulo" className="mt-3 font-display text-6xl leading-none sm:text-7xl">
             {text.title}
           </h1>
           <p className="mx-auto mt-5 max-w-md text-lg leading-relaxed">{text.lead}</p>
@@ -95,7 +95,7 @@ export default async function MenuPage({ params }: LocaleParams) {
                   <p aria-hidden="true" className="font-display text-lg text-emphasis">
                     {String(index + 1).padStart(2, "0")}
                   </p>
-                  <h2 id={titleId} className="mt-1 font-display text-4xl leading-none font-semibold uppercase sm:text-5xl">
+                  <h2 id={titleId} className="mt-1 font-display text-4xl leading-none sm:text-5xl">
                     {category.name}
                   </h2>
                   <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-ink/70">{category.description}</p>
@@ -123,7 +123,7 @@ export default async function MenuPage({ params }: LocaleParams) {
           })}
 
           <div className="mt-24 flex flex-col items-center gap-4 text-center">
-            <p className="font-display text-3xl uppercase">{text.hungry}</p>
+            <p className="font-display text-3xl">{text.hungry}</p>
             <ReservationTrigger intro={text.reserveIntro}>{text.reserve}</ReservationTrigger>
           </div>
         </div>

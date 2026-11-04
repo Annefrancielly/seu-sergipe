@@ -24,7 +24,7 @@ export function AgendaList({ items }: { items: readonly AgendaItem[] }) {
   if (visible.length === 0) {
     return (
       <div className="surgir vidro-cafe mt-8 rounded-[1.75rem] p-8 text-center sm:p-12">
-        <p className="font-display text-4xl leading-none font-semibold uppercase">{copy.emptyTitle}</p>
+        <p className="font-display text-4xl leading-none">{copy.emptyTitle}</p>
         <p className="mx-auto mt-4 max-w-md text-lg leading-relaxed">{copy.emptyText}</p>
         <ButtonLink href={whatsappHref(copy.notifyMessage)} locale={locale} withArrow className="mt-8">
           {copy.notifyLabel}
@@ -51,13 +51,13 @@ export function AgendaList({ items }: { items: readonly AgendaItem[] }) {
               <span className="inline-block rounded-full border border-accent/60 px-3 py-1 text-[0.65rem] uppercase tracking-[0.2em] text-accent">
                 {copy.kinds[item.kind]}
               </span>
-              <p className="mt-3 font-display text-3xl leading-none font-semibold uppercase text-accent">
+              <p className="mt-3 font-display text-3xl leading-none text-accent">
                 {item.until && <span className="block text-xs font-normal tracking-[0.2em] text-ink/70">{copy.from}</span>}
                 {date}
               </p>
             </div>
             <div className="min-w-0">
-              <h3 className="font-display text-3xl leading-none font-semibold uppercase">{text.title}</h3>
+              <h3 className="font-display text-3xl leading-none">{text.title}</h3>
               {when && <p className="mt-3 text-sm uppercase tracking-[0.18em] text-emphasis">{when}</p>}
               {text.description && <p className="mt-3 leading-relaxed">{text.description}</p>}
               {(text.location || item.priceInCents !== undefined) && (

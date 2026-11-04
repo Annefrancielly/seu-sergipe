@@ -81,7 +81,7 @@ export default async function ChefPage({ params }: LocaleParams) {
 
         <div className="mx-auto mt-24 max-w-6xl px-6">
           <div className="surgir text-center md:text-left">
-            <h2 id="encontros-titulo" className="font-display text-4xl leading-none font-semibold uppercase sm:text-5xl">
+            <h2 id="encontros-titulo" className="font-display text-4xl leading-none sm:text-5xl">
               {chefIntro.guests.title}
             </h2>
             <p className="mt-3 text-lg">{chefIntro.guests.lead}</p>
@@ -114,7 +114,7 @@ export default async function ChefPage({ params }: LocaleParams) {
         <Section surface="verde" labelledBy="sugestoes-chef-titulo" className="pb-secao">
           <div className="surgir mx-auto max-w-6xl px-6 text-center md:text-left">
             <p className="text-xs uppercase tracking-[0.3em] text-emphasis">{chefPicksIntro.title}</p>
-            <h2 id="sugestoes-chef-titulo" className="mt-3 font-display text-4xl leading-none font-semibold uppercase sm:text-5xl">
+            <h2 id="sugestoes-chef-titulo" className="mt-3 font-display text-4xl leading-none sm:text-5xl">
               {chefPicksIntro.lead}
             </h2>
           </div>

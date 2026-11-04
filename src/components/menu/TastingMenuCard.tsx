@@ -64,7 +64,7 @@ export function TastingMenuCard({ name, steps, description, details, photo, inte
         )}
       >
         {stepsLabel && <p className="text-xs uppercase tracking-[0.3em] text-accent">{stepsLabel}</p>}
-        <h3 className="mt-2 font-display text-3xl leading-none font-semibold uppercase sm:text-4xl">{name}</h3>
+        <h3 className="mt-2 font-display text-3xl leading-none sm:text-4xl">{name}</h3>
         <button
           ref={openButtonRef}
           type="button"
@@ -99,7 +99,7 @@ export function TastingMenuCard({ name, steps, description, details, photo, inte
         )}
       >
         {stepsLabel && <p className="text-xs uppercase tracking-[0.3em] text-accent">{stepsLabel}</p>}
-        <p className="mt-2 font-display text-2xl leading-none font-semibold uppercase">{name}</p>
+        <p className="mt-2 font-display text-2xl leading-none">{name}</p>
         {description && <p className="mt-4 text-sm leading-relaxed">{description}</p>}
         {details.map((detail) => (
           <p key={detail} className="mt-3 text-xs leading-relaxed text-emphasis">

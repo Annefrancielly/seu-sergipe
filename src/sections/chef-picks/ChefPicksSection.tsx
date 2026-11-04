@@ -46,7 +46,7 @@ export function ChefPicksSection({ locale }: { locale: Locale }) {
                 </span>
               )}
               <div className="min-w-0">
-                <p className="font-display text-xl leading-tight font-semibold uppercase">{dish.name}</p>
+                <p className="font-display text-xl leading-tight">{dish.name}</p>
                 <ReservationTrigger
                   variant="link"
                   withArrow={false}

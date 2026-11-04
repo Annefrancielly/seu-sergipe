@@ -30,7 +30,7 @@ export function PageHero({ eyebrow, title, lead, image, imagePosition, children 
       <div className="mx-auto w-full max-w-6xl px-6 pt-36 pb-12 md:pb-14">
         <div className="surgir max-w-2xl md:vidro md:rounded-[1.75rem] md:p-10">
           <p className="text-xs uppercase tracking-[0.3em] text-emphasis">{eyebrow}</p>
-          <h1 id="pagina-titulo" className="mt-3 font-display text-5xl leading-[0.95] font-semibold uppercase sm:text-7xl">
+          <h1 id="pagina-titulo" className="mt-3 font-display text-5xl leading-[0.95] sm:text-7xl">
             {title}
           </h1>
           {lead && <p className="mt-5 leading-relaxed md:text-lg">{lead}</p>}

@@ -136,7 +136,7 @@ export function SiteHeader() {
                   <Link
                     href={item.href}
                     onClick={closeMenu}
-                    className="block py-2 font-display text-4xl uppercase tracking-wide transition-colors hover:text-accent"
+                    className="block py-2 font-display text-4xl tracking-wide transition-colors hover:text-accent"
                   >
                     {item.label}
                   </Link>

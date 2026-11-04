@@ -87,7 +87,7 @@ export function HeroSlideshow({ slides, intervalMs = 7000, children }: HeroSlide
           key={current?.word}
           aria-hidden="true"
           lang="pt-BR"
-          className="hero-palavra font-display text-[clamp(2.75rem,10.5vw,8.5rem)] leading-[0.9] font-semibold uppercase"
+          className="hero-palavra font-display text-[clamp(2.75rem,10.5vw,8.5rem)] leading-[0.9]"
         >
           {current?.word}
         </p>
