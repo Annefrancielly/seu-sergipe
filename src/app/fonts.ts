@@ -1,9 +1,13 @@
-import { Big_Shoulders, DM_Mono } from "next/font/google";
+import { DM_Mono } from "next/font/google";
+import localFont from "next/font/local";
 
-export const fonteTitulos = Big_Shoulders({
-  subsets: ["latin"],
+export const fonteTitulos = localFont({
+  src: "../assets/fonts/tropicane.woff",
+  weight: "400",
+  style: "normal",
   variable: "--fonte-titulos",
   display: "swap",
+  adjustFontFallback: "Arial",
 });
 
 export const fonteTexto = DM_Mono({

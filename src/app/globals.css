@@ -322,6 +322,7 @@
 @layer base {
   html {
     -webkit-tap-highlight-color: transparent;
+    font-synthesis-weight: none;
   }
 
   a,

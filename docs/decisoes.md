@@ -452,10 +452,20 @@ A cliente quer o site inteiro em fundos escuros, como um jantar à luz de velas,
 - A foto do casal (jantar flambado) sai da abertura por falta de autorização de imagem e é apagada de `public/` (a exportação estática publica tudo o que está lá). Entra o caldo na cuia.
 - Pendências: fim do Café da manhã aos domingos (adotado 31/01/2027, "edição especial de 3 meses"), horários de 08/11 e 28/11, preço do Blues & Soul, confirmar o que é "Merine" (local da Aula do Mar), programação de dezembro.
 
+## D33 — Tropicane nos títulos; Silka aguardando a família completa
+
+- Arquivos recebidos da designer em 04/11/2026: `Tropicane.otf` (um único peso, Regular 400) e `silka-regularitalic-webfont.ttf` (só o itálico regular).
+- Tropicane: acentos do português completos (á à â ã é ê í ó ô õ ú ü ç). Faltam `·`, `º` e `ª`, que o navegador busca na fonte seguinte da pilha. Convertida para WOFF (24 KB) em `src/assets/fonts/` e carregada por `next/font/local` em `src/app/fonts.ts`, servida pelo próprio site.
+- Como só existe o peso 400, `font-synthesis-weight: none` no `html` impede o navegador de "engrossar" a fonte nos títulos que usam `font-semibold`.
+- Silka não foi integrada: só com o itálico não há texto corrido. DM Mono segue provisória no corpo.
+- Recomendação em aberto: a Tropicane é ornamental; frases longas em `font-display` (abertura, citação da chef, frase do rodapé, título do painel de reserva, página 404) leem melhor na fonte de texto.
+- Os arquivos de fonte não vão para o repositório antes da confirmação da licença web e da visibilidade do repositório no GitHub.
+
 ## Bloqueiam o design
 - Wireframes
 - Vetores originais da agência para o logotipo e o selo (hoje vetorizados a partir de imagem, ver D22)
-- Licenças web de Tropicane (HeyFonts) e Silka (Atipo), compradas no nome da cliente; confirmar se a secundária é Silka Mono e se a Tropicane tem os acentos do português
+- Licenças web de Tropicane (metadados: Arterfak Project; vendida hoje pela HeyFonts) e Silka (Atipo), no nome da cliente
+- Família Silka completa (Regular, Medium, SemiBold e itálicos) e confirmação se a secundária é Silka ou Silka Mono (ver D33)
 - Padronagens em vetor
 - Valores oficiais da paleta
 
